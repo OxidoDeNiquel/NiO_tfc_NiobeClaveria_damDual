@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "390188409862",
+    "project_id": "can-i-oxidodeniquel-2024",
+    "storage_bucket": "can-i-oxidodeniquel-2024.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:390188409862:android:07a7a864b644952fea8f87",
+        "android_client_info": {
+          "package_name": "com.niobe.can_i"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7wEIAqw9jw_pM1orbLAfGP5KnZ46amqc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
