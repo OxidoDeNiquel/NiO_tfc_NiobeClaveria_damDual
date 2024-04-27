@@ -1,5 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    //Adobe color
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="can_i_c0001">#E66EB2</color>
+    <color name="can_i_c0002">#003B4A</color>
+    <color name="can_i_c0003">#F24B88</color>
+    <color name="can_i_c0004">#07418C</color>
+    <color name="can_i_c0005">#064073</color>
+    <color name="can_i_c0006">#0597F2</color>
+    <color name="can_i_c0007">#04D9C4</color>
+    <color name="can_i_c0008">#04397F</color>
+    <color name="can_i_c0009">#27B7E4</color>
+    <color name="can_i_c0010">#03387E</color>
+
+    //Canva color
+    <color name="can_i_c0011">#053574</color>
+    <color name="can_i_c0012">#E8CAD3</color>
+    <color name="can_i_c0013">#1BD8E2</color>
+    <color name="can_i_c0014">#0882E7</color>
+
+    //Pastel
+    <color name="can_i_c0015">#9AB9D4</color>
+    <color name="can_i_c0016">#F4D6DC</color>
+    <color name="can_i_c0017">#AEEFF5</color>
+    <color name="can_i_c0018">#9FC8EF</color>
+    <color name="can_i_c0019">#F4C7DB</color>
+
+    //Escala de grises
+    <color name="can_i_c0020">#D9D9D9</color>
+    <color name="can_i_c0021">#393E40</color>
+    <color name="can_i_c0022">#92A0A6</color>
+    <color name="can_i_c0023">#5F6D73</color>
+    <color name="can_i_c0024">#D9D9D9</color>
+    <color name="can_i_c0025">#F1F0F0</color>
+
+    //Fondo del icono de la app
+    <color name="can_i_c0026">#03387e</color>
+
 </resources>

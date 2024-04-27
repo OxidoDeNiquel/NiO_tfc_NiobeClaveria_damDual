@@ -6,4 +6,11 @@
     </style>
 
     <style name="Theme.CanI" parent="Base.Theme.CanI" />
+
+    <style name="HeaderApp_Inicio_Perfil">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+    </style>
 </resources>
