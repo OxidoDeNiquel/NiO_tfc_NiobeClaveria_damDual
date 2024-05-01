@@ -12,4 +12,16 @@
     <string name="cerveza">Cerveza</string>
     <string name="copa">Copa</string>
     <string name="sin_alcohol">Sin Alcohol</string>
+    <string name="administrador">Administrador</string>
+    <string name="gestion_articulos">Gestión de artículos</string>
+    <string name="gestion_usuarios">Gestión de usuarios</string>
+    <string name="gestion_incidencias">Gestión de incidencias</string>
+    <string name="anadir_articulo">Añadir Artículo</string>
+    <string name="crear_articulo">Crear Artículo</string>
+    <string name="nombre">Nombre</string>
+    <string name="precio">Precio</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="stock">Stock</string>
+    <string name="editar_articulo">Editar Artículo</string>
+    <string name="confirmar">Confirmar</string>
 </resources>

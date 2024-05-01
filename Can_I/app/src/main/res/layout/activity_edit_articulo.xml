@@ -33,65 +33,84 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tvInicioSesion"
+                android:id="@+id/tvEditarArticulo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/iniciar_sesion"
+                android:text="@string/editar_articulo"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:textSize="21sp"
                 android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/tvEmail"
+                android:id="@+id/tvNombreArticulo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/usuario"
+                android:text="@string/nombre"
                 android:textSize="16sp"/>
 
             <EditText
-                android:id="@+id/etEmailAddress"
+                android:id="@+id/etNombreArticulo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:padding="5dp"
                 android:ems="10"
-                android:inputType="textEmailAddress"
+                android:inputType="text"
                 android:background="@color/can_i_c0025"/>
 
             <TextView
-                android:id="@+id/tvContrasena"
+                android:id="@+id/tvPrecio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/contrasena"
+                android:text="@string/precio"
                 android:textSize="16sp" />
 
 
             <EditText
-                android:id="@+id/etPassword"
+                android:id="@+id/etPrecio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="50dp"
+                android:layout_marginBottom="5dp"
                 android:padding="5dp"
                 android:ems="10"
-                android:inputType="textPassword"
+                android:inputType="number"
+                android:background="@color/can_i_c0025"/>
+
+            <TextView
+                android:id="@+id/tvStock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/stock"
+                android:textSize="16sp" />
+
+
+            <EditText
+                android:id="@+id/etStock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:padding="5dp"
+                android:ems="10"
+                android:inputType="number"
                 android:background="@color/can_i_c0025"/>
 
 
             <Button
-                android:id="@+id/bLogIn"
+                android:id="@+id/bCrearArticulo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:backgroundTint="@color/can_i_c0026"
-                android:text="@string/iniciar_sesion"/>
+                android:text="@string/confirmar"/>
 
-
-            <TextView
-                android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/bCancelar"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/recuperar_cuenta"
-                android:layout_marginBottom="50dp"/>
+                android:layout_marginBottom="5dp"
+                android:backgroundTint="@color/can_i_c0022"
+                android:text="@string/cancelar"/>
 
 
         </LinearLayout>

@@ -63,7 +63,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="parent"
         app:cardCornerRadius="50dp">
-">
+        ">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -144,7 +144,7 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Cesta"/>
+                android:text="@string/anadir_articulo"/>
 
         </LinearLayout>
 

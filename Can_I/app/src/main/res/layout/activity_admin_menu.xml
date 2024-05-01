@@ -33,65 +33,51 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tvInicioSesion"
-                android:layout_width="wrap_content"
+                android:id="@+id/tvNombreAdmin"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/iniciar_sesion"
+                android:text="John Doe"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:textSize="21sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:textAlignment="center"/>
 
             <TextView
-                android:id="@+id/tvEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/usuario"
-                android:textSize="16sp"/>
-
-            <EditText
-                android:id="@+id/etEmailAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:padding="5dp"
-                android:ems="10"
-                android:inputType="textEmailAddress"
-                android:background="@color/can_i_c0025"/>
-
-            <TextView
-                android:id="@+id/tvContrasena"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/contrasena"
-                android:textSize="16sp" />
-
-
-            <EditText
-                android:id="@+id/etPassword"
+                android:id="@+id/tvRol"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="50dp"
-                android:padding="5dp"
-                android:ems="10"
-                android:inputType="textPassword"
-                android:background="@color/can_i_c0025"/>
-
+                android:text="@string/administrador"
+                android:textSize="16sp"
+                android:textAlignment="center"/>
 
             <Button
-                android:id="@+id/bLogIn"
+                android:id="@+id/bGestionArticulos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
+                android:padding="20dp"
                 android:backgroundTint="@color/can_i_c0026"
-                android:text="@string/iniciar_sesion"/>
+                android:text="@string/gestion_articulos"/>
 
-
-            <TextView
-                android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/bGestionEmpleados"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/recuperar_cuenta"
-                android:layout_marginBottom="50dp"/>
+                android:layout_marginBottom="5dp"
+                android:padding="20dp"
+                android:backgroundTint="@color/can_i_c0026"
+                android:text="@string/gestion_usuarios"/>
+
+            <Button
+                android:id="@+id/bGestionIncidencias"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:padding="20dp"
+                android:backgroundTint="@color/can_i_c0026"
+                android:text="@string/gestion_incidencias"/>
 
 
         </LinearLayout>
