@@ -38,4 +38,8 @@
     //Fondo del icono de la app
     <color name="can_i_c0026">#03387e</color>
 
+    //Error o borrar
+    <color name="can_i_c0027">#DF0000</color>
+
+
 </resources>

@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".usecases.camarero_home.CamareroHomeActivity"
+    tools:context=".usecases.admin_menu.admin_articulos.AdminGArticulosActivity"
     android:background="@color/can_i_c0024">
 
     <LinearLayout
@@ -142,6 +142,7 @@
                 </androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
             <Button
+                android:id="@+id/bAnadirArticulo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/anadir_articulo"/>

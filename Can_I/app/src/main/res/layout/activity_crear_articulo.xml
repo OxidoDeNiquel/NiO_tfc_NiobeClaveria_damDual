@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".usecases.login.LogInActivity"
+    tools:context=".usecases.admin_menu.admin_articulos.crear_articulo.CrearArticuloActivity"
     android:background="@color/can_i_c0026">
 
     <ImageView
