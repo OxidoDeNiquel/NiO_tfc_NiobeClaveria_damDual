@@ -18,7 +18,7 @@
         android:layout_gravity="bottom">
 
         <TextView
-            android:id="@+id/tvSuperheroName"
+            android:id="@+id/tvArticulo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"

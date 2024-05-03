@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id("com.google.gms.google-services")
+    id("kotlin-kapt")
 }
 
 android {
@@ -34,6 +35,10 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    buildFeatures{
+        viewBinding = true   //Además, hay que darle a sincronizar
+    }
 }
 
 dependencies {
@@ -45,6 +50,11 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.firebase.database)
     implementation(libs.firebase.auth)
+
+    //Room
+    implementation ("androidx.room:room-ktx:2.6.1")
+    kapt ("androidx.room:room-compiler:2.6.1")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
