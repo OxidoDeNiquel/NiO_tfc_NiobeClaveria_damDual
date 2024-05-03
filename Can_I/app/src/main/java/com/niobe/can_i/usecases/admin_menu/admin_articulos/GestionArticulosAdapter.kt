@@ -6,10 +6,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.niobe.can_i.R
-import com.niobe.can_i.database.entity.ArticulosEntity
+import com.niobe.can_i.model.Articulo
 
-class GestionArticulosAdapter(var moviesList: List<ArticulosEntity> = emptyList()): RecyclerView.Adapter<GestionArticulosViewHolder>() {
-    fun updateList(list: List<ArticulosEntity>){
+class GestionArticulosAdapter(var moviesList: List<Articulo> = emptyList()): RecyclerView.Adapter<GestionArticulosViewHolder>() {
+    fun updateList(list: List<Articulo>){
         moviesList = list
         notifyDataSetChanged()
     }

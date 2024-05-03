@@ -32,16 +32,15 @@ class AdminMenuActivity : AppCompatActivity() {
         }
         //Inicializamos los componentes
         initUI()
-
+    }
+    //Función para inicializar todos los componentes del layout
+    private fun initUI(){
+        botonGestionArticulos = binding.bGestionArticulos
         // Configuramos el click listener para el botón
         botonGestionArticulos.setOnClickListener {
             // Aquí se ejecutará cuando se presione el botón
             goToGestionArticulosActivity()
         }
-    }
-    //Función para inicializar todos los componentes del layout
-    private fun initUI(){
-        botonGestionArticulos = binding.bGestionArticulos
     }
     // Función para navegar a AdminGArticulosActivity
     private fun goToGestionArticulosActivity(){

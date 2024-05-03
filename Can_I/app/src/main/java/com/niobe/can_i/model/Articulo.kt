@@ -6,4 +6,3 @@ data class Articulo(
     var precio: Double,
     var stock: Int
 )
-
