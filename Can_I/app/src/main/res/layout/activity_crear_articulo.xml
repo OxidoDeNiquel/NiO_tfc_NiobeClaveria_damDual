@@ -37,7 +37,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/crear_articulo"
-                android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:textSize="21sp"
                 android:textStyle="bold"/>
@@ -59,6 +58,23 @@
                 android:inputType="text"
                 android:background="@color/can_i_c0025"/>
 
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp">
+
+                <AutoCompleteTextView
+                    android:id="@+id/actvTipoBebida"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:inputType="none"
+                    android:hint="Tipo de bebida" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
             <TextView
                 android:id="@+id/tvPrecio"
                 android:layout_width="wrap_content"
@@ -74,7 +90,7 @@
                 android:layout_marginBottom="5dp"
                 android:padding="5dp"
                 android:ems="10"
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 android:background="@color/can_i_c0025"/>
 
             <TextView
@@ -108,11 +124,8 @@
                 android:id="@+id/bCancelar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
                 android:backgroundTint="@color/can_i_c0022"
                 android:text="@string/cancelar"/>
-
-
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
