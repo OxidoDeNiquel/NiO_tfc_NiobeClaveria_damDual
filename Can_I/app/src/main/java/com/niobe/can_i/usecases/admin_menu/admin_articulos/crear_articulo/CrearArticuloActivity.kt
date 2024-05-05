@@ -32,12 +32,6 @@ class CrearArticuloActivity : AppCompatActivity() {
         initUI()
     }
 
-    private fun goToGestionArticulosActivity(){
-        // Iniciamos la actividad de destino
-        val intent = Intent(this, GestionArticulosActivity::class.java)
-        startActivity(intent)
-    }
-
     //Función para inicializar los componentes y SetOnClickListeners
     private fun initUI(){
         //SetOnClickListeners
@@ -46,6 +40,7 @@ class CrearArticuloActivity : AppCompatActivity() {
         }
         binding.bCrearArticulo.setOnClickListener {
             crearArticulo()
+            goToGestionArticulosActivity()
         }
 
         //Componentes
@@ -59,10 +54,17 @@ class CrearArticuloActivity : AppCompatActivity() {
         }
     }
 
+    private fun goToGestionArticulosActivity(){
+        // Iniciamos la actividad de destino
+        val intent = Intent(this, GestionArticulosActivity::class.java)
+        startActivity(intent)
+        finish() // Cerrar la actividad actual
+    }
+
     private fun crearArticulo(){
         // Obtener una instancia de la base de datos Firebase
         val databaseReference = FirebaseDatabase.getInstance("https://can-i-oxidodeniquel-2024-default-rtdb.europe-west1.firebasedatabase.app")
-                                                .getReference("articulos")
+            .getReference("articulos")
 
         // Obtener los datos del formulario
         val nombreArticulo = binding.etNombreArticulo.text.toString()
@@ -83,6 +85,11 @@ class CrearArticuloActivity : AppCompatActivity() {
                     // Handle success
                     Toast.makeText(applicationContext, "Artículo creado exitosamente", Toast.LENGTH_SHORT).show()
                     Log.i("Ole ole se ha ejecutado", "Se ha mandado pal firebase")
+
+                    // Set the result as RESULT_OK before finishing the activity
+                    val resultIntent = Intent()
+                    resultIntent.putExtra("articuloId", articuloId) // Pasar la clave del artículo de vuelta a la actividad principal
+                    setResult(RESULT_OK, resultIntent)
                 }
                 .addOnFailureListener { e ->
                     // Handle error
@@ -94,5 +101,6 @@ class CrearArticuloActivity : AppCompatActivity() {
             Toast.makeText(applicationContext, "Error al generar el ID del artículo", Toast.LENGTH_SHORT).show()
         }
     }
+
 
 }

@@ -7,10 +7,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.niobe.can_i.R
 import com.niobe.can_i.model.Articulo
+import com.niobe.can_i.provider.preferences.roomdb.entities.ArticuloEntity
 
-class GestionArticulosAdapter(var moviesList: List<Articulo> = emptyList()): RecyclerView.Adapter<GestionArticulosViewHolder>() {
-    fun updateList(list: List<Articulo>){
-        moviesList = list
+class GestionArticulosAdapter(var articulosList: List<ArticuloEntity> = emptyList()): RecyclerView.Adapter<GestionArticulosViewHolder>() {
+    fun updateList(list: List<ArticuloEntity>){
+        articulosList = list
         notifyDataSetChanged()
     }
 
@@ -21,9 +22,9 @@ class GestionArticulosAdapter(var moviesList: List<Articulo> = emptyList()): Rec
     }
 
     override fun onBindViewHolder(holder: GestionArticulosViewHolder, position: Int) {
-        holder.bind(moviesList[position])
+        holder.bind(articulosList[position])
     }
 
-    override fun getItemCount(): Int = moviesList.size
+    override fun getItemCount(): Int = articulosList.size
 
 }
