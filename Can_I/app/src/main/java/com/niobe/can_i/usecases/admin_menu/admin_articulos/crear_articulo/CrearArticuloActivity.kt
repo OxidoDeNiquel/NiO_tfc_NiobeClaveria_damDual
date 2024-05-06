@@ -54,8 +54,8 @@ class CrearArticuloActivity : AppCompatActivity() {
         }
     }
 
-    private fun goToGestionArticulosActivity(){
-        // Iniciamos la actividad de destino
+    private fun goToGestionArticulosActivity() {
+        // Iniciamos la actividad de destino después de que se complete la operación de guardar el artículo en Firebase
         val intent = Intent(this, GestionArticulosActivity::class.java)
         startActivity(intent)
         finish() // Cerrar la actividad actual

@@ -23,7 +23,7 @@ class CanIRepository (private val room: CanIDatabase){
 
     suspend fun fillRoomDatabase() {
         val databaseReference = Util.getDatabaseReference()
-        databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
+        databaseReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val articulosList = mutableListOf<Articulo>()
                 for (snapshot in dataSnapshot.children) {
@@ -44,6 +44,7 @@ class CanIRepository (private val room: CanIDatabase){
             }
         })
     }
+
 
     private fun guardarArticulosEnRoom(articulosList: List<Articulo>) {
         CoroutineScope(Dispatchers.IO).launch {
