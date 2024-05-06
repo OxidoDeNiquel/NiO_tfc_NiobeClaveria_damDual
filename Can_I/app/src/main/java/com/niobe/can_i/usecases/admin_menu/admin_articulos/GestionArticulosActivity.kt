@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.google.firebase.database.DataSnapshot
@@ -52,7 +51,7 @@ class GestionArticulosActivity : AppCompatActivity() {
             insets
         }
 
-        room = Room.databaseBuilder(this, CanIDatabase::class.java, "movies_table").build()
+        room = Room.databaseBuilder(this, CanIDatabase::class.java, "articulo").build()
         repository = CanIRepository(room)
 
         //Inicializamos los componentes
@@ -77,8 +76,61 @@ class GestionArticulosActivity : AppCompatActivity() {
 
     private fun llenarBDRoom() {
         lifecycleScope.launch {
-            repository.fillRoomDatabase()
+            fillRoomDatabase()
         }
+    }
+    private fun fillRoomDatabase() {
+        Log.i("FILL ROOM DATABASE", "Ha entrado en fillRoomDatabase()")
+        val databaseReference = FirebaseDatabase
+            .getInstance(Constants.INSTANCE)
+            .getReference("articulos")
+        databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                Log.i("ONDATACHANGE", "Ha entrado en onDataChange()")
+                val articulosList = mutableListOf<Articulo>()
+                for (snapshot in dataSnapshot.children) {
+                    val articulo = snapshot.getValue(Articulo::class.java)
+                    articulo?.let {
+                        articulosList.add(it)
+                    }
+                }
+
+                Log.i("LEYENDO ARTICULOS...", articulosList.toString())
+
+                guardarArticulosEnRoom(articulosList)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle errors
+                Log.e("FIREBASE", "Error al leer datos de Firebase: ${databaseError.message}")
+            }
+        })
+    }
+    private fun guardarArticulosEnRoom(articulosList: List<Articulo>) {
+        Log.i("GUARDAR ARTICULOS ROOM", "Ha entrado en guardarArticulosEnRoom()")
+        CoroutineScope(Dispatchers.IO).launch {
+            // Eliminar todos los registros de la tabla en el hilo de fondo
+            room.articuloDao().deleteAllArticulos()
+
+            // Restablecer la secuencia de autoincremento
+            room.articuloDao().resetArticuloAutoincrement()
+
+            // Insertar nuevos registros
+            val articuloEntities = articulosList.map { articulo ->
+                ArticuloEntity(
+                    nombre = articulo.nombre,
+                    tipo = articulo.tipo,
+                    precio = articulo.precio,
+                    stock = articulo.stock
+                )
+            }
+            val dao = room.articuloDao()
+            dao.insertAll(articuloEntities)
+        }
+    }
+
+    suspend fun getArticulosByType(dao: ArticuloDao, tipo: String): List<ArticuloEntity> {
+        return dao.getArticuloByType("%${tipo}%")
     }
 
     private fun leerArticulosTipo(tipoArticulo: String, recyclerView: RecyclerView) {
@@ -87,7 +139,7 @@ class GestionArticulosActivity : AppCompatActivity() {
         Util.setupRecyclerView(this@GestionArticulosActivity, recyclerView, adapter)
 
         lifecycleScope.launch {
-            val articulosList = repository.getArticulosByType(room.articuloDao(), tipoArticulo)
+            val articulosList = getArticulosByType(room.articuloDao(), tipoArticulo)
             Log.i("HILO", "Ha entrado en el hilo")
             // Configurar el adapter y asignarlo al RecyclerView correspondiente
             adapter.updateList(articulosList)
@@ -106,6 +158,7 @@ class GestionArticulosActivity : AppCompatActivity() {
         leerArticulosTipo(Constants.TIPO_ARTICULO_COPA, binding.rvCopa)
         leerArticulosTipo(Constants.TIPO_ARTICULO_SIN_ALCOHOL, binding.rvSinAlcohol)
     }
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == Constants.REQUEST_CODE_CREAR_ARTICULO && resultCode == Activity.RESULT_OK) {

@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.niobe.can_i.usecases.admin_menu.admin_articulos.GestionArticulosActivity
 
 object Util {
     /**
@@ -50,7 +49,7 @@ object Util {
     fun getDatabaseReference(): DatabaseReference {
         // Obtiene la referencia a la base de datos Firebase
         return FirebaseDatabase
-            .getInstance("https://can-i-oxidodeniquel-2024-default-rtdb.europe-west1.firebasedatabase.app")
+            .getInstance(Constants.INSTANCE)
             .getReference("articulos")
     }
 
