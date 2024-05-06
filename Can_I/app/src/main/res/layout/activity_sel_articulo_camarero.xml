@@ -6,7 +6,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".usecases.admin_menu.admin_articulos.sel_articulo.SelArticuloActivity"
+    tools:context=".usecases.camarero_home.sel_articulo.SelArticuloCamareroActivity"
     android:orientation="vertical"
     android:background="@color/can_i_c0026">
 
@@ -49,51 +49,52 @@
                 android:textSize="32sp"
                 android:textStyle="bold"/>
             <TextView
-                android:id="@+id/tvPrecio"
+                android:id="@+id/tvEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
                 android:text="0,00€"
                 android:textStyle="bold"
                 android:textSize="26sp"
-                android:layout_marginTop="20dp"
-                />
+                android:layout_marginTop="20dp"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="40dp"
-                android:layout_marginBottom="80dp"
-                android:gravity="center">
+                android:gravity="center"
+                android:padding="50dp">
+
+
                 <TextView
+                    android:id="@+id/tvAdd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="24sp"
-                    android:text="Stock: "/>
+                    android:text="+"
+                    android:layout_marginRight="50dp"
+                    android:textSize="40sp" />
                 <TextView
-                    android:id="@+id/tvStockValue"
+                    android:id="@+id/tvNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="24sp"
-                    android:text="X"/>
+                    android:layout_marginRight="50dp"
+                    android:text="0"
+                    android:textSize="40sp" />
+                <TextView
+                    android:id="@+id/tvSubstract"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-"
+                    android:textSize="40sp" />
 
             </LinearLayout>
 
             <Button
-                android:id="@+id/bEditarArticulo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:text="Editar artículo"
+                android:text="@string/anadir_articulo"
                 android:backgroundTint="@color/can_i_c0026"/>
-
-            <Button
-                android:id="@+id/bBorrarArticulo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:text="Borrar artículo"
-                android:backgroundTint="@color/can_i_c0027"/>
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
