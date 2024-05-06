@@ -6,11 +6,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.niobe.can_i.databinding.ItemProductsBinding
 import com.niobe.can_i.model.Articulo
 import com.niobe.can_i.provider.preferences.roomdb.entities.ArticuloEntity
+class GestionArticulosViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    private val binding = ItemProductsBinding.bind(view)
+    fun bind(articuloEntity: ArticuloEntity,
+             navigateToDetailActivity: (Int) -> Unit) {
+        binding.tvArticulo.text = articuloEntity.nombre
+        // Enlaza otros datos del artículo a las vistas
 
-class GestionArticulosViewHolder(view: View): RecyclerView.ViewHolder(view) {
-    private var binding = ItemProductsBinding.bind(view)
-
-    fun bind(articulosEntityResponse: ArticuloEntity){
-        binding.tvArticulo.text = articulosEntityResponse.nombre
+        binding.root.setOnClickListener {
+            navigateToDetailActivity(articuloEntity.id)
+        }
     }
 }

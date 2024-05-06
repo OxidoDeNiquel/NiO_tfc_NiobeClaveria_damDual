@@ -40,7 +40,7 @@ class CanIRepository (private val room: CanIDatabase){
 
             override fun onCancelled(databaseError: DatabaseError) {
                 // Handle errors
-                Log.e("FIREBASE", "Error al leer datos de Firebase: ${databaseError.message}")
+                Log.e("FIREBASE ERROR", "Error al leer datos de Firebase: ${databaseError.message}")
             }
         })
     }

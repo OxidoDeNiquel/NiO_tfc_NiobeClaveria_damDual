@@ -16,6 +16,12 @@
         android:layout_weight="3"
         android:backgroundTint="@color/can_i_c0026">
 
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:padding="10dp"
+            android:src="@drawable/baseline_arrow_back_24"/>
 
     </androidx.cardview.widget.CardView>
     <androidx.cardview.widget.CardView

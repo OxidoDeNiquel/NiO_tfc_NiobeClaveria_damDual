@@ -7,7 +7,7 @@ import com.niobe.can_i.model.Articulo
 @Entity(tableName = "articulos")
 data class ArticuloEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
+    val id: Int = 0,
     val nombre: String,
     val tipo: String,
     val precio: Double,

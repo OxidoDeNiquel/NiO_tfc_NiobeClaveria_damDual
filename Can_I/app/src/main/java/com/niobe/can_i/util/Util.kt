@@ -49,7 +49,7 @@ object Util {
     fun getDatabaseReference(): DatabaseReference {
         // Obtiene la referencia a la base de datos Firebase
         return FirebaseDatabase
-            .getInstance(Constants.INSTANCE)
+            .getInstance("https://can-i-oxidodeniquel-2024-default-rtdb.europe-west1.firebasedatabase.app")
             .getReference("articulos")
     }
 

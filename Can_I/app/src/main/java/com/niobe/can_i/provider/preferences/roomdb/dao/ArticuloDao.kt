@@ -22,4 +22,8 @@ interface ArticuloDao {
 
     @Query("SELECT * FROM articulos WHERE tipo LIKE :tipo")
     suspend fun getArticuloByType(tipo: String): List<ArticuloEntity>
+
+    @Query("SELECT * FROM articulos WHERE id = :id")
+    suspend fun getArticuloById(id: Int): ArticuloEntity?
+
 }

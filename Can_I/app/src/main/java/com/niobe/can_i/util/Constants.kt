@@ -16,4 +16,6 @@ object Constants {
     //REQUEST CODES
     const val REQUEST_CODE_CREAR_ARTICULO = 1001
 
+    const val EXTRA_ID = "extra_id"
+
 }

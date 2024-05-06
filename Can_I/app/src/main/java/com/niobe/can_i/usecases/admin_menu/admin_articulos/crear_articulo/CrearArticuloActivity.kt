@@ -101,6 +101,4 @@ class CrearArticuloActivity : AppCompatActivity() {
             Toast.makeText(applicationContext, "Error al generar el ID del artículo", Toast.LENGTH_SHORT).show()
         }
     }
-
-
 }

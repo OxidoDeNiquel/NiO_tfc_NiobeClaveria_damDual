@@ -25,6 +25,7 @@ import com.niobe.can_i.provider.preferences.roomdb.dao.ArticuloDao
 import com.niobe.can_i.provider.preferences.roomdb.entities.ArticuloEntity
 import com.niobe.can_i.usecases.admin_menu.AdminMenuActivity
 import com.niobe.can_i.usecases.admin_menu.admin_articulos.crear_articulo.CrearArticuloActivity
+import com.niobe.can_i.usecases.admin_menu.admin_articulos.sel_articulo.SelArticuloActivity
 import com.niobe.can_i.util.Constants
 import com.niobe.can_i.util.Util
 import kotlinx.coroutines.CoroutineScope
@@ -34,7 +35,6 @@ import kotlinx.coroutines.launch
 class GestionArticulosActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityGestionArticulosBinding
-    private lateinit var botonCrear: Button
     private lateinit var room: CanIDatabase
     private lateinit var repository: CanIRepository
 
@@ -51,7 +51,7 @@ class GestionArticulosActivity : AppCompatActivity() {
             insets
         }
 
-        room = Room.databaseBuilder(this, CanIDatabase::class.java, "articulo").build()
+        room = Room.databaseBuilder(this, CanIDatabase::class.java, "Can I").build()
         repository = CanIRepository(room)
 
         //Inicializamos los componentes
@@ -60,9 +60,8 @@ class GestionArticulosActivity : AppCompatActivity() {
 
     //Función para inicializar todos los componentes del layout
     private fun initUI(){
-        botonCrear = binding.bAnadirArticulo
         // Configuramos el click listener para el botón
-        botonCrear.setOnClickListener {
+        binding.bAnadirArticulo.setOnClickListener {
             Util.changeActivity(this, CrearArticuloActivity::class.java)
         }
         binding.tvInicio.setOnClickListener {
@@ -76,74 +75,27 @@ class GestionArticulosActivity : AppCompatActivity() {
 
     private fun llenarBDRoom() {
         lifecycleScope.launch {
-            fillRoomDatabase()
+            repository.fillRoomDatabase()
         }
-    }
-    private fun fillRoomDatabase() {
-        Log.i("FILL ROOM DATABASE", "Ha entrado en fillRoomDatabase()")
-        val databaseReference = FirebaseDatabase
-            .getInstance(Constants.INSTANCE)
-            .getReference("articulos")
-        databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                Log.i("ONDATACHANGE", "Ha entrado en onDataChange()")
-                val articulosList = mutableListOf<Articulo>()
-                for (snapshot in dataSnapshot.children) {
-                    val articulo = snapshot.getValue(Articulo::class.java)
-                    articulo?.let {
-                        articulosList.add(it)
-                    }
-                }
-
-                Log.i("LEYENDO ARTICULOS...", articulosList.toString())
-
-                guardarArticulosEnRoom(articulosList)
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Handle errors
-                Log.e("FIREBASE", "Error al leer datos de Firebase: ${databaseError.message}")
-            }
-        })
-    }
-    private fun guardarArticulosEnRoom(articulosList: List<Articulo>) {
-        Log.i("GUARDAR ARTICULOS ROOM", "Ha entrado en guardarArticulosEnRoom()")
-        CoroutineScope(Dispatchers.IO).launch {
-            // Eliminar todos los registros de la tabla en el hilo de fondo
-            room.articuloDao().deleteAllArticulos()
-
-            // Restablecer la secuencia de autoincremento
-            room.articuloDao().resetArticuloAutoincrement()
-
-            // Insertar nuevos registros
-            val articuloEntities = articulosList.map { articulo ->
-                ArticuloEntity(
-                    nombre = articulo.nombre,
-                    tipo = articulo.tipo,
-                    precio = articulo.precio,
-                    stock = articulo.stock
-                )
-            }
-            val dao = room.articuloDao()
-            dao.insertAll(articuloEntities)
-        }
-    }
-
-    suspend fun getArticulosByType(dao: ArticuloDao, tipo: String): List<ArticuloEntity> {
-        return dao.getArticuloByType("%${tipo}%")
     }
 
     private fun leerArticulosTipo(tipoArticulo: String, recyclerView: RecyclerView) {
         Log.i("LEER_ARTICULOS", "Ha entrado en leerArticulosTipo()")
-        val adapter = GestionArticulosAdapter()
+        val adapter = GestionArticulosAdapter { articuloId -> navigateToDetail(articuloId) }
         Util.setupRecyclerView(this@GestionArticulosActivity, recyclerView, adapter)
 
         lifecycleScope.launch {
-            val articulosList = getArticulosByType(room.articuloDao(), tipoArticulo)
+            val articulosList = repository.getArticulosByType(room.articuloDao(), tipoArticulo)
             Log.i("HILO", "Ha entrado en el hilo")
             // Configurar el adapter y asignarlo al RecyclerView correspondiente
             adapter.updateList(articulosList)
         }
+    }
+
+    private fun navigateToDetail(id: Int) {
+        val intent = Intent(this, SelArticuloActivity::class.java)
+        intent.putExtra(Constants.EXTRA_ID, id)
+        startActivity(intent)
     }
 
     override fun onResume() {
@@ -158,7 +110,7 @@ class GestionArticulosActivity : AppCompatActivity() {
         leerArticulosTipo(Constants.TIPO_ARTICULO_COPA, binding.rvCopa)
         leerArticulosTipo(Constants.TIPO_ARTICULO_SIN_ALCOHOL, binding.rvSinAlcohol)
     }
-    @Deprecated("Deprecated in Java")
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == Constants.REQUEST_CODE_CREAR_ARTICULO && resultCode == Activity.RESULT_OK) {

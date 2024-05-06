@@ -9,9 +9,10 @@ import com.niobe.can_i.R
 import com.niobe.can_i.model.Articulo
 import com.niobe.can_i.provider.preferences.roomdb.entities.ArticuloEntity
 
-class GestionArticulosAdapter(var articulosList: List<ArticuloEntity> = emptyList()): RecyclerView.Adapter<GestionArticulosViewHolder>() {
-    fun updateList(list: List<ArticuloEntity>){
-        articulosList = list
+class GestionArticulosAdapter(var articuloList: List<ArticuloEntity> = emptyList(),
+                              private val navigateToDetailActivity: (Int) -> Unit) : RecyclerView.Adapter<GestionArticulosViewHolder>() {
+    fun updateList(list: List<ArticuloEntity>) {
+        articuloList = list
         notifyDataSetChanged()
     }
 
@@ -22,9 +23,8 @@ class GestionArticulosAdapter(var articulosList: List<ArticuloEntity> = emptyLis
     }
 
     override fun onBindViewHolder(holder: GestionArticulosViewHolder, position: Int) {
-        holder.bind(articulosList[position])
+        holder.bind(articuloList[position], navigateToDetailActivity)
     }
 
-    override fun getItemCount(): Int = articulosList.size
-
+    override fun getItemCount() = articuloList.size
 }
