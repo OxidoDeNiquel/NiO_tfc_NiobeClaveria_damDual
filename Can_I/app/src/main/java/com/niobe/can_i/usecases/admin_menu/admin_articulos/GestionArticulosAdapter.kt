@@ -9,9 +9,9 @@ import com.niobe.can_i.R
 import com.niobe.can_i.model.Articulo
 import com.niobe.can_i.provider.preferences.roomdb.entities.ArticuloEntity
 
-class GestionArticulosAdapter(var articuloList: List<ArticuloEntity> = emptyList(),
-                              private val navigateToDetailActivity: (Int) -> Unit) : RecyclerView.Adapter<GestionArticulosViewHolder>() {
-    fun updateList(list: List<ArticuloEntity>) {
+class GestionArticulosAdapter(var articuloList: List<Articulo> = emptyList(),
+                              private val navigateToDetailActivity: (String) -> Unit) : RecyclerView.Adapter<GestionArticulosViewHolder>() {
+    fun updateList(list: List<Articulo>) {
         articuloList = list
         notifyDataSetChanged()
     }

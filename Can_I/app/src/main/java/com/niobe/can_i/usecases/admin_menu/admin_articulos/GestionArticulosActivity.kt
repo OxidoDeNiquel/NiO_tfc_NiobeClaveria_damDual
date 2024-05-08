@@ -67,48 +67,16 @@ class GestionArticulosActivity : AppCompatActivity() {
         binding.tvInicio.setOnClickListener {
             Util.changeActivity(this, AdminMenuActivity::class.java)
         }
+
         // Llenar la base de datos de Room
-        llenarBDRoom()
+        //llenarBDRoom()
         // Leer y mostrar los artículos por tipo en los RecyclerViews
         onResume()
     }
 
-    private fun llenarBDRoom() {
-        lifecycleScope.launch {
-            repository.fillRoomDatabase()
-        }
-    }
-
-    private fun leerArticulosTipo(tipoArticulo: String, recyclerView: RecyclerView) {
-        Log.i("LEER_ARTICULOS", "Ha entrado en leerArticulosTipo()")
-        val adapter = GestionArticulosAdapter { articuloId -> navigateToDetail(articuloId) }
-        Util.setupRecyclerView(this@GestionArticulosActivity, recyclerView, adapter)
-
-        lifecycleScope.launch {
-            val articulosList = repository.getArticulosByType(room.articuloDao(), tipoArticulo)
-            Log.i("HILO", "Ha entrado en el hilo")
-            // Configurar el adapter y asignarlo al RecyclerView correspondiente
-            adapter.updateList(articulosList)
-        }
-    }
-
-    private fun navigateToDetail(id: Int) {
-        val intent = Intent(this, SelArticuloActivity::class.java)
-        intent.putExtra(Constants.EXTRA_ID, id)
-        startActivity(intent)
-    }
-
     override fun onResume() {
-        Log.i("ONRESUME", "Ha entrado en OnResume")
         super.onResume()
         actualizarRecyclerViews()
-    }
-
-    private fun actualizarRecyclerViews() {
-        Log.i("ACTUALIZAR_RV", "Ha entrado en actualizarRecyclerViews()")
-        leerArticulosTipo(Constants.TIPO_ARTICULO_CERVEZA, binding.rvCervezas)
-        leerArticulosTipo(Constants.TIPO_ARTICULO_COPA, binding.rvCopa)
-        leerArticulosTipo(Constants.TIPO_ARTICULO_SIN_ALCOHOL, binding.rvSinAlcohol)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -123,4 +91,68 @@ class GestionArticulosActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun actualizarRecyclerViews() {
+        leerArticulos(Constants.TIPO_ARTICULO_CERVEZA, binding.rvCervezas)
+        leerArticulos(Constants.TIPO_ARTICULO_COPA, binding.rvCopa)
+        leerArticulos(Constants.TIPO_ARTICULO_SIN_ALCOHOL, binding.rvSinAlcohol)
+    }
+
+    private fun leerArticulos(tipoArticulo: String, recyclerView: RecyclerView) {
+        Log.i("FUNCION", "He entrado a la funcion")
+        val adapter = GestionArticulosAdapter { articuloId -> navigateToDetail(articuloId) }
+        Util.setupRecyclerView(this@GestionArticulosActivity, recyclerView, adapter)
+
+        // Obtener una referencia a la base de datos
+        val databaseReference = FirebaseDatabase
+            .getInstance("https://can-i-oxidodeniquel-2024-default-rtdb.europe-west1.firebasedatabase.app")
+            .getReference("articulos")
+        Log.i("databaseReference", databaseReference.toString())
+
+        // Agregar un listener para manejar los resultados de la consulta
+        databaseReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // Crear una lista mutable para almacenar los artículos
+                val articulos: MutableList<Articulo> = mutableListOf()
+                Log.i("dataSnapshot", dataSnapshot.toString())
+                // Iterar sobre los resultados y convertirlos en objetos Articulo
+                for (childSnapshot in dataSnapshot.children) {
+                    Log.i("childSnapshot", childSnapshot.toString())
+                    // Obtener los datos del artículo
+                    val articuloId = childSnapshot.child("articuloId").getValue(String::class.java) ?: ""
+                    val nombre = childSnapshot.child("nombre").getValue(String::class.java) ?: ""
+                    val tipo = childSnapshot.child("tipo").getValue(String::class.java) ?: ""
+                    val precio = childSnapshot.child("precio").getValue(Double::class.java) ?: 0.0
+                    val stock = childSnapshot.child("stock").getValue(Int::class.java) ?: 0
+
+                    // Crear un objeto Articulo y agregarlo a la lista
+                    val articulo = Articulo(articuloId, nombre, tipo, precio, stock)
+                    articulos.add(articulo)
+                }
+                Log.i("articulos", articulos.toString())
+                // Actualizar el RecyclerView con la lista de artículos
+                adapter.updateList(articulos)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Manejar errores de lectura de la base de datos
+                Log.e("ERROR", "Error al leer datos de Firebase: ${databaseError.message}")
+            }
+        })
+    }
+
+
+    private fun navigateToDetail(id: String) {
+        val intent = Intent(this, SelArticuloActivity::class.java)
+        intent.putExtra(Constants.EXTRA_ID, id)
+        startActivity(intent)
+    }
+
+
+
+    /*private fun llenarBDRoom() {
+        lifecycleScope.launch {
+            repository.fillRoomDatabase()
+        }
+    }*/
 }

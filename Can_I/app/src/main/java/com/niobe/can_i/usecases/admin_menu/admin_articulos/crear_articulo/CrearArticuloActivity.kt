@@ -14,6 +14,7 @@ import com.niobe.can_i.R
 import com.niobe.can_i.databinding.ActivityCrearArticuloBinding
 import com.niobe.can_i.model.Articulo
 import com.niobe.can_i.usecases.admin_menu.admin_articulos.GestionArticulosActivity
+import java.util.UUID
 
 class CrearArticuloActivity : AppCompatActivity() {
 
@@ -67,20 +68,21 @@ class CrearArticuloActivity : AppCompatActivity() {
             .getReference("articulos")
 
         // Obtener los datos del formulario
+        val articuloId = UUID.randomUUID().toString()
         val nombreArticulo = binding.etNombreArticulo.text.toString()
         val tipoArticulo = binding.actvTipoBebida.text.toString() // Usar autoCompleteTextView aquí
         val precioArticulo = binding.etPrecio.text.toString().toDouble()
         val stockArticulo = binding.etStock.text.toString().toInt()
 
         // Crear un objeto Artículo
-        val articulo = Articulo(nombreArticulo, tipoArticulo, precioArticulo, stockArticulo)
+        val articulo = Articulo(articuloId, nombreArticulo, tipoArticulo, precioArticulo, stockArticulo)
 
         // Generar un ID único para el artículo
-        val articuloId = databaseReference.push().key
+        val key = databaseReference.push().key
 
         // Guardar el objeto Artículo en la base de datos
-        if (articuloId != null) {
-            databaseReference.child(articuloId).setValue(articulo)
+        if (key != null) {
+            databaseReference.child(key).setValue(articulo)
                 .addOnSuccessListener {
                     // Handle success
                     Toast.makeText(applicationContext, "Artículo creado exitosamente", Toast.LENGTH_SHORT).show()
@@ -88,7 +90,7 @@ class CrearArticuloActivity : AppCompatActivity() {
 
                     // Set the result as RESULT_OK before finishing the activity
                     val resultIntent = Intent()
-                    resultIntent.putExtra("articuloId", articuloId) // Pasar la clave del artículo de vuelta a la actividad principal
+                    resultIntent.putExtra("key", key) // Pasar la clave del artículo de vuelta a la actividad principal
                     setResult(RESULT_OK, resultIntent)
                 }
                 .addOnFailureListener { e ->
