@@ -35,8 +35,6 @@ import kotlinx.coroutines.launch
 class GestionArticulosActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityGestionArticulosBinding
-    private lateinit var room: CanIDatabase
-    private lateinit var repository: CanIRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,9 +48,6 @@ class GestionArticulosActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-        room = Room.databaseBuilder(this, CanIDatabase::class.java, "Can I").build()
-        repository = CanIRepository(room)
 
         //Inicializamos los componentes
         initUI()
@@ -105,12 +100,16 @@ class GestionArticulosActivity : AppCompatActivity() {
 
         // Obtener una referencia a la base de datos
         val databaseReference = FirebaseDatabase
-            .getInstance("https://can-i-oxidodeniquel-2024-default-rtdb.europe-west1.firebasedatabase.app")
+            .getInstance(Constants.INSTANCE)
             .getReference("articulos")
+
         Log.i("databaseReference", databaseReference.toString())
 
+        // Definir la consulta para filtrar los artículos por tipo
+        val query = databaseReference.orderByChild("tipo").equalTo(tipoArticulo)
+
         // Agregar un listener para manejar los resultados de la consulta
-        databaseReference.addValueEventListener(object : ValueEventListener {
+        query.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // Crear una lista mutable para almacenar los artículos
                 val articulos: MutableList<Articulo> = mutableListOf()
@@ -140,19 +139,9 @@ class GestionArticulosActivity : AppCompatActivity() {
             }
         })
     }
-
-
     private fun navigateToDetail(id: String) {
         val intent = Intent(this, SelArticuloActivity::class.java)
         intent.putExtra(Constants.EXTRA_ID, id)
         startActivity(intent)
     }
-
-
-
-    /*private fun llenarBDRoom() {
-        lifecycleScope.launch {
-            repository.fillRoomDatabase()
-        }
-    }*/
 }

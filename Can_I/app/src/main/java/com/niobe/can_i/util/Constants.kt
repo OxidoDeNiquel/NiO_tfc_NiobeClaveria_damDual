@@ -11,7 +11,7 @@ object Constants {
     //Tipos de articulos
     const val TIPO_ARTICULO_CERVEZA = "Cerveza"
     const val TIPO_ARTICULO_COPA = "Copa"
-    const val TIPO_ARTICULO_SIN_ALCOHOL = "Sin Alcohol"
+    const val TIPO_ARTICULO_SIN_ALCOHOL = "Sin alcohol"
 
     //REQUEST CODES
     const val REQUEST_CODE_CREAR_ARTICULO = 1001
