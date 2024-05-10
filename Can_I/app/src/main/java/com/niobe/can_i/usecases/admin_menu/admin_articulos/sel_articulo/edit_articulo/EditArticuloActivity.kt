@@ -2,6 +2,7 @@ package com.niobe.can_i.usecases.admin_menu.admin_articulos.sel_articulo.edit_ar
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -50,10 +51,12 @@ class EditArticuloActivity : AppCompatActivity() {
         }
 
         if (articuloId != null) {
+            Log.i("ENTRAR IF", "He entrado en el if")
             // Obtener los detalles del artículo y mostrarlos en la interfaz de usuario
             getArticulo(articuloId,
                 onSuccess = { articulo ->
                     if (articulo != null) {
+                        Log.i("Articulo", articulo.toString())
                         createUI(articulo)
                     } else {
                         Toast.makeText(this, "No se encontró ningún artículo", Toast.LENGTH_SHORT).show()
@@ -63,6 +66,8 @@ class EditArticuloActivity : AppCompatActivity() {
                     Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
                 }
             )
+        }else{
+            Log.e("Error ArticuloId", articuloId ?: "El artículo id es nulo")
         }
 
         binding.bConfirmar.setOnClickListener {
@@ -101,14 +106,16 @@ class EditArticuloActivity : AppCompatActivity() {
     }
 
     private fun createUI(articulo: Articulo) {
+        Log.d("EditArticuloActivity", "Nombre: ${articulo.nombre}, Precio: ${articulo.precio}, Stock: ${articulo.stock}")
         binding.etNombreArticulo.setText(articulo.nombre)
         binding.etPrecio.setText(articulo.precio.toString())
         binding.etStock.setText(articulo.stock.toString())
     }
 
+
     private fun getArticulo(articuloId: String, onSuccess: (Articulo?) -> Unit, onFailure: (String) -> Unit) {
         // Obtener una referencia a la base de datos Firebase
-        val databaseReference = FirebaseDatabase.getInstance("https://tu-proyecto.firebaseio.com")
+        val databaseReference = FirebaseDatabase.getInstance(Constants.INSTANCE)
             .getReference("articulos")
 
         // Realizar la consulta para obtener el artículo con el articuloId dado
@@ -135,11 +142,21 @@ class EditArticuloActivity : AppCompatActivity() {
     }
 
     private fun updateArticulo(articuloId: String, nuevoArticulo: Articulo) {
+        // Obtener una referencia al nodo del artículo específico en la base de datos
         val databaseReference = FirebaseDatabase.getInstance(Constants.INSTANCE)
             .getReference("articulos")
             .child(articuloId)
 
-        databaseReference.setValue(nuevoArticulo)
+        // Crear un mapa para almacenar los nuevos valores del artículo
+        val updates = mapOf<String, Any>(
+            "nombre" to nuevoArticulo.nombre,
+            "tipo" to nuevoArticulo.tipo,
+            "precio" to nuevoArticulo.precio,
+            "stock" to nuevoArticulo.stock
+        )
+
+        // Actualizar los valores del artículo en la base de datos
+        databaseReference.updateChildren(updates)
             .addOnSuccessListener {
                 // La actualización fue exitosa
                 // Puedes mostrar un Toast u otra acción
@@ -152,6 +169,7 @@ class EditArticuloActivity : AppCompatActivity() {
                 Toast.makeText(this, "Error al actualizar el artículo", Toast.LENGTH_SHORT).show()
             }
     }
+
 
     private fun goToGestionArticulosActivity() {
         // Iniciar la actividad de gestión de artículos

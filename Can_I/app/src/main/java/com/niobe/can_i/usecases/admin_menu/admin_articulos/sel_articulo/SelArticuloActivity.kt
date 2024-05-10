@@ -52,8 +52,11 @@ class SelArticuloActivity : AppCompatActivity() {
             goToGestionArticulosActivity()
         }
         binding.bEditarArticulo.setOnClickListener {
-            navigateToEditArticulo(id ?: "")
-            Util.changeActivity(this, EditArticuloActivity::class.java)
+            Log.i("PASAR ID", id ?: "")
+            if (id != null) {
+                Log.i("EXXISTE ID!!", id)
+                navigateToEditArticulo(id)
+            }
         }
         binding.bBorrarArticulo.setOnClickListener {
             deleteArticulo(id ?: "")
@@ -65,7 +68,6 @@ class SelArticuloActivity : AppCompatActivity() {
         intent.putExtra("ARTICULO", articuloId)
         startActivity(intent)
     }
-
 
     private fun goToGestionArticulosActivity() {
         // Iniciamos la actividad de destino después de que se complete la operación de guardar el artículo en Firebase
