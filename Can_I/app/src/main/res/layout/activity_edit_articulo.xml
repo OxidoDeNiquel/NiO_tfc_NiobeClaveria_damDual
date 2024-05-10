@@ -29,7 +29,10 @@
             android:id="@+id/etEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="50dp"
+            android:paddingTop="50dp"
+            android:paddingRight="50dp"
+            android:paddingLeft="50dp"
+            android:paddingBottom="20dp"
             android:orientation="vertical">
 
             <TextView
@@ -58,6 +61,21 @@
                 android:ems="10"
                 android:inputType="text"
                 android:background="@color/can_i_c0025"/>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp">
+
+                <AutoCompleteTextView
+                    android:id="@+id/actvTipoBebida"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:inputType="none"
+                    android:hint="Tipo de bebida" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/tvPrecio"
@@ -97,7 +115,7 @@
 
 
             <Button
-                android:id="@+id/bCrearArticulo"
+                android:id="@+id/bConfirmar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"

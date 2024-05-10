@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".usecases.admin_menu.admin_articulos.AdminGArticulosActivity"
+    tools:context=".usecases.admin_menu.admin_articulos.admin_articulos_lista.ArticulosListaActivity"
     android:background="@color/can_i_c0024">
 
     <LinearLayout
@@ -24,6 +24,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp">
             <TextView
+                android:id="@+id/tvInicio"
                 style="@style/HeaderApp_Inicio_Perfil"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -69,7 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:padding="30dp">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -79,68 +80,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="@string/cerveza"/>
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_weight="8"
+                        android:gravity="start|center_vertical"
+                        android:textStyle="bold"
+                        android:text="@string/tipo_bebida"/>
                 </LinearLayout>
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvCervezas"
                     android:layout_width="match_parent"
-                    android:layout_height="120dp">
+                    android:layout_height="match_parent">
 
                 </androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginBottom="20dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/copa"/>
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-                </LinearLayout>
-                <androidx.recyclerview.widget.RecyclerView
-                    android:layout_width="match_parent"
-                    android:layout_height="120dp">
-
-                </androidx.recyclerview.widget.RecyclerView>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginBottom="20dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/sin_alcohol"/>
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-                </LinearLayout>
-                <androidx.recyclerview.widget.RecyclerView
-                    android:layout_width="match_parent"
-                    android:layout_height="120dp">
-
-                </androidx.recyclerview.widget.RecyclerView>
-            </LinearLayout>
             <Button
                 android:id="@+id/bAnadirArticulo"
                 android:layout_width="match_parent"

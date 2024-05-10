@@ -15,6 +15,15 @@
         android:theme="@style/Theme.CanI"
         tools:targetApi="31">
         <activity
+            android:name=".usecases.camarero_home.sel_articulo.SelArticuloCamareroActivity"
+            android:exported="false" />
+        <activity
+            android:name=".usecases.admin_menu.admin_articulos.admin_articulos_lista.ArticulosListaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".usecases.admin_menu.admin_perfil.PerfilAdminActivity"
+            android:exported="false" />
+        <activity
             android:name=".usecases.admin_menu.admin_articulos.GestionArticulosActivity"
             android:exported="false" />
         <activity
