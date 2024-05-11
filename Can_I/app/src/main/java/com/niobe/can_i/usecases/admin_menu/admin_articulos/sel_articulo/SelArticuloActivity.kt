@@ -2,6 +2,7 @@ package com.niobe.can_i.usecases.admin_menu.admin_articulos.sel_articulo
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -37,18 +38,22 @@ class SelArticuloActivity : AppCompatActivity() {
 
     private fun initUI() {
         val id: String? = intent.getStringExtra(Constants.EXTRA_ID)
-        getArticuloInformation(id ?: "")
-
-        binding.ivBack.setOnClickListener {
-            finish()
-        }
-        binding.bEditarArticulo.setOnClickListener {
-            if (id != null) {
+        Log.i("ARTICULOID", id ?: "NO HAY ")
+        if (id != null) {
+            getArticuloInformation(id)
+            binding.ivBack.setOnClickListener {
+                finish()
+            }
+            binding.bEditarArticulo.setOnClickListener {
                 navigateToEditArticulo(id)
             }
-        }
-        binding.bBorrarArticulo.setOnClickListener {
-            deleteArticulo(id ?: "")
+            binding.bBorrarArticulo.setOnClickListener {
+                deleteArticulo(id)
+            }
+        } else {
+            // Manejar el caso donde no se proporciona el ID del artículo
+            Toast.makeText(this, "ID de artículo no válido", Toast.LENGTH_SHORT).show()
+            finish()
         }
     }
 
@@ -59,7 +64,7 @@ class SelArticuloActivity : AppCompatActivity() {
     }
 
     private fun deleteArticulo(articuloId: String) {
-        firebaseUtil.deleteArticulo(articuloId) { success ->
+        firebaseUtil.eliminarArticulo(articuloId) { success ->
             if (success) {
                 Toast.makeText(this, "Artículo eliminado con éxito", Toast.LENGTH_SHORT).show()
                 finish()
@@ -73,15 +78,13 @@ class SelArticuloActivity : AppCompatActivity() {
         firebaseUtil.getArticulo(
             articuloId,
             onSuccess = { articulo ->
-                if (articulo != null) {
+                articulo?.let {
                     runOnUiThread {
                         createUI(articulo)
                     }
-                } else {
-                    runOnUiThread {
-                        // Manejar caso donde no se puede obtener el artículo
-                        Toast.makeText(this, "No se encontró ningún artículo", Toast.LENGTH_SHORT).show()
-                    }
+                } ?: runOnUiThread {
+                    // Manejar caso donde no se puede obtener el artículo
+                    Toast.makeText(this, "No se encontró ningún artículo", Toast.LENGTH_SHORT).show()
                 }
             },
             onFailure = { errorMessage ->
@@ -92,7 +95,6 @@ class SelArticuloActivity : AppCompatActivity() {
             }
         )
     }
-
 
     private fun createUI(articulo: Articulo) {
         binding.tvNombreArticulo.text = articulo.nombre

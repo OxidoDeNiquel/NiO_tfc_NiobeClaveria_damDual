@@ -3,21 +3,16 @@ package com.niobe.can_i.usecases.admin_menu.admin_articulos
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.niobe.can_i.R
 import com.niobe.can_i.databinding.ActivityGestionArticulosBinding
-import com.niobe.can_i.model.Articulo
 import com.niobe.can_i.provider.services.firebase.FirebaseUtil
 import com.niobe.can_i.usecases.admin_menu.AdminMenuActivity
+import com.niobe.can_i.usecases.admin_menu.admin_articulos.admin_articulos_lista.ListaArticulosActivity
 import com.niobe.can_i.usecases.admin_menu.admin_articulos.crear_articulo.CrearArticuloActivity
 import com.niobe.can_i.usecases.admin_menu.admin_articulos.sel_articulo.SelArticuloActivity
 import com.niobe.can_i.util.Constants
@@ -25,7 +20,7 @@ import com.niobe.can_i.util.Util
 
 class GestionArticulosActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityGestionArticulosBinding
+    private lateinit var binding: ActivityGestionArticulosBinding
     private lateinit var firebaseUtil: FirebaseUtil
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +36,7 @@ class GestionArticulosActivity : AppCompatActivity() {
             insets
         }
 
-        // Inicializamos Firebase
+        // Inicializamos FirebaseUtil
         firebaseUtil = FirebaseUtil()
 
         // Inicializamos los componentes
@@ -113,5 +108,4 @@ class GestionArticulosActivity : AppCompatActivity() {
         intent.putExtra(Constants.EXTRA_TIPO_ARTICULO, tipoArticulo)
         startActivity(intent)
     }
-
 }

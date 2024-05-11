@@ -53,6 +53,7 @@ dependencies {
 
     //Room
     implementation ("androidx.room:room-ktx:2.6.1")
+    implementation(libs.firebase.firestore)
     kapt ("androidx.room:room-compiler:2.6.1")
 
     testImplementation(libs.junit)

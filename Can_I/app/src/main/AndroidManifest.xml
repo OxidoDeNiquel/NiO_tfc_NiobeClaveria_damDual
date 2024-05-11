@@ -15,13 +15,13 @@
         android:theme="@style/Theme.CanI"
         tools:targetApi="31">
         <activity
-            android:name=".usecases.admin_menu.admin_articulos.ListaArticulosActivity"
+            android:name=".usecases.admin_menu.admin_usuarios.CrearUsuarioActivity"
+            android:exported="false" />
+        <activity
+            android:name=".usecases.admin_menu.admin_articulos.admin_articulos_lista.ListaArticulosActivity"
             android:exported="false" />
         <activity
             android:name=".usecases.camarero_home.sel_articulo.SelArticuloCamareroActivity"
-            android:exported="false" />
-        <activity
-            android:name=".usecases.admin_menu.admin_articulos.admin_articulos_lista.ArticulosListaActivity"
             android:exported="false" />
         <activity
             android:name=".usecases.admin_menu.admin_perfil.PerfilAdminActivity"
@@ -40,13 +40,7 @@
             android:exported="false" />
         <activity
             android:name=".usecases.admin_menu.AdminMenuActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity> <!-- android:exported="false" /> -->
+            android:exported="false"/>
         <activity
             android:name=".usecases.camarero_home.CamareroHomeActivity"
             android:exported="false" />
@@ -55,7 +49,13 @@
             android:exported="false" />
         <activity
             android:name=".usecases.login.LogInActivity"
-            android:exported="false" />
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

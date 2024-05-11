@@ -6,7 +6,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".usecases.admin_menu.admin_articulos.ListaArticulosActivity"
+    tools:context=".usecases.admin_menu.admin_articulos.admin_articulos_lista.ListaArticulosActivity"
     android:background="@color/can_i_c0026"
     android:orientation="vertical">
 
@@ -75,6 +75,7 @@
                 android:orientation="vertical"
                 android:layout_marginBottom="20dp">
                 <TextView
+                    android:id="@+id/tvTipoBebida"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"

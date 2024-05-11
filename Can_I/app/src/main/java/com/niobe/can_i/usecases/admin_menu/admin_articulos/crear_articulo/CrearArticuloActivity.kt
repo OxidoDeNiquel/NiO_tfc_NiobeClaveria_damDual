@@ -50,7 +50,7 @@ class CrearArticuloActivity : AppCompatActivity() {
         // Componentes
         val tipoBebida = resources.getStringArray(R.array.tipos_de_bebidas)
         val adapter = ArrayAdapter(
-            this, R.layout.list_tipos_bebidas, tipoBebida
+            this, R.layout.list_desplegable, tipoBebida
         )
 
         with(binding.actvTipoBebida) {
@@ -65,20 +65,20 @@ class CrearArticuloActivity : AppCompatActivity() {
         val stockArticulo = binding.etStock.text.toString().toIntOrNull()
 
         if (nombreArticulo.isNotEmpty() && tipoArticulo.isNotEmpty() && precioArticulo != null && stockArticulo != null) {
-            val articuloId = UUID.randomUUID().toString()
+            val articuloId = UUID.randomUUID().toString() // Generar un ID aleatorio
             val articulo = Articulo(articuloId, nombreArticulo, tipoArticulo, precioArticulo, stockArticulo)
-            firebaseUtil.guardarArticulo(articulo) { success, key ->
+            firebaseUtil.guardarArticulo(articulo) { success ->
                 if (success) {
-                    Toast.makeText(applicationContext, "Artículo creado exitosamente", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Artículo creado exitosamente", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, GestionArticulosActivity::class.java)
                     startActivity(intent)
                     finish()
                 } else {
-                    Toast.makeText(applicationContext, "Error al crear el artículo", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Error al crear el artículo", Toast.LENGTH_SHORT).show()
                 }
             }
         } else {
-            Toast.makeText(applicationContext, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show()
         }
     }
 }
