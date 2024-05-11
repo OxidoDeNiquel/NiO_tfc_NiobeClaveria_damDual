@@ -25,11 +25,18 @@
     <string name="editar_articulo">Editar Artículo</string>
     <string name="confirmar">Confirmar</string>
     <string name="tipo_bebida">Tipo de bebida</string>
+    <string name="crear_usuario">Crear usuario</string>
+    <string name="cerrar_sesion">Cerrar Sesión</string>
 
     <!-- Dropdown items -->
     <string-array name="tipos_de_bebidas">
         <item>Cerveza</item>
         <item>Copa</item>
         <item>Sin alcohol</item>
+    </string-array>
+
+    <string-array name="tipos_de_usuarios">
+        <item>Camarero</item>
+        <item>Administrador</item>
     </string-array>
 </resources>

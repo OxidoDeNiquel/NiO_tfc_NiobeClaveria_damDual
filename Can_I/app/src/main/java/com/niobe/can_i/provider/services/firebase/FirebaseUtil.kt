@@ -1,17 +1,32 @@
 package com.niobe.can_i.provider.services.firebase
 
+import android.content.Context
+import android.content.Intent
 import android.util.Log
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.niobe.can_i.model.Articulo
+import com.niobe.can_i.usecases.login.LogInActivity
 import com.niobe.can_i.util.Constants
 
 class FirebaseUtil {
+
+    private var auth: FirebaseAuth = FirebaseAuth.getInstance()
+
     private val databaseReference: DatabaseReference = FirebaseDatabase.getInstance(Constants.INSTANCE)
         .getReference("articulos")
+
+    fun cerrarSesion(context: Context) {
+        auth.signOut()
+        // Redirigir al usuario de vuelta a la pantalla de inicio de sesión
+        val intent = Intent(context, LogInActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        context.startActivity(intent)
+    }
 
     fun leerArticulos(tipoArticulo: String, callback: (List<Articulo>) -> Unit) {
         val query = databaseReference.orderByChild("tipo").equalTo(tipoArticulo)

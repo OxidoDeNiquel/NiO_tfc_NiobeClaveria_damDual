@@ -39,7 +39,7 @@ class EditArticuloActivity : AppCompatActivity() {
 
         val tipoBebida = resources.getStringArray(R.array.tipos_de_bebidas)
         val adapter = ArrayAdapter(
-            this, R.layout.list_tipos_bebidas, tipoBebida
+            this, R.layout.list_desplegable, tipoBebida
         )
 
         with(binding.actvTipoBebida) {
