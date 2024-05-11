@@ -1,4 +1,4 @@
-package com.niobe.can_i.usecases.admin_menu.admin_articulos
+package com.niobe.can_i.usecases.admin_menu.admin_articulos.admin_articulos_lista
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

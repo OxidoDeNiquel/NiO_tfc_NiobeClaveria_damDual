@@ -30,13 +30,11 @@ class EditArticuloActivity : AppCompatActivity() {
             insets
         }
 
-        // Inicializar la interfaz de usuario y cargar los datos del artículo
         initUI()
     }
 
     private fun initUI() {
         val articuloId = intent.getStringExtra("ARTICULO")
-
         val tipoBebida = resources.getStringArray(R.array.tipos_de_bebidas)
         val adapter = ArrayAdapter(
             this, R.layout.list_desplegable, tipoBebida
@@ -47,12 +45,11 @@ class EditArticuloActivity : AppCompatActivity() {
         }
 
         if (articuloId != null) {
-            // Obtener los detalles del artículo y mostrarlos en la interfaz de usuario
             firebaseUtil.getArticulo(articuloId,
                 onSuccess = { articulo ->
-                    if (articulo != null) {
+                    articulo?.let {
                         createUI(articulo)
-                    } else {
+                    } ?: run {
                         Toast.makeText(this, "No se encontró ningún artículo", Toast.LENGTH_SHORT).show()
                     }
                 },
@@ -66,10 +63,15 @@ class EditArticuloActivity : AppCompatActivity() {
         }
 
         binding.bConfirmar.setOnClickListener {
-            // Actualizar el artículo con los nuevos datos
             if (articuloId != null) {
                 val nuevoArticulo = obtenerNuevoArticulo()
-                firebaseUtil.updateArticulo(articuloId, nuevoArticulo,
+                val nuevosDatos = mapOf(
+                    "nombre" to nuevoArticulo.nombre,
+                    "tipo" to nuevoArticulo.tipo,
+                    "precio" to nuevoArticulo.precio,
+                    "stock" to nuevoArticulo.stock
+                )
+                firebaseUtil.actualizarArticulo(articuloId, nuevosDatos,
                     onSuccess = {
                         Toast.makeText(this, "Artículo actualizado correctamente", Toast.LENGTH_SHORT).show()
                         goToGestionArticulosActivity()
@@ -81,8 +83,9 @@ class EditArticuloActivity : AppCompatActivity() {
             }
         }
 
+
+
         binding.bCancelar.setOnClickListener {
-            // Volver a la actividad de gestión de artículos
             goToGestionArticulosActivity()
         }
     }
@@ -104,9 +107,8 @@ class EditArticuloActivity : AppCompatActivity() {
     }
 
     private fun goToGestionArticulosActivity() {
-        // Iniciar la actividad de gestión de artículos
         val intent = Intent(this, GestionArticulosActivity::class.java)
         startActivity(intent)
-        finish() // Cerrar la actividad actual
+        finish()
     }
 }

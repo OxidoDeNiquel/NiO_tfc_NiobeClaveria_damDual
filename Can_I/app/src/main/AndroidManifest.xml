@@ -18,13 +18,10 @@
             android:name=".usecases.admin_menu.admin_usuarios.CrearUsuarioActivity"
             android:exported="false" />
         <activity
-            android:name=".usecases.admin_menu.admin_articulos.ListaArticulosActivity"
+            android:name=".usecases.admin_menu.admin_articulos.admin_articulos_lista.ListaArticulosActivity"
             android:exported="false" />
         <activity
             android:name=".usecases.camarero_home.sel_articulo.SelArticuloCamareroActivity"
-            android:exported="false" />
-        <activity
-            android:name=".usecases.admin_menu.admin_articulos.admin_articulos_lista.ArticulosListaActivity"
             android:exported="false" />
         <activity
             android:name=".usecases.admin_menu.admin_perfil.PerfilAdminActivity"

@@ -4,21 +4,14 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.firestore.FirebaseFirestore
 import com.niobe.can_i.model.Articulo
 import com.niobe.can_i.usecases.login.LogInActivity
-import com.niobe.can_i.util.Constants
 
 class FirebaseUtil {
 
     private var auth: FirebaseAuth = FirebaseAuth.getInstance()
-
-    private val databaseReference: DatabaseReference = FirebaseDatabase.getInstance(Constants.INSTANCE)
-        .getReference("articulos")
+    private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
     fun cerrarSesion(context: Context) {
         auth.signOut()
@@ -29,121 +22,113 @@ class FirebaseUtil {
     }
 
     fun leerArticulos(tipoArticulo: String, callback: (List<Articulo>) -> Unit) {
-        val query = databaseReference.orderByChild("tipo").equalTo(tipoArticulo)
-        query.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
+        firestore.collection("articulos")
+            .whereEqualTo("tipo", tipoArticulo)
+            .get()
+            .addOnSuccessListener { result ->
                 val articulos: MutableList<Articulo> = mutableListOf()
-                for (childSnapshot in dataSnapshot.children) {
-                    val articuloId = childSnapshot.child("articuloId").getValue(String::class.java) ?: ""
-                    val nombre = childSnapshot.child("nombre").getValue(String::class.java) ?: ""
-                    val tipo = childSnapshot.child("tipo").getValue(String::class.java) ?: ""
-                    val precio = childSnapshot.child("precio").getValue(Double::class.java) ?: 0.0
-                    val stock = childSnapshot.child("stock").getValue(Int::class.java) ?: 0
-                    val articulo = Articulo(articuloId, nombre, tipo, precio, stock)
+                for (document in result) {
+                    val articulo = document.toObject(Articulo::class.java)
                     articulos.add(articulo)
                 }
                 callback(articulos)
             }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.e("ERROR", "Error al leer datos de Firebase: ${databaseError.message}")
+            .addOnFailureListener { exception ->
+                Log.e("ERROR", "Error al leer datos de Firestore: $exception")
+                callback(emptyList())
             }
-        })
     }
-    fun deleteArticulo(articuloId: String, callback: (Boolean) -> Unit) {
-        databaseReference.orderByChild("articuloId").equalTo(articuloId)
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        val articuloSnapshot = dataSnapshot.children.firstOrNull()
-                        val key = articuloSnapshot?.key
-                        if (key != null) {
-                            databaseReference.child(key).removeValue()
-                                .addOnSuccessListener {
-                                    callback(true)
-                                }
-                                .addOnFailureListener {
-                                    callback(false)
-                                }
-                        } else {
+
+    fun eliminarArticulo(articuloId: String, callback: (Boolean) -> Unit) {
+        firestore.collection("articulos")
+            .whereEqualTo("articuloId", articuloId)
+            .get()
+            .addOnSuccessListener { documents ->
+                if (!documents.isEmpty) {
+                    val document = documents.documents[0]
+                    document.reference.delete()
+                        .addOnSuccessListener {
+                            Log.d("SUCCESS", "Documento eliminado correctamente")
+                            callback(true)
+                        }
+                        .addOnFailureListener { e ->
+                            Log.e("ERROR", "Error al eliminar documento", e)
                             callback(false)
                         }
-                    } else {
-                        callback(false)
-                    }
-                }
-
-                override fun onCancelled(databaseError: DatabaseError) {
+                } else {
+                    Log.e("ERROR", "No se encontró ningún artículo con el ID $articuloId")
                     callback(false)
                 }
-            })
+            }
+            .addOnFailureListener { exception ->
+                Log.e("ERROR", "Error al obtener artículo: $exception")
+                callback(false)
+            }
     }
 
+    fun actualizarArticulo(
+        articuloId: String,
+        nuevosDatos: Map<String, Any>,
+        onSuccess: () -> Unit,
+        onFailure: (String) -> Unit
+    ) {
+        firestore.collection("articulos")
+            .whereEqualTo("articuloId", articuloId) // Consultar documentos con el articuloId proporcionado
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                if (!querySnapshot.isEmpty) {
+                    val documento = querySnapshot.documents[0] // Tomar el primer documento de la consulta
+                    documento.reference.update(nuevosDatos) // Actualizar el documento con los nuevos datos
+                        .addOnSuccessListener {
+                            Log.d("SUCCESS", "Documento actualizado correctamente")
+                            onSuccess() // Llamar a onSuccess cuando la operación tenga éxito
+                        }
+                        .addOnFailureListener { e ->
+                            Log.e("ERROR", "Error al actualizar documento", e)
+                            onFailure("Error al actualizar el artículo: ${e.message}") // Llamar a onFailure con el mensaje de error
+                        }
+                } else {
+                    onFailure("No se encontró ningún artículo con el ID $articuloId") // Llamar a onFailure si no se encuentra ningún documento
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e("ERROR", "Error al obtener el artículo para actualizar", e)
+                onFailure("Error al obtener el artículo para actualizar: ${e.message}") // Llamar a onFailure con el mensaje de error
+            }
+    }
+
+
+
     fun getArticulo(articuloId: String, onSuccess: (Articulo?) -> Unit, onFailure: (String) -> Unit) {
-        val query = databaseReference.orderByChild("articuloId").equalTo(articuloId)
-        query.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    val articuloSnapshot = dataSnapshot.children.firstOrNull()
-                    val articulo = articuloSnapshot?.getValue(Articulo::class.java)
+        firestore.collection("articulos")
+            .whereEqualTo("articuloId", articuloId)
+            .get()
+            .addOnSuccessListener { documents ->
+                if (!documents.isEmpty) {
+                    val document = documents.documents[0]
+                    val articulo = document.toObject(Articulo::class.java)
                     onSuccess(articulo)
                 } else {
                     onFailure("No se encontró ningún artículo con el ID $articuloId")
                 }
             }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                onFailure("Error al obtener el artículo: ${databaseError.message}")
+            .addOnFailureListener { exception ->
+                Log.e("ERROR", "Error al obtener artículo: $exception")
+                onFailure("Error al obtener el artículo: $exception")
             }
-        })
     }
 
-
-    fun guardarArticulo(articulo: Articulo, callback: (Boolean, String) -> Unit) {
-        val key = databaseReference.push().key
-        if (key != null) {
-            databaseReference.child(key).setValue(articulo)
-                .addOnSuccessListener {
-                    callback(true, key)
-                }
-                .addOnFailureListener {
-                    callback(false, "")
-                }
-        } else {
-            callback(false, "")
-        }
-    }
-    fun updateArticulo(articuloId: String, nuevoArticulo: Articulo, onSuccess: () -> Unit, onFailure: (String) -> Unit) {
-        val articuloRef = databaseReference.orderByChild("articuloId").equalTo(articuloId)
-        articuloRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    val articuloSnapshot = dataSnapshot.children.firstOrNull()
-                    if (articuloSnapshot != null) {
-                        articuloSnapshot.ref.updateChildren(
-                            mapOf(
-                                "nombre" to nuevoArticulo.nombre,
-                                "tipo" to nuevoArticulo.tipo,
-                                "precio" to nuevoArticulo.precio,
-                                "stock" to nuevoArticulo.stock
-                            )
-                        ).addOnSuccessListener {
-                            onSuccess()
-                        }.addOnFailureListener {
-                            onFailure("Error al actualizar el artículo: ${it.message}")
-                        }
-                    } else {
-                        onFailure("No se encontró el artículo con el ID $articuloId")
-                    }
-                } else {
-                    onFailure("No se encontró ningún artículo con el ID $articuloId")
-                }
+    fun guardarArticulo(articulo: Articulo, callback: (Boolean) -> Unit) {
+        val db = FirebaseFirestore.getInstance()
+        db.collection("articulos")
+            .add(articulo)
+            .addOnSuccessListener {
+                callback(true)
             }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                onFailure("Error al obtener el artículo: ${databaseError.message}")
+            .addOnFailureListener { e ->
+                Log.e("FirebaseUtil", "Error al guardar el artículo: ", e)
+                callback(false)
             }
-        })
     }
 
 }

@@ -1,4 +1,4 @@
-package com.niobe.can_i.usecases.admin_menu.admin_articulos
+package com.niobe.can_i.usecases.admin_menu.admin_articulos.admin_articulos_lista
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,11 +7,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.recyclerview.widget.RecyclerView
 import com.niobe.can_i.R
 import com.niobe.can_i.databinding.ActivityListaArticulosBinding
-import com.niobe.can_i.model.Articulo
 import com.niobe.can_i.provider.services.firebase.FirebaseUtil
+import com.niobe.can_i.usecases.admin_menu.admin_articulos.GestionArticulosActivity
 import com.niobe.can_i.usecases.admin_menu.admin_articulos.sel_articulo.SelArticuloActivity
 import com.niobe.can_i.util.Constants
 import com.niobe.can_i.util.Util
@@ -35,7 +34,7 @@ class ListaArticulosActivity : AppCompatActivity() {
         initUI()
     }
 
-    private fun initUI(){
+    private fun initUI() {
         val tipoArticulo = intent.getStringExtra(Constants.EXTRA_TIPO_ARTICULO)
         if (tipoArticulo != null) {
             actualizarRecyclerViews(tipoArticulo)
@@ -43,6 +42,8 @@ class ListaArticulosActivity : AppCompatActivity() {
             // Manejar el caso en que no se proporcionó el tipo de artículo
             Log.e("ListaArticulosActivity", "Tipo de artículo no proporcionado")
         }
+
+        binding.tvTipoBebida.text = tipoArticulo
 
         binding.tvInicio.setOnClickListener {
             Util.changeActivity(this, GestionArticulosActivity::class.java)
