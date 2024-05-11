@@ -4,14 +4,11 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -19,27 +16,22 @@ import com.google.firebase.database.ValueEventListener
 import com.niobe.can_i.R
 import com.niobe.can_i.databinding.ActivityGestionArticulosBinding
 import com.niobe.can_i.model.Articulo
-import com.niobe.can_i.provider.preferences.CanIRepository
-import com.niobe.can_i.provider.preferences.roomdb.CanIDatabase
-import com.niobe.can_i.provider.preferences.roomdb.dao.ArticuloDao
-import com.niobe.can_i.provider.preferences.roomdb.entities.ArticuloEntity
+import com.niobe.can_i.provider.services.firebase.FirebaseUtil
 import com.niobe.can_i.usecases.admin_menu.AdminMenuActivity
 import com.niobe.can_i.usecases.admin_menu.admin_articulos.crear_articulo.CrearArticuloActivity
 import com.niobe.can_i.usecases.admin_menu.admin_articulos.sel_articulo.SelArticuloActivity
 import com.niobe.can_i.util.Constants
 import com.niobe.can_i.util.Util
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class GestionArticulosActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityGestionArticulosBinding
+    private lateinit var firebaseUtil: FirebaseUtil
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        //Inicializamos el binding
+        // Inicializamos el binding
         binding = ActivityGestionArticulosBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -49,12 +41,15 @@ class GestionArticulosActivity : AppCompatActivity() {
             insets
         }
 
-        //Inicializamos los componentes
+        // Inicializamos Firebase
+        firebaseUtil = FirebaseUtil()
+
+        // Inicializamos los componentes
         initUI()
     }
 
-    //Función para inicializar todos los componentes del layout
-    private fun initUI(){
+    // Función para inicializar todos los componentes del layout
+    private fun initUI() {
         // Configuramos el click listener para el botón
         binding.bAnadirArticulo.setOnClickListener {
             Util.changeActivity(this, CrearArticuloActivity::class.java)
@@ -62,9 +57,15 @@ class GestionArticulosActivity : AppCompatActivity() {
         binding.tvInicio.setOnClickListener {
             Util.changeActivity(this, AdminMenuActivity::class.java)
         }
-
-        // Llenar la base de datos de Room
-        //llenarBDRoom()
+        binding.ivCerveza.setOnClickListener {
+            navigateToList(Constants.TIPO_ARTICULO_CERVEZA)
+        }
+        binding.ivCopa.setOnClickListener {
+            navigateToList(Constants.TIPO_ARTICULO_COPA)
+        }
+        binding.ivSinAlcohol.setOnClickListener {
+            navigateToList(Constants.TIPO_ARTICULO_SIN_ALCOHOL)
+        }
         // Leer y mostrar los artículos por tipo en los RecyclerViews
         onResume()
     }
@@ -94,54 +95,23 @@ class GestionArticulosActivity : AppCompatActivity() {
     }
 
     private fun leerArticulos(tipoArticulo: String, recyclerView: RecyclerView) {
-        Log.i("FUNCION", "He entrado a la funcion")
-        val adapter = GestionArticulosAdapter { articuloId -> navigateToDetail(articuloId) }
-        Util.setupRecyclerView(this@GestionArticulosActivity, recyclerView, adapter)
-
-        // Obtener una referencia a la base de datos
-        val databaseReference = FirebaseDatabase
-            .getInstance(Constants.INSTANCE)
-            .getReference("articulos")
-
-        Log.i("databaseReference", databaseReference.toString())
-
-        // Definir la consulta para filtrar los artículos por tipo
-        val query = databaseReference.orderByChild("tipo").equalTo(tipoArticulo)
-
-        // Agregar un listener para manejar los resultados de la consulta
-        query.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                // Crear una lista mutable para almacenar los artículos
-                val articulos: MutableList<Articulo> = mutableListOf()
-                Log.i("dataSnapshot", dataSnapshot.toString())
-                // Iterar sobre los resultados y convertirlos en objetos Articulo
-                for (childSnapshot in dataSnapshot.children) {
-                    Log.i("childSnapshot", childSnapshot.toString())
-                    // Obtener los datos del artículo
-                    val articuloId = childSnapshot.child("articuloId").getValue(String::class.java) ?: ""
-                    val nombre = childSnapshot.child("nombre").getValue(String::class.java) ?: ""
-                    val tipo = childSnapshot.child("tipo").getValue(String::class.java) ?: ""
-                    val precio = childSnapshot.child("precio").getValue(Double::class.java) ?: 0.0
-                    val stock = childSnapshot.child("stock").getValue(Int::class.java) ?: 0
-
-                    // Crear un objeto Articulo y agregarlo a la lista
-                    val articulo = Articulo(articuloId, nombre, tipo, precio, stock)
-                    articulos.add(articulo)
-                }
-                Log.i("articulos", articulos.toString())
-                // Actualizar el RecyclerView con la lista de artículos
-                adapter.updateList(articulos)
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Manejar errores de lectura de la base de datos
-                Log.e("ERROR", "Error al leer datos de Firebase: ${databaseError.message}")
-            }
-        })
+        firebaseUtil.leerArticulos(tipoArticulo) { articulos ->
+            val adapter = GestionArticulosAdapter { articuloId -> navigateToDetail(articuloId) }
+            Util.setupRecyclerViewHorizontal(this@GestionArticulosActivity, recyclerView, adapter)
+            adapter.updateList(articulos)
+        }
     }
+
     private fun navigateToDetail(id: String) {
         val intent = Intent(this, SelArticuloActivity::class.java)
         intent.putExtra(Constants.EXTRA_ID, id)
         startActivity(intent)
     }
+
+    private fun navigateToList(tipoArticulo: String) {
+        val intent = Intent(this, ListaArticulosActivity::class.java)
+        intent.putExtra(Constants.EXTRA_TIPO_ARTICULO, tipoArticulo)
+        startActivity(intent)
+    }
+
 }

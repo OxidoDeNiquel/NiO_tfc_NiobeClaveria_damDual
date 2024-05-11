@@ -2,26 +2,22 @@ package com.niobe.can_i.usecases.admin_menu.admin_articulos.sel_articulo.edit_ar
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.niobe.can_i.R
 import com.niobe.can_i.databinding.ActivityEditArticuloBinding
 import com.niobe.can_i.model.Articulo
+import com.niobe.can_i.provider.services.firebase.FirebaseUtil
 import com.niobe.can_i.usecases.admin_menu.admin_articulos.GestionArticulosActivity
-import com.niobe.can_i.util.Constants
 
 class EditArticuloActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityEditArticuloBinding
+    private val firebaseUtil = FirebaseUtil()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,17 +42,15 @@ class EditArticuloActivity : AppCompatActivity() {
             this, R.layout.list_tipos_bebidas, tipoBebida
         )
 
-        with(binding.actvTipoBebida){
+        with(binding.actvTipoBebida) {
             setAdapter(adapter)
         }
 
         if (articuloId != null) {
-            Log.i("ENTRAR IF", "He entrado en el if")
             // Obtener los detalles del artículo y mostrarlos en la interfaz de usuario
-            getArticulo(articuloId,
+            firebaseUtil.getArticulo(articuloId,
                 onSuccess = { articulo ->
                     if (articulo != null) {
-                        Log.i("Articulo", articulo.toString())
                         createUI(articulo)
                     } else {
                         Toast.makeText(this, "No se encontró ningún artículo", Toast.LENGTH_SHORT).show()
@@ -66,39 +60,27 @@ class EditArticuloActivity : AppCompatActivity() {
                     Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
                 }
             )
-        }else{
-            Log.e("Error ArticuloId", articuloId ?: "El artículo id es nulo")
+        } else {
+            Toast.makeText(this, "Error: No se proporcionó un ID de artículo", Toast.LENGTH_SHORT).show()
+            finish()
         }
 
         binding.bConfirmar.setOnClickListener {
             // Actualizar el artículo con los nuevos datos
             if (articuloId != null) {
-                getArticulo(articuloId,
-                    onSuccess = { articulo ->
-                        if (articulo != null) {
-                            val nuevoArticulo = Articulo(
-                                articulo.articuloId,
-                                binding.etNombreArticulo.text.toString(),
-                                binding.actvTipoBebida.text.toString(),
-                                binding.etPrecio.text.toString().toDouble(),
-                                binding.etStock.text.toString().toInt()
-                            )
-                            updateArticulo(articulo.articuloId, nuevoArticulo)
-                        } else {
-                            Toast.makeText(
-                                this,
-                                "No se encontró ningún artículo",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
+                val nuevoArticulo = obtenerNuevoArticulo()
+                firebaseUtil.updateArticulo(articuloId, nuevoArticulo,
+                    onSuccess = {
+                        Toast.makeText(this, "Artículo actualizado correctamente", Toast.LENGTH_SHORT).show()
+                        goToGestionArticulosActivity()
                     },
-                    onFailure = { errorMessage ->
-                        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
+                    onFailure = {
+                        Toast.makeText(this, "Error al actualizar el artículo", Toast.LENGTH_SHORT).show()
                     }
                 )
             }
-
         }
+
         binding.bCancelar.setOnClickListener {
             // Volver a la actividad de gestión de artículos
             goToGestionArticulosActivity()
@@ -106,70 +88,20 @@ class EditArticuloActivity : AppCompatActivity() {
     }
 
     private fun createUI(articulo: Articulo) {
-        Log.d("EditArticuloActivity", "Nombre: ${articulo.nombre}, Precio: ${articulo.precio}, Stock: ${articulo.stock}")
         binding.etNombreArticulo.setText(articulo.nombre)
+        binding.actvTipoBebida.setText(articulo.tipo)
         binding.etPrecio.setText(articulo.precio.toString())
         binding.etStock.setText(articulo.stock.toString())
     }
 
+    private fun obtenerNuevoArticulo(): Articulo {
+        val nombreArticulo = binding.etNombreArticulo.text.toString()
+        val tipoArticulo = binding.actvTipoBebida.text.toString()
+        val precioArticulo = binding.etPrecio.text.toString().toDoubleOrNull() ?: 0.0
+        val stockArticulo = binding.etStock.text.toString().toIntOrNull() ?: 0
 
-    private fun getArticulo(articuloId: String, onSuccess: (Articulo?) -> Unit, onFailure: (String) -> Unit) {
-        // Obtener una referencia a la base de datos Firebase
-        val databaseReference = FirebaseDatabase.getInstance(Constants.INSTANCE)
-            .getReference("articulos")
-
-        // Realizar la consulta para obtener el artículo con el articuloId dado
-        databaseReference.orderByChild("articuloId").equalTo(articuloId)
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        // La consulta devuelve resultados
-                        // En este caso, solo debería haber un artículo con el articuloId específico
-                        val articuloSnapshot = dataSnapshot.children.first() // Obtener el primer resultado
-                        val articulo = articuloSnapshot.getValue(Articulo::class.java)
-                        onSuccess(articulo)
-                    } else {
-                        // No se encontró ningún artículo con el articuloId dado
-                        onFailure("No existe ningún artículo con articuloId $articuloId")
-                    }
-                }
-
-                override fun onCancelled(databaseError: DatabaseError) {
-                    // Manejar errores de lectura de la base de datos
-                    onFailure("Error al leer datos de Firebase: ${databaseError.message}")
-                }
-            })
+        return Articulo("", nombreArticulo, tipoArticulo, precioArticulo, stockArticulo)
     }
-
-    private fun updateArticulo(articuloId: String, nuevoArticulo: Articulo) {
-        // Obtener una referencia al nodo del artículo específico en la base de datos
-        val databaseReference = FirebaseDatabase.getInstance(Constants.INSTANCE)
-            .getReference("articulos")
-            .child(articuloId)
-
-        // Crear un mapa para almacenar los nuevos valores del artículo
-        val updates = mapOf<String, Any>(
-            "nombre" to nuevoArticulo.nombre,
-            "tipo" to nuevoArticulo.tipo,
-            "precio" to nuevoArticulo.precio,
-            "stock" to nuevoArticulo.stock
-        )
-
-        // Actualizar los valores del artículo en la base de datos
-        databaseReference.updateChildren(updates)
-            .addOnSuccessListener {
-                // La actualización fue exitosa
-                // Puedes mostrar un Toast u otra acción
-                Toast.makeText(this, "Artículo actualizado correctamente", Toast.LENGTH_SHORT).show()
-                goToGestionArticulosActivity()
-            }
-            .addOnFailureListener { exception ->
-                // La actualización falló
-                // Puedes mostrar un Toast o manejar el error de otra manera
-                Toast.makeText(this, "Error al actualizar el artículo", Toast.LENGTH_SHORT).show()
-            }
-    }
-
 
     private fun goToGestionArticulosActivity() {
         // Iniciar la actividad de gestión de artículos
