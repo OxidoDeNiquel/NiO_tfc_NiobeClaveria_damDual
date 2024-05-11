@@ -17,5 +17,6 @@ object Constants {
     const val REQUEST_CODE_CREAR_ARTICULO = 1001
 
     const val EXTRA_ID = "extra_id"
+    const val EXTRA_TIPO_ARTICULO = "extra_tipo_articulo"
 
 }

@@ -16,10 +16,17 @@ object Util {
      * @param recyclerView RecyclerView que se va a configurar.
      * @param adapter Adaptador que se va a establecer en el RecyclerView.
      */
-    fun setupRecyclerView(activity: AppCompatActivity, recyclerView: RecyclerView, adapter: RecyclerView.Adapter<*>) {
+    fun setupRecyclerViewHorizontal(activity: AppCompatActivity, recyclerView: RecyclerView, adapter: RecyclerView.Adapter<*>) {
         // Establece el RecyclerView con un tamaño fijo y un LayoutManager horizontal
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        // Asigna el adaptador al RecyclerView
+        recyclerView.adapter = adapter
+    }
+    fun setupRecyclerViewVertical(activity: AppCompatActivity, recyclerView: RecyclerView, adapter: RecyclerView.Adapter<*>) {
+        // Establece el RecyclerView con un tamaño fijo y un LayoutManager horizontal
+        recyclerView.setHasFixedSize(true)
+        recyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         // Asigna el adaptador al RecyclerView
         recyclerView.adapter = adapter
     }

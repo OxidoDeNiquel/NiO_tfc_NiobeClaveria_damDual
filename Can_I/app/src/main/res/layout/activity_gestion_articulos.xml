@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".usecases.admin_menu.admin_articulos.GestionArticulosActivity"
-    android:background="@color/can_i_c0024">
+    android:background="@color/can_i_c0024"
+    android:backgroundTint="@color/can_i_c0026">
 
     <LinearLayout
         android:id="@+id/llHeader1"
@@ -30,6 +31,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="2"
                 android:gravity="center"
+                android:textColor="@color/white"
                 android:text="@string/inicio"/>
             <TextView
                 android:layout_width="match_parent"
@@ -39,6 +41,7 @@
                 android:textAlignment="center"
                 android:textSize="36sp"
                 android:textStyle="bold"
+                android:textColor="@color/white"
                 android:text="@string/can_i"/>
             <TextView
                 style="@style/HeaderApp_Inicio_Perfil"
@@ -46,6 +49,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="2"
                 android:gravity="center"
+                android:textColor="@color/white"
                 android:text="@string/perfil"/>
         </LinearLayout>
 
@@ -90,6 +94,7 @@
                         android:text="@string/cerveza"/>
 
                     <ImageView
+                        android:id="@+id/ivCerveza"
                         android:layout_width="60dp"
                         android:layout_height="35dp"
                         android:layout_weight="0"
@@ -122,6 +127,7 @@
                         android:text="@string/copa"/>
 
                     <ImageView
+                        android:id="@+id/ivCopa"
                         android:layout_width="60dp"
                         android:layout_height="35dp"
                         android:layout_weight="0"
@@ -154,6 +160,7 @@
                         android:text="@string/sin_alcohol"/>
 
                     <ImageView
+                        android:id="@+id/ivSinAlcohol"
                         android:layout_width="60dp"
                         android:layout_height="35dp"
                         android:layout_weight="0"
@@ -170,6 +177,7 @@
                 android:id="@+id/bAnadirArticulo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/can_i_c0026"
                 android:text="@string/anadir_articulo"/>
 
         </LinearLayout>
