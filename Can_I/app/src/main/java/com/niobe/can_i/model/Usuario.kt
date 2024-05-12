@@ -2,14 +2,12 @@ package com.niobe.can_i.model
 
 data class Usuario (
     var idUsuario: String,
-    var nombreUsuario: String,
-    var contrasena: String,
-    var tipoUsuario: String,
+    var email: String,
+    var rol: String,
     var nombre: String,
     var apellido1: String,
-    var apellido2: String,
-    var dni: String,
-    var email: String
+    var apellido2 : String?,
+    var dni: String
 )
 
 data class Empleado(

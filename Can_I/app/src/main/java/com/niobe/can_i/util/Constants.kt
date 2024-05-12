@@ -19,4 +19,7 @@ object Constants {
     const val EXTRA_ID = "extra_id"
     const val EXTRA_TIPO_ARTICULO = "extra_tipo_articulo"
 
+    const val TIPO_USUARIO_ADMINISTRADOR= "Administrador"
+    const val TIPO_USUARIO_CAMARERO= "Camarero"
+
 }

@@ -8,15 +8,6 @@
     tools:context=".usecases.admin_menu.admin_usuarios.CrearUsuarioActivity"
     android:background="@color/can_i_c0026">
 
-    <ImageView
-        android:id="@+id/igIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/cvBackgroundLogIn"
-        android:src="@drawable/ic_appicon" />
-
     <androidx.cardview.widget.CardView
         android:id="@+id/cvBackgroundLogIn"
         android:layout_width="match_parent"
@@ -57,23 +48,6 @@
                 android:inputType="textEmailAddress"
                 android:background="@color/can_i_c0025"/>
 
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="10dp">
-
-                <AutoCompleteTextView
-                    android:id="@+id/actvTipoUsuario"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:inputType="none"
-                    android:hint="Tipo de usuario" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
             <TextView
                 android:id="@+id/tvContrasena"
                 android:layout_width="wrap_content"
@@ -92,6 +66,92 @@
                 android:inputType="textPassword"
                 android:background="@color/can_i_c0025"/>
 
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp">
+
+                <AutoCompleteTextView
+                    android:id="@+id/actvTipoUsuario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:inputType="none"
+                    android:hint="Tipo de usuario" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tvNombre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nombre"
+                android:textSize="16sp" />
+
+
+            <EditText
+                android:id="@+id/etNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:padding="5dp"
+                android:ems="10"
+                android:inputType="text"
+                android:background="@color/can_i_c0025"/>
+            <TextView
+                android:id="@+id/tvApellido1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/apellido_1"
+                android:textSize="16sp" />
+
+
+            <EditText
+                android:id="@+id/etApellido1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:padding="5dp"
+                android:ems="10"
+                android:inputType="text"
+                android:background="@color/can_i_c0025"/>
+            <TextView
+                android:id="@+id/tvApellido2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/apellido_2"
+                android:textSize="16sp" />
+
+
+            <EditText
+                android:id="@+id/etApellido2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:padding="5dp"
+                android:ems="10"
+                android:inputType="text"
+                android:background="@color/can_i_c0025"/>
+
+            <TextView
+                android:id="@+id/tvDni"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dni"
+                android:textSize="16sp" />
+
+
+            <EditText
+                android:id="@+id/etDni"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:padding="5dp"
+                android:ems="10"
+                android:inputType="text"
+                android:background="@color/can_i_c0025"/>
+
             <Button
                 android:id="@+id/bCrearUsuario"
                 android:layout_width="match_parent"
@@ -106,6 +166,7 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/can_i_c0022"
                 android:text="@string/cancelar"/>
+
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

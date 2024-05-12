@@ -50,11 +50,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.firebase.database)
     implementation(libs.firebase.auth)
-
-    //Room
-    implementation ("androidx.room:room-ktx:2.6.1")
     implementation(libs.firebase.firestore)
-    kapt ("androidx.room:room-compiler:2.6.1")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

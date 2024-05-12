@@ -27,6 +27,11 @@
     <string name="tipo_bebida">Tipo de bebida</string>
     <string name="crear_usuario">Crear usuario</string>
     <string name="cerrar_sesion">Cerrar Sesión</string>
+    <string name="apellido_1">Apellido 1</string>
+    <string name="apellido_2">Apellido 2</string>
+    <string name="dni">DNI</string>
+    <string name="gestion_barras">Gestión de barras</string>
+    <string name="borrar_barra">Borrar Barra</string>
 
     <!-- Dropdown items -->
     <string-array name="tipos_de_bebidas">

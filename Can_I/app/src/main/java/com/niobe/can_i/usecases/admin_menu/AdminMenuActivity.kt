@@ -12,6 +12,7 @@ import com.niobe.can_i.R
 import com.niobe.can_i.databinding.ActivityAdminMenuBinding
 import com.niobe.can_i.provider.services.firebase.FirebaseUtil
 import com.niobe.can_i.usecases.admin_menu.admin_articulos.GestionArticulosActivity
+import com.niobe.can_i.usecases.admin_menu.admin_barras.GestionBarrasActivity
 import com.niobe.can_i.usecases.admin_menu.admin_usuarios.CrearUsuarioActivity
 import com.niobe.can_i.util.Util
 
@@ -51,6 +52,9 @@ class AdminMenuActivity : AppCompatActivity() {
         }
         binding.bCerrarSesion.setOnClickListener {
             firebaseUtil.cerrarSesion(this)
+        }
+        binding.bGestionIncidencias.setOnClickListener {
+            Util.changeActivity(this, GestionBarrasActivity::class.java)
         }
     }
 }
