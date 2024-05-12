@@ -6,6 +6,7 @@ import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.niobe.can_i.model.Articulo
+import com.niobe.can_i.model.Barra
 import com.niobe.can_i.usecases.login.LogInActivity
 
 class FirebaseUtil {
@@ -128,6 +129,38 @@ class FirebaseUtil {
             .addOnFailureListener { e ->
                 Log.e("FirebaseUtil", "Error al guardar el artículo: ", e)
                 callback(false)
+            }
+    }
+
+    fun getBarra(idBarra: String, onSuccess: (Barra?) -> Unit, onFailure: (String) -> Unit) {
+        val firestore = FirebaseFirestore.getInstance()
+        firestore.collection("barras")
+            .document(idBarra)
+            .get()
+            .addOnSuccessListener { documentSnapshot ->
+                if (documentSnapshot.exists()) {
+                    val barra = documentSnapshot.toObject(Barra::class.java)
+                    onSuccess(barra)
+                } else {
+                    onFailure("No se encontró ninguna barra con el ID $idBarra")
+                }
+            }
+            .addOnFailureListener { exception ->
+                onFailure("Error al obtener la barra: ${exception.message}")
+            }
+    }
+
+    fun borrarBarra(idBarra: String, onSuccess: () -> Unit, onFailure: (String) -> Unit) {
+        val firestore = FirebaseFirestore.getInstance()
+        val barrasCollection = firestore.collection("barras")
+
+        barrasCollection.document(idBarra)
+            .delete()
+            .addOnSuccessListener {
+                onSuccess()
+            }
+            .addOnFailureListener { exception ->
+                onFailure("Error al borrar la barra: ${exception.message}")
             }
     }
 
