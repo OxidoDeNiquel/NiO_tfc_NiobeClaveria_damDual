@@ -67,7 +67,7 @@ class CrearArticuloActivity : AppCompatActivity() {
         if (nombreArticulo.isNotEmpty() && tipoArticulo.isNotEmpty() && precioArticulo != null && stockArticulo != null) {
             val articuloId = UUID.randomUUID().toString() // Generar un ID aleatorio
             val articulo = Articulo(articuloId, nombreArticulo, tipoArticulo, precioArticulo, stockArticulo)
-            firebaseUtil.guardarArticulo(articulo) { success ->
+            firebaseUtil.guardarArticulo(articuloId, articulo) { success ->
                 if (success) {
                     Toast.makeText(this, "Artículo creado exitosamente", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, GestionArticulosActivity::class.java)

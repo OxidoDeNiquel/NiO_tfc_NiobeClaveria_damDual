@@ -119,10 +119,11 @@ class FirebaseUtil {
             }
     }
 
-    fun guardarArticulo(articulo: Articulo, callback: (Boolean) -> Unit) {
+    fun guardarArticulo(articuloId: String, articulo: Articulo, callback: (Boolean) -> Unit) {
         val db = FirebaseFirestore.getInstance()
         db.collection("articulos")
-            .add(articulo)
+            .document(articuloId) // Usar articuloId como documentId
+            .set(articulo)
             .addOnSuccessListener {
                 callback(true)
             }

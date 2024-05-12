@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".usecases.camarero_home.CamareroHomeActivity"
-    android:background="@color/can_i_c0024">
+    android:background="@color/can_i_c0024"
+    android:backgroundTint="@color/can_i_c0026">
 
     <LinearLayout
         android:id="@+id/llHeader1"
@@ -21,14 +22,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp">
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp">
             <TextView
+                android:id="@+id/tvInicio"
                 style="@style/HeaderApp_Inicio_Perfil"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
                 android:gravity="center"
+                android:textColor="@color/white"
                 android:text="@string/inicio"/>
             <TextView
                 android:layout_width="match_parent"
@@ -38,6 +41,7 @@
                 android:textAlignment="center"
                 android:textSize="36sp"
                 android:textStyle="bold"
+                android:textColor="@color/white"
                 android:text="@string/can_i"/>
             <TextView
                 style="@style/HeaderApp_Inicio_Perfil"
@@ -45,6 +49,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="2"
                 android:gravity="center"
+                android:textColor="@color/white"
                 android:text="@string/perfil"/>
         </LinearLayout>
 
@@ -63,13 +68,13 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="parent"
         app:cardCornerRadius="50dp">
-">
+        ">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:padding="30dp">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -79,17 +84,26 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:gravity="start|center_vertical"
+                        android:textStyle="bold"
                         android:text="@string/cerveza"/>
+
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:id="@+id/ivCerveza"
+                        android:layout_width="60dp"
+                        android:layout_height="35dp"
+                        android:layout_weight="0"
+                        android:src="@drawable/icons8_flecha_50"/>
                 </LinearLayout>
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvCervezas"
                     android:layout_width="match_parent"
-                    android:layout_height="120dp">
+                    android:layout_height="100dp">
 
                 </androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
@@ -103,17 +117,26 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:gravity="start|center_vertical"
+                        android:textStyle="bold"
                         android:text="@string/copa"/>
+
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:id="@+id/ivCopa"
+                        android:layout_width="60dp"
+                        android:layout_height="35dp"
+                        android:layout_weight="0"
+                        android:src="@drawable/icons8_flecha_50"/>
                 </LinearLayout>
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvCopa"
                     android:layout_width="match_parent"
-                    android:layout_height="120dp">
+                    android:layout_height="100dp">
 
                 </androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
@@ -127,24 +150,35 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:gravity="start|center_vertical"
+                        android:textStyle="bold"
                         android:text="@string/sin_alcohol"/>
+
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:id="@+id/ivSinAlcohol"
+                        android:layout_width="60dp"
+                        android:layout_height="35dp"
+                        android:layout_weight="0"
+                        android:src="@drawable/icons8_flecha_50"/>
                 </LinearLayout>
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvSinAlcohol"
                     android:layout_width="match_parent"
-                    android:layout_height="120dp">
+                    android:layout_height="100dp">
 
                 </androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
             <Button
+                android:id="@+id/bAnadirArticulo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Cesta"/>
+                android:backgroundTint="@color/can_i_c0026"
+                android:text="@string/anadir_articulo"/>
 
         </LinearLayout>
 

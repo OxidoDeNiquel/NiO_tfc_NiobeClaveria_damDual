@@ -1,80 +1,81 @@
 package com.niobe.can_i.usecases.camarero_home
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
-import android.text.TextUtils
-import android.util.Log
-import android.widget.Button
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.google.android.material.textfield.TextInputEditText
-import com.google.firebase.Firebase
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.auth
+import androidx.recyclerview.widget.RecyclerView
 import com.niobe.can_i.R
+import com.niobe.can_i.databinding.ActivityCamareroHomeBinding
+import com.niobe.can_i.provider.services.firebase.FirebaseUtil
+import com.niobe.can_i.usecases.camarero_home.sel_articulo.SelArticuloCamareroActivity
+import com.niobe.can_i.util.Constants
+import com.niobe.can_i.util.Util
 
 class CamareroHomeActivity : AppCompatActivity() {
 
-    private lateinit var etEmail : TextInputEditText
-    private lateinit var etPassword : TextInputEditText
-    private lateinit var bLogIn : Button
+    private lateinit var binding: ActivityCamareroHomeBinding
+    private lateinit var firebaseUtil: FirebaseUtil
 
-    private lateinit var auth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_camarero_home)
+        binding = ActivityCamareroHomeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        // Inicializamos FirebaseUtil
+        firebaseUtil = FirebaseUtil()
 
         initUI()
-
-        bLogIn.setOnClickListener {
-            var email: String = etEmail.text.toString()
-            var password: String = etPassword.text.toString()
-
-            //Checkear si el campo email y password estan rellenos o no
-            if(TextUtils.isEmpty(email)){
-                //Mostrar mensaje para avisar
-                Toast.makeText(this, "Escribe un email", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            if(TextUtils.isEmpty(password)){
-                Toast.makeText(this, "Escribe una contraseña", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            //Función sacada de la documentación de firebase
-            auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Log.d("TAG", "signInWithEmail:success")
-                        val user = auth.currentUser
-                        //updateUI(user)
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        Log.w("TAG", "signInWithEmail:failure", task.exception)
-                        Toast.makeText(
-                            baseContext,
-                            "Authentication failed.",
-                            Toast.LENGTH_SHORT,
-                        ).show()
-                        //updateUI(null)
-                    }
-                }
-        }
     }
 
     private fun initUI() {
-        etEmail = findViewById(R.id.tvEmail)
-        etPassword = findViewById(R.id.tvContrasena)
-        bLogIn = findViewById(R.id.bLogIn)
-        auth = Firebase.auth
+        // Leer y mostrar los artículos por tipo en los RecyclerViews
+        onResume()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        actualizarRecyclerViews()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == Constants.REQUEST_CODE_CREAR_ARTICULO && resultCode == Activity.RESULT_OK) {
+            // Obtener la clave del artículo del intent resultante
+            val articuloId = data?.getStringExtra("articuloId")
+            // Verificar que la clave del artículo no sea nula
+            if (articuloId != null) {
+                // Actualizar los RecyclerViews utilizando la clave del artículo
+                actualizarRecyclerViews()
+            }
+        }
+    }
+
+    private fun actualizarRecyclerViews() {
+        leerArticulos(Constants.TIPO_ARTICULO_CERVEZA, binding.rvCervezas)
+        leerArticulos(Constants.TIPO_ARTICULO_COPA, binding.rvCopa)
+        leerArticulos(Constants.TIPO_ARTICULO_SIN_ALCOHOL, binding.rvSinAlcohol)
+    }
+
+    private fun leerArticulos(tipoArticulo: String, recyclerView: RecyclerView) {
+        firebaseUtil.leerArticulos(tipoArticulo) { articulos ->
+            val adapter = CamareroHomeAdapter { articuloId -> navigateToDetail(articuloId) }
+            Util.setupRecyclerViewHorizontal(this@CamareroHomeActivity, recyclerView, adapter)
+            adapter.updateList(articulos)
+        }
+    }
+
+    private fun navigateToDetail(id: String) {
+        val intent = Intent(this, SelArticuloCamareroActivity::class.java)
+        intent.putExtra(Constants.EXTRA_ID, id)
+        startActivity(intent)
     }
 }
