@@ -1,5 +1,6 @@
 package com.niobe.can_i.usecases.admin_menu.admin_barras.sel_barra
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -12,7 +13,9 @@ import com.niobe.can_i.databinding.ActivitySelBarraBinding
 import com.niobe.can_i.model.Articulo
 import com.niobe.can_i.model.Barra
 import com.niobe.can_i.provider.services.firebase.FirebaseUtil
+import com.niobe.can_i.usecases.admin_menu.admin_articulos.admin_articulos_lista.ListaArticulosActivity
 import com.niobe.can_i.usecases.admin_menu.admin_barras.GestionBarrasActivity
+import com.niobe.can_i.usecases.admin_menu.admin_barras.sel_barra.articulos_por_barra.ArticulosPorBarraActivity
 import com.niobe.can_i.util.Constants
 import com.niobe.can_i.util.Util
 
@@ -43,8 +46,8 @@ class SelBarraActivity : AppCompatActivity() {
             binding.ivBack.setOnClickListener {
                 finish()
             }
-            binding.bCancelar.setOnClickListener {
-                Util.changeActivity(this, GestionBarrasActivity::class.java)
+            binding.bVerArticulosBarra.setOnClickListener {
+                navigateToList(id)
             }
             binding.bBorrarBarra.setOnClickListener {
                 deleteBarra(id)
@@ -96,5 +99,11 @@ class SelBarraActivity : AppCompatActivity() {
             append("Barra ")
             append(barra.ubicacion)
         }
+    }
+
+    private fun navigateToList(tipoArticulo: String) {
+        val intent = Intent(this, ArticulosPorBarraActivity::class.java)
+        intent.putExtra(Constants.EXTRA_ARTICULOS_BARRA, tipoArticulo)
+        startActivity(intent)
     }
 }

@@ -165,4 +165,25 @@ class FirebaseUtil {
             }
     }
 
+    fun leerArticulosPorIdBarra(idBarra: String, callback: (List<Articulo>) -> Unit) {
+        val firestore = FirebaseFirestore.getInstance()
+        val articulosCollection = firestore.collection("articulos_barra")
+
+        articulosCollection.whereEqualTo("idBarra", idBarra)
+            .get()
+            .addOnSuccessListener { result ->
+                val articulos = mutableListOf<Articulo>()
+                for (document in result) {
+                    val articulo = document.toObject(Articulo::class.java)
+                    articulos.add(articulo)
+                }
+                callback(articulos)
+            }
+            .addOnFailureListener { exception ->
+                // Manejar errores de base de datos aquí
+                Log.e("FirebaseUtil", "Error al leer artículos: $exception")
+            }
+    }
+
+
 }

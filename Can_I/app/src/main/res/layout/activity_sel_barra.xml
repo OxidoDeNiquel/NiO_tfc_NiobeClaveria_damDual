@@ -53,24 +53,29 @@
                 android:paddingBottom="10dp"
                 android:textSize="32sp"
                 android:textStyle="bold"/>
-
-            <Button
-                android:id="@+id/bBorrarBarra"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:text="Borrar barra"
-                android:backgroundTint="@color/can_i_c0027"/>
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="bottom">
 
+                <Button
+                    android:id="@+id/bVerArticulosBarra"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="Ver artículos barra"
+                    android:backgroundTint="@color/can_i_c0026"/>
 
-            <Button
-                android:id="@+id/bCancelar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:text="Cancelar"
-                android:backgroundTint="@color/can_i_c0026"/>
+                <Button
+                    android:id="@+id/bBorrarBarra"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="Borrar barra"
+                    android:backgroundTint="@color/can_i_c0027"/>
 
+            </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
