@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".usecases.admin_menu.admin_usuarios.CrearUsuarioActivity"
+    tools:context=".usecases.admin_menu.admin_usuarios.crear_usuario.CrearUsuarioActivity"
     android:background="@color/can_i_c0026">
 
     <androidx.cardview.widget.CardView

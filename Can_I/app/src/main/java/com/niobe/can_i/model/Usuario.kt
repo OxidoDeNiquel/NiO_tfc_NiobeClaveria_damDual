@@ -1,5 +1,7 @@
 package com.niobe.can_i.model
 
+import java.io.Serializable
+
 data class Usuario (
     var idUsuario: String,
     var email: String,
@@ -8,7 +10,11 @@ data class Usuario (
     var apellido1: String,
     var apellido2 : String?,
     var dni: String
-)
+) : Serializable {
+    // Constructor sin argumentos requerido por Firebase
+    constructor() : this("","", "", "", "", "", "")
+}
+
 
 data class Empleado(
     var idEmpleado: String,

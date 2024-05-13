@@ -1,4 +1,4 @@
-package com.niobe.can_i.usecases.admin_menu.admin_usuarios
+package com.niobe.can_i.usecases.admin_menu.admin_usuarios.crear_usuario
 
 import android.graphics.Color
 import android.os.Bundle

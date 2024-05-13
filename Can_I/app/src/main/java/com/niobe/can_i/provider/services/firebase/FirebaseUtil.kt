@@ -7,6 +7,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.niobe.can_i.model.Articulo
 import com.niobe.can_i.model.Barra
+import com.niobe.can_i.model.Usuario
 import com.niobe.can_i.usecases.login.LogInActivity
 
 class FirebaseUtil {
@@ -182,6 +183,55 @@ class FirebaseUtil {
             .addOnFailureListener { exception ->
                 // Manejar errores de base de datos aquí
                 Log.e("FirebaseUtil", "Error al leer artículos: $exception")
+            }
+    }
+
+    fun leerUsuariosPorRol(rol: String, callback: (List<Usuario>) -> Unit) {
+        firestore.collection("usuarios")
+            .whereEqualTo("rol", rol)
+            .get()
+            .addOnSuccessListener { result ->
+                val usuarios: MutableList<Usuario> = mutableListOf()
+                for (document in result) {
+                    val usuario = document.toObject(Usuario::class.java)
+                    usuarios.add(usuario)
+                }
+                callback(usuarios)
+            }
+            .addOnFailureListener { exception ->
+                Log.e("ERROR", "Error al leer datos de Firestore: $exception")
+                callback(emptyList())
+            }
+    }
+    fun eliminarUsuario(documentId: String, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
+        val db = FirebaseFirestore.getInstance()
+
+        db.collection("usuarios").document(documentId)
+            .delete()
+            .addOnSuccessListener {
+                onSuccess()
+            }
+            .addOnFailureListener { exception ->
+                onFailure(exception)
+            }
+    }
+
+    fun obtenerUsuarioPorId(documentId: String, onSuccess: (Usuario?) -> Unit, onFailure: (Exception) -> Unit) {
+        val db = FirebaseFirestore.getInstance()
+
+        db.collection("usuarios").document(documentId)
+            .get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    val usuario = document.toObject(Usuario::class.java)
+                    onSuccess(usuario)
+                } else {
+                    // El documento no existe, devolvemos null
+                    onSuccess(null)
+                }
+            }
+            .addOnFailureListener { exception ->
+                onFailure(exception)
             }
     }
 

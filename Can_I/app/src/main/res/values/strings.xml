@@ -32,6 +32,8 @@
     <string name="dni">DNI</string>
     <string name="gestion_barras">Gestión de barras</string>
     <string name="borrar_barra">Borrar Barra</string>
+    <string name="camareros">Camareros</string>
+    <string name="administradores">Administradores</string>
 
     <!-- Dropdown items -->
     <string-array name="tipos_de_bebidas">
