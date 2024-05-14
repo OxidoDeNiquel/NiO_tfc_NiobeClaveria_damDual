@@ -34,6 +34,7 @@
     <string name="borrar_barra">Borrar Barra</string>
     <string name="camareros">Camareros</string>
     <string name="administradores">Administradores</string>
+    <string name="editar_usuario">Editar Usuario</string>
 
     <!-- Dropdown items -->
     <string-array name="tipos_de_bebidas">

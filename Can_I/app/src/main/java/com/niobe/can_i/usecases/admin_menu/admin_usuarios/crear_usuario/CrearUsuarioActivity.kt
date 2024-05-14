@@ -37,9 +37,9 @@ class CrearUsuarioActivity : AppCompatActivity() {
 
     private fun initUI() {
         // Componentes
-        val tipoBebida = resources.getStringArray(R.array.tipos_de_usuarios)
+        val tipoUsuarios = resources.getStringArray(R.array.tipos_de_usuarios)
         val adapter = ArrayAdapter(
-            this, R.layout.list_desplegable, tipoBebida
+            this, R.layout.list_desplegable, tipoUsuarios
         )
 
         with(binding.actvTipoUsuario) {

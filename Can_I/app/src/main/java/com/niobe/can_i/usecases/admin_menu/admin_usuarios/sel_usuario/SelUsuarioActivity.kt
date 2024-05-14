@@ -14,6 +14,7 @@ import com.niobe.can_i.model.Articulo
 import com.niobe.can_i.model.Usuario
 import com.niobe.can_i.provider.services.firebase.FirebaseUtil
 import com.niobe.can_i.usecases.admin_menu.admin_articulos.sel_articulo.edit_articulo.EditArticuloActivity
+import com.niobe.can_i.usecases.admin_menu.admin_usuarios.sel_usuario.editar_usuario.EditarUsuarioActivity
 import com.niobe.can_i.util.Constants
 import com.niobe.can_i.util.Util
 
@@ -58,7 +59,7 @@ class SelUsuarioActivity : AppCompatActivity() {
     }
 
     private fun navigateToEditUsuario(idUsuario: String) {
-        val intent = Intent(this, EditArticuloActivity::class.java)
+        val intent = Intent(this, EditarUsuarioActivity::class.java)
         intent.putExtra(Constants.EXTRA_ID, idUsuario)
         startActivity(intent)
     }
