@@ -6,7 +6,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".usecases.camarero_home.sel_articulo.SelArticuloCamareroActivity"
+    tools:context=".usecases.admin_menu.admin_articulos.sel_articulo.SelArticuloActivity"
     android:orientation="vertical"
     android:background="@color/can_i_c0026">
 
@@ -32,9 +32,8 @@
 
 
         <LinearLayout
-            android:id="@+id/etEmail"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:padding="30dp"
             android:orientation="vertical">
 
@@ -45,63 +44,38 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_launcher_foreground" />
             <TextView
-                android:id="@+id/tvNombreArticulo"
+                android:id="@+id/tvNombreBarra"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Nombre artículo"
+                android:text="Barra X"
                 android:textAlignment="center"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:textSize="32sp"
                 android:textStyle="bold"/>
-            <TextView
-                android:id="@+id/tvPrecio"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:text="0,00€"
-                android:textStyle="bold"
-                android:textSize="26sp"
-                android:layout_marginTop="20dp"/>
-
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:padding="50dp">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="bottom">
 
+                <Button
+                    android:id="@+id/bVerArticulosBarra"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="Ver artículos barra"
+                    android:backgroundTint="@color/can_i_c0026"/>
 
-                <TextView
-                    android:id="@+id/tvAdd"
-                    android:layout_width="wrap_content"
+                <Button
+                    android:id="@+id/bBorrarBarra"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="+"
-                    android:layout_marginRight="50dp"
-                    android:textSize="40sp" />
-                <TextView
-                    android:id="@+id/tvNumber"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="50dp"
-                    android:text="0"
-                    android:textSize="40sp" />
-                <TextView
-                    android:id="@+id/tvSubstract"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="-"
-                    android:textSize="40sp" />
+                    android:layout_marginBottom="10dp"
+                    android:text="Borrar barra"
+                    android:backgroundTint="@color/can_i_c0027"/>
 
             </LinearLayout>
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:text="@string/anadir_articulo"
-                android:backgroundTint="@color/can_i_c0026"/>
-
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

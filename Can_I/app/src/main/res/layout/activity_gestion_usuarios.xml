@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".usecases.camarero_home.CamareroHomeActivity"
+    tools:context=".usecases.admin_menu.admin_usuarios.GestionUsuariosActivity"
     android:background="@color/can_i_c0024"
     android:backgroundTint="@color/can_i_c0026">
 
@@ -91,19 +91,19 @@
                         android:layout_weight="8"
                         android:gravity="start|center_vertical"
                         android:textStyle="bold"
-                        android:text="@string/cerveza"/>
+                        android:text="@string/camareros"/>
 
                     <ImageView
-                        android:id="@+id/ivCerveza"
+                        android:id="@+id/ivCamareros"
                         android:layout_width="60dp"
                         android:layout_height="35dp"
                         android:layout_weight="0"
                         android:src="@drawable/baseline_arrow_forward_24"/>
                 </LinearLayout>
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvCervezas"
+                    android:id="@+id/rvCamareros"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp">
+                    android:layout_height="150dp">
 
                 </androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
@@ -124,52 +124,19 @@
                         android:layout_weight="8"
                         android:gravity="start|center_vertical"
                         android:textStyle="bold"
-                        android:text="@string/copa"/>
+                        android:text="@string/administradores"/>
 
                     <ImageView
-                        android:id="@+id/ivCopa"
+                        android:id="@+id/ivAdministradores"
                         android:layout_width="60dp"
                         android:layout_height="35dp"
                         android:layout_weight="0"
                         android:src="@drawable/baseline_arrow_forward_24"/>
                 </LinearLayout>
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvCopa"
+                    android:id="@+id/rvAdministradores"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp">
-
-                </androidx.recyclerview.widget.RecyclerView>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginBottom="20dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="8"
-                        android:gravity="start|center_vertical"
-                        android:textStyle="bold"
-                        android:text="@string/sin_alcohol"/>
-
-                    <ImageView
-                        android:id="@+id/ivSinAlcohol"
-                        android:layout_width="60dp"
-                        android:layout_height="35dp"
-                        android:layout_weight="0"
-                        android:src="@drawable/baseline_arrow_forward_24"/>
-                </LinearLayout>
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvSinAlcohol"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp">
+                    android:layout_height="150dp">
 
                 </androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>

@@ -6,7 +6,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".usecases.camarero_home.sel_articulo.SelArticuloCamareroActivity"
+    tools:context=".usecases.admin_menu.admin_articulos.sel_articulo.SelArticuloActivity"
     android:orientation="vertical"
     android:background="@color/can_i_c0026">
 
@@ -45,62 +45,55 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_launcher_foreground" />
             <TextView
-                android:id="@+id/tvNombreArticulo"
+                android:id="@+id/tvNombreUsuario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Nombre artículo"
+                android:text="Nombre Usuario"
                 android:textAlignment="center"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:textSize="32sp"
                 android:textStyle="bold"/>
             <TextView
-                android:id="@+id/tvPrecio"
+                android:id="@+id/tvPuesto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:text="0,00€"
+                android:text="Puesto: "
                 android:textStyle="bold"
                 android:textSize="26sp"
-                android:layout_marginTop="20dp"/>
-
-            <LinearLayout
+                android:layout_marginTop="20dp"
+                />
+            <TextView
+                android:id="@+id/tvEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:padding="50dp">
-
-
-                <TextView
-                    android:id="@+id/tvAdd"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="+"
-                    android:layout_marginRight="50dp"
-                    android:textSize="40sp" />
-                <TextView
-                    android:id="@+id/tvNumber"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="50dp"
-                    android:text="0"
-                    android:textSize="40sp" />
-                <TextView
-                    android:id="@+id/tvSubstract"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="-"
-                    android:textSize="40sp" />
-
-            </LinearLayout>
+                android:layout_marginTop="10dp"
+                android:textSize="21sp"
+                android:text="Email: "/>
+            <TextView
+                android:id="@+id/tvDni"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="80dp"
+                android:textSize="21sp"
+                android:text="DNI: "/>
 
             <Button
+                android:id="@+id/bEditarUsuario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:text="@string/anadir_articulo"
+                android:text="Editar usuario"
                 android:backgroundTint="@color/can_i_c0026"/>
+
+            <Button
+                android:id="@+id/bBorrarUsuario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="Borrar usuario"
+                android:backgroundTint="@color/can_i_c0027"/>
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

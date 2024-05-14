@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".usecases.admin_menu.admin_usuarios.crear_usuario.CrearUsuarioActivity"
+    tools:context=".usecases.admin_menu.admin_usuarios.sel_usuario.editar_usuario.EditarUsuarioActivity"
     android:background="@color/can_i_c0026">
 
     <androidx.cardview.widget.CardView
@@ -23,10 +23,10 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tvCrearUsuario"
+                android:id="@+id/tvEditarUsuario"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/crear_usuario"
+                android:text="@string/editar_usuario"
                 android:paddingBottom="10dp"
                 android:textSize="21sp"
                 android:textStyle="bold"/>
@@ -38,32 +38,13 @@
                 android:text="@string/email"
                 android:textSize="16sp"/>
 
-            <EditText
+            <TextView
                 android:id="@+id/etEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:padding="5dp"
                 android:ems="10"
-                android:inputType="textEmailAddress"
-                android:background="@color/can_i_c0025"/>
-
-            <TextView
-                android:id="@+id/tvContrasena"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/contrasena"
-                android:textSize="16sp" />
-
-
-            <EditText
-                android:id="@+id/etContrasena"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:padding="5dp"
-                android:ems="10"
-                android:inputType="textPassword"
                 android:background="@color/can_i_c0025"/>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -153,7 +134,7 @@
                 android:background="@color/can_i_c0025"/>
 
             <Button
-                android:id="@+id/bCrearUsuario"
+                android:id="@+id/bActualizarUsuario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"

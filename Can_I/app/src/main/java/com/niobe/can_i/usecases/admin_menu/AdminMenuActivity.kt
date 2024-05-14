@@ -1,8 +1,6 @@
 package com.niobe.can_i.usecases.admin_menu
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -12,7 +10,9 @@ import com.niobe.can_i.R
 import com.niobe.can_i.databinding.ActivityAdminMenuBinding
 import com.niobe.can_i.provider.services.firebase.FirebaseUtil
 import com.niobe.can_i.usecases.admin_menu.admin_articulos.GestionArticulosActivity
-import com.niobe.can_i.usecases.admin_menu.admin_usuarios.CrearUsuarioActivity
+import com.niobe.can_i.usecases.admin_menu.admin_usuarios.GestionUsuariosActivity
+import com.niobe.can_i.usecases.admin_menu.admin_usuarios.GestionUsuariosAdapter
+import com.niobe.can_i.usecases.admin_menu.admin_usuarios.crear_usuario.CrearUsuarioActivity
 import com.niobe.can_i.util.Util
 
 class AdminMenuActivity : AppCompatActivity() {
@@ -47,10 +47,13 @@ class AdminMenuActivity : AppCompatActivity() {
             Util.changeActivity(this, GestionArticulosActivity::class.java)
         }
         binding.bGestionEmpleados.setOnClickListener {
-            Util.changeActivity(this, CrearUsuarioActivity::class.java)
+            Util.changeActivity(this, GestionUsuariosActivity::class.java)
         }
         binding.bCerrarSesion.setOnClickListener {
             firebaseUtil.cerrarSesion(this)
         }
+        /*binding.bGestionIncidencias.setOnClickListener {
+            Util.changeActivity(this, GestionBarrasActivity::class.java)
+        }*/
     }
 }

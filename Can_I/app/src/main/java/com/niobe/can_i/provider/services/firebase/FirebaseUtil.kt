@@ -6,6 +6,8 @@ import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.niobe.can_i.model.Articulo
+import com.niobe.can_i.model.Barra
+import com.niobe.can_i.model.Usuario
 import com.niobe.can_i.usecases.login.LogInActivity
 
 class FirebaseUtil {
@@ -118,10 +120,11 @@ class FirebaseUtil {
             }
     }
 
-    fun guardarArticulo(articulo: Articulo, callback: (Boolean) -> Unit) {
+    fun guardarArticulo(articuloId: String, articulo: Articulo, callback: (Boolean) -> Unit) {
         val db = FirebaseFirestore.getInstance()
         db.collection("articulos")
-            .add(articulo)
+            .document(articuloId) // Usar articuloId como documentId
+            .set(articulo)
             .addOnSuccessListener {
                 callback(true)
             }
@@ -130,5 +133,107 @@ class FirebaseUtil {
                 callback(false)
             }
     }
+
+    fun getBarra(idBarra: String, onSuccess: (Barra?) -> Unit, onFailure: (String) -> Unit) {
+        val firestore = FirebaseFirestore.getInstance()
+        firestore.collection("barras")
+            .document(idBarra)
+            .get()
+            .addOnSuccessListener { documentSnapshot ->
+                if (documentSnapshot.exists()) {
+                    val barra = documentSnapshot.toObject(Barra::class.java)
+                    onSuccess(barra)
+                } else {
+                    onFailure("No se encontró ninguna barra con el ID $idBarra")
+                }
+            }
+            .addOnFailureListener { exception ->
+                onFailure("Error al obtener la barra: ${exception.message}")
+            }
+    }
+
+    fun borrarBarra(idBarra: String, onSuccess: () -> Unit, onFailure: (String) -> Unit) {
+        val firestore = FirebaseFirestore.getInstance()
+        val barrasCollection = firestore.collection("barras")
+
+        barrasCollection.document(idBarra)
+            .delete()
+            .addOnSuccessListener {
+                onSuccess()
+            }
+            .addOnFailureListener { exception ->
+                onFailure("Error al borrar la barra: ${exception.message}")
+            }
+    }
+
+    fun leerArticulosPorIdBarra(idBarra: String, callback: (List<Articulo>) -> Unit) {
+        val firestore = FirebaseFirestore.getInstance()
+        val articulosCollection = firestore.collection("articulos_barra")
+
+        articulosCollection.whereEqualTo("idBarra", idBarra)
+            .get()
+            .addOnSuccessListener { result ->
+                val articulos = mutableListOf<Articulo>()
+                for (document in result) {
+                    val articulo = document.toObject(Articulo::class.java)
+                    articulos.add(articulo)
+                }
+                callback(articulos)
+            }
+            .addOnFailureListener { exception ->
+                // Manejar errores de base de datos aquí
+                Log.e("FirebaseUtil", "Error al leer artículos: $exception")
+            }
+    }
+
+    fun leerUsuariosPorRol(rol: String, callback: (List<Usuario>) -> Unit) {
+        firestore.collection("usuarios")
+            .whereEqualTo("rol", rol)
+            .get()
+            .addOnSuccessListener { result ->
+                val usuarios: MutableList<Usuario> = mutableListOf()
+                for (document in result) {
+                    val usuario = document.toObject(Usuario::class.java)
+                    usuarios.add(usuario)
+                }
+                callback(usuarios)
+            }
+            .addOnFailureListener { exception ->
+                Log.e("ERROR", "Error al leer datos de Firestore: $exception")
+                callback(emptyList())
+            }
+    }
+    fun eliminarUsuario(documentId: String, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
+        val db = FirebaseFirestore.getInstance()
+
+        db.collection("usuarios").document(documentId)
+            .delete()
+            .addOnSuccessListener {
+                onSuccess()
+            }
+            .addOnFailureListener { exception ->
+                onFailure(exception)
+            }
+    }
+
+    fun obtenerUsuarioPorId(documentId: String, onSuccess: (Usuario?) -> Unit, onFailure: (Exception) -> Unit) {
+        val db = FirebaseFirestore.getInstance()
+
+        db.collection("usuarios").document(documentId)
+            .get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    val usuario = document.toObject(Usuario::class.java)
+                    onSuccess(usuario)
+                } else {
+                    // El documento no existe, devolvemos null
+                    onSuccess(null)
+                }
+            }
+            .addOnFailureListener { exception ->
+                onFailure(exception)
+            }
+    }
+
 
 }

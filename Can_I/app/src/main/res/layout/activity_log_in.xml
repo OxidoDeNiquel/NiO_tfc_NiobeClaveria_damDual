@@ -26,7 +26,6 @@
         app:cardCornerRadius="50dp">
 
         <LinearLayout
-            android:id="@+id/etEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="50dp"

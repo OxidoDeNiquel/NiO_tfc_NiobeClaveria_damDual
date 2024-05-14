@@ -1,4 +1,4 @@
-package com.niobe.can_i.usecases.admin_menu.admin_articulos.sel_articulo
+package com.niobe.can_i.usecases.admin_menu.admin_barras.sel_barra
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,21 +9,24 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.niobe.can_i.R
-import com.niobe.can_i.databinding.ActivitySelArticuloBinding
+import com.niobe.can_i.databinding.ActivitySelBarraBinding
 import com.niobe.can_i.model.Articulo
+import com.niobe.can_i.model.Barra
 import com.niobe.can_i.provider.services.firebase.FirebaseUtil
-import com.niobe.can_i.usecases.admin_menu.admin_articulos.sel_articulo.edit_articulo.EditArticuloActivity
+import com.niobe.can_i.usecases.admin_menu.admin_articulos.admin_articulos_lista.ListaArticulosActivity
+import com.niobe.can_i.usecases.admin_menu.admin_barras.GestionBarrasActivity
+import com.niobe.can_i.usecases.admin_menu.admin_barras.sel_barra.articulos_por_barra.ArticulosPorBarraActivity
 import com.niobe.can_i.util.Constants
+import com.niobe.can_i.util.Util
 
-class SelArticuloActivity : AppCompatActivity() {
+class SelBarraActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivitySelArticuloBinding
+    private lateinit var binding: ActivitySelBarraBinding
     private lateinit var firebaseUtil: FirebaseUtil
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivitySelArticuloBinding.inflate(layoutInflater)
+        binding = ActivitySelBarraBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -39,15 +42,15 @@ class SelArticuloActivity : AppCompatActivity() {
     private fun initUI() {
         val id: String? = intent.getStringExtra(Constants.EXTRA_ID)
         if (id != null) {
-            getArticuloInformation(id)
+            getBarraInformation(id)
             binding.ivBack.setOnClickListener {
                 finish()
             }
-            binding.bEditarArticulo.setOnClickListener {
-                navigateToEditArticulo(id)
+            binding.bVerArticulosBarra.setOnClickListener {
+                navigateToList(id)
             }
-            binding.bBorrarArticulo.setOnClickListener {
-                deleteArticulo(id)
+            binding.bBorrarBarra.setOnClickListener {
+                deleteBarra(id)
             }
         } else {
             // Manejar el caso donde no se proporciona el ID del artículo
@@ -56,30 +59,26 @@ class SelArticuloActivity : AppCompatActivity() {
         }
     }
 
-    private fun navigateToEditArticulo(articuloId: String) {
-        val intent = Intent(this, EditArticuloActivity::class.java)
-        intent.putExtra("ARTICULO", articuloId)
-        startActivity(intent)
-    }
-
-    private fun deleteArticulo(articuloId: String) {
-        firebaseUtil.eliminarArticulo(articuloId) { success ->
-            if (success) {
-                Toast.makeText(this, "Artículo eliminado con éxito", Toast.LENGTH_SHORT).show()
+    private fun deleteBarra(barraId: String) {
+        firebaseUtil.borrarBarra(barraId,
+            onSuccess = {
+                Toast.makeText(this, "Barra eliminada con éxito", Toast.LENGTH_SHORT).show()
                 finish()
-            } else {
-                Toast.makeText(this, "Error al eliminar el artículo", Toast.LENGTH_SHORT).show()
+            },
+            onFailure = { errorMessage ->
+                Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
             }
-        }
+        )
     }
 
-    private fun getArticuloInformation(articuloId: String) {
-        firebaseUtil.getArticulo(
-            articuloId,
-            onSuccess = { articulo ->
-                articulo?.let {
+
+    private fun getBarraInformation(idBarra: String) {
+        firebaseUtil.getBarra(
+            idBarra,
+            onSuccess = { barra ->
+                barra?.let {
                     runOnUiThread {
-                        createUI(articulo)
+                        createUI(barra)
                     }
                 } ?: runOnUiThread {
                     // Manejar caso donde no se puede obtener el artículo
@@ -95,9 +94,16 @@ class SelArticuloActivity : AppCompatActivity() {
         )
     }
 
-    private fun createUI(articulo: Articulo) {
-        binding.tvNombreArticulo.text = articulo.nombre
-        binding.tvPrecio.text = "${articulo.precio}€"
-        binding.tvStockValue.text = articulo.stock.toString()
+    private fun createUI(barra: Barra) {
+        binding.tvNombreBarra.text = buildString {
+            append("Barra ")
+            append(barra.ubicacion)
+        }
+    }
+
+    private fun navigateToList(tipoArticulo: String) {
+        val intent = Intent(this, ArticulosPorBarraActivity::class.java)
+        intent.putExtra(Constants.EXTRA_ARTICULOS_BARRA, tipoArticulo)
+        startActivity(intent)
     }
 }
