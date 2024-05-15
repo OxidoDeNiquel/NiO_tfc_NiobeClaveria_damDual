@@ -6,7 +6,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".usecases.camarero_home.sel_articulo.SelArticuloCamareroActivity"
+    tools:context=".usecases.camarero_menu.camarero_home.sel_articulo.SelArticuloCamareroActivity"
     android:orientation="vertical"
     android:background="@color/can_i_c0026">
 
@@ -73,10 +73,10 @@
 
 
                 <TextView
-                    android:id="@+id/tvAdd"
+                    android:id="@+id/btnSubstract"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="+"
+                    android:text="-"
                     android:layout_marginRight="50dp"
                     android:textSize="40sp" />
                 <TextView
@@ -87,15 +87,16 @@
                     android:text="0"
                     android:textSize="40sp" />
                 <TextView
-                    android:id="@+id/tvSubstract"
+                    android:id="@+id/btnAdd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="-"
+                    android:text="+"
                     android:textSize="40sp" />
 
             </LinearLayout>
 
             <Button
+                android:id="@+id/bAnadirCesta"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"

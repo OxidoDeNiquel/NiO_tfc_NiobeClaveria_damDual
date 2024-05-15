@@ -1,8 +1,9 @@
-package com.niobe.can_i.usecases.camarero_home
+package com.niobe.can_i.usecases.camarero_menu.camarero_home
 
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -11,7 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.niobe.can_i.R
 import com.niobe.can_i.databinding.ActivityCamareroHomeBinding
 import com.niobe.can_i.provider.services.firebase.FirebaseUtil
-import com.niobe.can_i.usecases.camarero_home.sel_articulo.SelArticuloCamareroActivity
+import com.niobe.can_i.usecases.camarero_menu.camarero_home.lista_articulos.ListaArticulosActivity
+import com.niobe.can_i.usecases.camarero_menu.camarero_home.sel_articulo.SelArticuloCamareroActivity
 import com.niobe.can_i.util.Constants
 import com.niobe.can_i.util.Util
 
@@ -19,6 +21,8 @@ class CamareroHomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCamareroHomeBinding
     private lateinit var firebaseUtil: FirebaseUtil
+    private var idComanda: String? = null
+    private var idCamarero: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +41,27 @@ class CamareroHomeActivity : AppCompatActivity() {
     }
 
     private fun initUI() {
+        idComanda = intent.getStringExtra(Constants.EXTRA_COMANDA)
+        idCamarero = intent.getStringExtra(Constants.EXTRA_USUARIO)
+
+        if(idComanda.isNullOrEmpty()) {
+            Log.e("Error idComanda", "El idComanda es inválido")
+            finish()
+            return
+        }
+
+        binding.ivCerveza.setOnClickListener {
+            navigateToList(Constants.TIPO_ARTICULO_CERVEZA)
+        }
+        binding.ivCopa.setOnClickListener {
+            navigateToList(Constants.TIPO_ARTICULO_COPA)
+        }
+        binding.ivSinAlcohol.setOnClickListener {
+            navigateToList(Constants.TIPO_ARTICULO_SIN_ALCOHOL)
+        }
+        binding.tvInicio.setOnClickListener {
+            finish()
+        }
         // Leer y mostrar los artículos por tipo en los RecyclerViews
         onResume()
     }
@@ -76,6 +101,15 @@ class CamareroHomeActivity : AppCompatActivity() {
     private fun navigateToDetail(id: String) {
         val intent = Intent(this, SelArticuloCamareroActivity::class.java)
         intent.putExtra(Constants.EXTRA_ID, id)
+        intent.putExtra(Constants.EXTRA_COMANDA, idComanda)
+        intent.putExtra(Constants.EXTRA_USUARIO, idCamarero)
+        startActivity(intent)
+    }
+
+    private fun navigateToList(tipoArticulo: String) {
+        val intent = Intent(this, ListaArticulosActivity::class.java)
+        intent.putExtra(Constants.EXTRA_TIPO_ARTICULO, tipoArticulo)
+        intent.putExtra(Constants.EXTRA_COMANDA, idComanda)
         startActivity(intent)
     }
 }

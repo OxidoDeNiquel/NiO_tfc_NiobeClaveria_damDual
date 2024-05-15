@@ -53,6 +53,7 @@ dependencies {
     implementation(libs.firebase.firestore)
 
     testImplementation(libs.junit)
+    testImplementation ("org.mockito:mockito-core:3.12.4")
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }

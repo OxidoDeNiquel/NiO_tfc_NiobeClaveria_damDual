@@ -6,9 +6,17 @@ import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.niobe.can_i.model.Articulo
+import com.niobe.can_i.model.ArticulosComanda
 import com.niobe.can_i.model.Barra
+import com.niobe.can_i.model.Camarero
+import com.niobe.can_i.model.Comanda
 import com.niobe.can_i.model.Usuario
 import com.niobe.can_i.usecases.login.LogInActivity
+import com.niobe.can_i.util.Util
+import java.util.UUID
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 class FirebaseUtil {
 
@@ -235,5 +243,85 @@ class FirebaseUtil {
             }
     }
 
+    fun crearComanda(idCamarero: Camarero, onSuccess: (String) -> Unit, onFailure: (Exception) -> Unit) {
+        // Genera un ID aleatorio para la comanda
+        val idComanda = UUID.randomUUID().toString()
+
+        // Obtén la fecha y hora actual
+        val fechaHoraActual = Util.obtenerFechaHoraActual()
+
+        // Crea una instancia de Comanda con los datos proporcionados
+        val comanda = Comanda(idComanda, idCamarero, fechaHoraActual)
+
+        // Agrega la comanda a Firestore con el ID generado
+        firestore.collection("comandas")
+            .document(idComanda)
+            .set(comanda)
+            .addOnSuccessListener {
+                println("Comanda creada correctamente en Firestore")
+                onSuccess(idComanda) // Devuelve el ID de la comanda creada
+            }
+            .addOnFailureListener { e ->
+                println("Error al crear la comanda: $e")
+                onFailure(e)
+            }
+    }
+
+    fun obtenerCamareroPorId(documentId: String, onSuccess: (Camarero?) -> Unit, onFailure: (Exception) -> Unit) {
+        firestore.collection("camareros")
+            .document(documentId)
+            .get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    val camarero = document.toObject(Camarero::class.java)
+                    onSuccess(camarero)
+                } else {
+                    onSuccess(null)
+                }
+            }
+            .addOnFailureListener { e ->
+                onFailure(e)
+            }
+    }
+
+    suspend fun obtenerComandaPorId(documentId: String, camarero: Camarero): Comanda {
+        return suspendCoroutine { continuation ->
+            firestore.collection("comandas")
+                .document(documentId)
+                .get()
+                .addOnSuccessListener { document ->
+                    if (document.exists()) {
+                        val idComanda = document.getString("idComanda") ?: ""
+                        val fechaHora = document.getString("fechaHora") ?: ""
+                        val comanda = Comanda(idComanda, camarero, fechaHora)
+                        continuation.resume(comanda)
+                    } else {
+                        continuation.resumeWithException(NoSuchElementException("No se encontró ninguna comanda con ese DocumentID"))
+                    }
+                }
+                .addOnFailureListener { e ->
+                    continuation.resumeWithException(e)
+                }
+        }
+    }
+
+
+    fun crearArticuloComanda(articulosComanda: ArticulosComanda, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
+        // Generar un ID aleatorio para idArticulosComanda
+        val idArticulosComanda = UUID.randomUUID().toString()
+
+        // Guardar el artículo de comanda en Firestore con el mismo ID que el documentID
+        firestore.collection("articulos_comanda")
+            .document(idArticulosComanda)
+            .set(articulosComanda)
+            .addOnSuccessListener {
+                // Llamar a onSuccess si la operación tiene éxito
+                onSuccess()
+            }
+            .addOnFailureListener { e ->
+                // Llamar a onFailure si hay un error
+                onFailure(e)
+            }
+    }
 
 }

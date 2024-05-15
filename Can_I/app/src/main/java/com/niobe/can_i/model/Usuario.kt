@@ -17,9 +17,12 @@ data class Usuario (
 
 
 data class Empleado(
-    var idEmpleado: String,
-    var usuario: Usuario
-)
+    var idEmpleado: String = "",
+    var usuario: Usuario = Usuario()
+) {
+    // Constructor sin argumentos requerido por Firestore
+    constructor() : this("", Usuario())
+}
 
 data class Administrador(
     var idAdministrador: String,

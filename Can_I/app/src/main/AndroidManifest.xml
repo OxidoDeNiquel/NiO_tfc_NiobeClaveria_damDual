@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools" >
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -13,9 +13,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CanI"
-        tools:targetApi="31">
+        tools:targetApi="31" >
         <activity
-            android:name=".usecases.camarero_home.lista_articulos.ListaArticulosActivity"
+            android:name=".usecases.camarero_menu.CamareroMenuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".usecases.camarero_menu.camarero_home.lista_articulos.ListaArticulosActivity"
             android:exported="false" />
         <activity
             android:name=".usecases.admin_menu.admin_usuarios.sel_usuario.editar_usuario.EditarUsuarioActivity"
@@ -27,7 +30,7 @@
             android:name=".usecases.admin_menu.admin_usuarios.GestionUsuariosActivity"
             android:exported="false" />
         <activity
-            android:name=".usecases.camarero_home.cesta.CestaActivity"
+            android:name=".usecases.camarero_menu.camarero_home.cesta.CestaActivity"
             android:exported="false" />
         <activity
             android:name=".usecases.admin_menu.admin_barras.sel_barra.articulos_por_barra.ArticulosPorBarraActivity"
@@ -45,7 +48,7 @@
             android:name=".usecases.admin_menu.admin_articulos.admin_articulos_lista.ListaArticulosActivity"
             android:exported="false" />
         <activity
-            android:name=".usecases.camarero_home.sel_articulo.SelArticuloCamareroActivity"
+            android:name=".usecases.camarero_menu.camarero_home.sel_articulo.SelArticuloCamareroActivity"
             android:exported="false" />
         <activity
             android:name=".usecases.admin_menu.admin_perfil.PerfilAdminActivity"
@@ -66,14 +69,14 @@
             android:name=".usecases.admin_menu.AdminMenuActivity"
             android:exported="false" />
         <activity
-            android:name=".usecases.camarero_home.CamareroHomeActivity"
+            android:name=".usecases.camarero_menu.camarero_home.CamareroHomeActivity"
             android:exported="false" />
         <activity
             android:name=".usecases.login.RecoverAccountActivity"
             android:exported="false" />
         <activity
             android:name=".usecases.login.LogInActivity"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

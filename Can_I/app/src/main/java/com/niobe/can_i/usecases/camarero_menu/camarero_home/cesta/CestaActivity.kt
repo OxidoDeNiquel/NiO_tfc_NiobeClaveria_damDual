@@ -1,4 +1,4 @@
-package com.niobe.can_i.usecases.camarero_home.cesta
+package com.niobe.can_i.usecases.camarero_menu.camarero_home.cesta
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge

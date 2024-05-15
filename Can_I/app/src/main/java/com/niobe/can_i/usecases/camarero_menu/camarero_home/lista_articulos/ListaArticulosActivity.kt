@@ -1,4 +1,4 @@
-package com.niobe.can_i.usecases.camarero_home.lista_articulos
+package com.niobe.can_i.usecases.camarero_menu.camarero_home.lista_articulos
 
 import android.content.Intent
 import android.os.Bundle
@@ -14,7 +14,8 @@ import com.niobe.can_i.provider.services.firebase.FirebaseUtil
 import com.niobe.can_i.usecases.admin_menu.admin_articulos.GestionArticulosActivity
 import com.niobe.can_i.usecases.admin_menu.admin_articulos.admin_articulos_lista.ListaArticulosAdapter
 import com.niobe.can_i.usecases.admin_menu.admin_articulos.sel_articulo.SelArticuloActivity
-import com.niobe.can_i.usecases.camarero_home.sel_articulo.SelArticuloCamareroActivity
+import com.niobe.can_i.usecases.camarero_menu.camarero_home.CamareroHomeActivity
+import com.niobe.can_i.usecases.camarero_menu.camarero_home.sel_articulo.SelArticuloCamareroActivity
 import com.niobe.can_i.util.Constants
 import com.niobe.can_i.util.Util
 
@@ -47,8 +48,8 @@ class ListaArticulosActivity : AppCompatActivity() {
 
         binding.tvTipoBebida.text = tipoArticulo
 
-        binding.tvInicio.setOnClickListener {
-            Util.changeActivity(this, GestionArticulosActivity::class.java)
+        binding.ivBack.setOnClickListener {
+            Util.changeActivity(this, CamareroHomeActivity::class.java)
         }
     }
 

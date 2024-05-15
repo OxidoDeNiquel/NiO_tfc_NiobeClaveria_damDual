@@ -35,6 +35,7 @@
     <string name="camareros">Camareros</string>
     <string name="administradores">Administradores</string>
     <string name="editar_usuario">Editar Usuario</string>
+    <string name="crear_comanda">Crear comanda</string>
 
     <!-- Dropdown items -->
     <string-array name="tipos_de_bebidas">
