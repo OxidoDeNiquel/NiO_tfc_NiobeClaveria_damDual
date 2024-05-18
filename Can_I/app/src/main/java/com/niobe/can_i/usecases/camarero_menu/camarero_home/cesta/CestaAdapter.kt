@@ -10,7 +10,8 @@ import com.niobe.can_i.model.ArticulosComanda
 import com.niobe.can_i.provider.services.firebase.FirebaseUtil
 
 class CestaAdapter(
-    private var articuloComandaList: List<ArticulosComanda> = emptyList()
+    private var articuloComandaList: List<ArticulosComanda> = emptyList(),
+    private val navigateToDetailActivity: (String) -> Unit
 ) : RecyclerView.Adapter<CestaViewHolder>() {
 
     private val firebaseUtil = FirebaseUtil()
@@ -30,7 +31,7 @@ class CestaAdapter(
         firebaseUtil.getArticuloById(articuloComanda.idArticulo.articuloId) { articulo ->
             if (articulo != null) {
                 Log.i("Articulo", "Nombre: ${articulo.nombre}, Precio: ${articulo.precio}")
-                holder.bind(articulo, articuloComanda)
+                holder.bind(articulo, articuloComanda, navigateToDetailActivity)
             } else {
                 Log.e("Error", "Artículo no encontrado")
             }

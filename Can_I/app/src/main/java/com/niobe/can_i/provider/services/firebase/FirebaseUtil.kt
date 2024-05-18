@@ -332,4 +332,57 @@ class FirebaseUtil {
                 callback(null)
             }
     }
+
+    fun getArticuloComandaByComandaAndArticulo(idComanda: String, idArticulo: String, callback: (ArticulosComanda?) -> Unit) {
+        firestore.collection("articulos_comanda")
+            .whereEqualTo("idComanda.idComanda", idComanda)
+            .whereEqualTo("idArticulo.articuloId", idArticulo)
+            .get()
+            .addOnSuccessListener { result ->
+                val articuloComanda = result.documents.firstOrNull()?.toObject(ArticulosComanda::class.java)
+                callback(articuloComanda)
+            }
+            .addOnFailureListener { exception ->
+                exception.printStackTrace()
+                callback(null)
+            }
+    }
+
+    fun updateArticuloComanda(idComanda: String, idArticulo: String, nuevaCantidad: Int, callback: (Boolean) -> Unit) {
+        firestore.collection("articulos_comanda")
+            .whereEqualTo("idComanda.idComanda", idComanda)
+            .whereEqualTo("idArticulo.articuloId", idArticulo)
+            .get()
+            .addOnSuccessListener { result ->
+                val document = result.documents.firstOrNull()
+                if (document != null) {
+                    document.reference.update("cantidad", nuevaCantidad)
+                        .addOnSuccessListener { callback(true) }
+                        .addOnFailureListener { callback(false) }
+                } else {
+                    callback(false)
+                }
+            }
+            .addOnFailureListener { callback(false) }
+    }
+
+    fun deleteArticuloComanda(idComanda: String, idArticulo: String, callback: (Boolean) -> Unit) {
+        firestore.collection("articulos_comanda")
+            .whereEqualTo("idComanda.idComanda", idComanda)
+            .whereEqualTo("idArticulo.articuloId", idArticulo)
+            .get()
+            .addOnSuccessListener { result ->
+                val document = result.documents.firstOrNull()
+                if (document != null) {
+                    document.reference.delete()
+                        .addOnSuccessListener { callback(true) }
+                        .addOnFailureListener { callback(false) }
+                } else {
+                    callback(false)
+                }
+            }
+            .addOnFailureListener { callback(false) }
+    }
+
+
 }

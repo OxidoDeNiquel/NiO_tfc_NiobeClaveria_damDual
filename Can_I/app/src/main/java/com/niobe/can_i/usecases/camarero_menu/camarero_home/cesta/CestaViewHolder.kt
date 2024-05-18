@@ -9,7 +9,8 @@ import com.niobe.can_i.model.ArticulosComanda
 class CestaViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val binding = ItemCestaBinding.bind(view)
 
-    fun bind(articulo: Articulo, articuloComanda: ArticulosComanda) {
+    fun bind(articulo: Articulo, articuloComanda: ArticulosComanda,
+             navigateToDetailActivity: (String) -> Unit) {
         binding.tvNombreArticulo.text = articulo.nombre
         binding.tvCantidad.text = buildString {
             append("Cantidad: ")
@@ -18,6 +19,9 @@ class CestaViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         binding.tvPrecio.text = buildString {
             append(articulo.precio.toString())
             append("€")
+        }
+        binding.root.setOnClickListener {
+            navigateToDetailActivity(articulo.articuloId)
         }
     }
 }

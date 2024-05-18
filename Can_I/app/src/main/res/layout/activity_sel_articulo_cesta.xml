@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".usecases.camarero_menu.camarero_home.cesta.sel_articulo_cesta.SelArticuloCestaActivity"
+    android:orientation="vertical"
+    android:background="@color/can_i_c0026">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        android:backgroundTint="@color/can_i_c0026">
+
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:padding="10dp"
+            android:src="@drawable/baseline_arrow_back_24"/>
+
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        app:cardCornerRadius="50dp">
+
+
+        <LinearLayout
+            android:id="@+id/etEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="30dp"
+            android:orientation="vertical">
+
+
+            <ImageView
+                android:id="@+id/igIcon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_launcher_foreground" />
+            <TextView
+                android:id="@+id/tvNombreArticulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nombre artículo"
+                android:textAlignment="center"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:textSize="32sp"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/tvPrecio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="0,00€"
+                android:textStyle="bold"
+                android:textSize="26sp"
+                android:layout_marginTop="20dp"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:padding="50dp">
+
+
+                <TextView
+                    android:id="@+id/btnSubstract"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-"
+                    android:layout_marginRight="50dp"
+                    android:textSize="40sp" />
+                <TextView
+                    android:id="@+id/tvCantidad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="50dp"
+                    android:text="0"
+                    android:textSize="40sp" />
+                <TextView
+                    android:id="@+id/btnAdd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="+"
+                    android:textSize="40sp" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/bConfirmar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="Confirmar"
+                android:backgroundTint="@color/can_i_c0026"/>
+
+            <Button
+                android:id="@+id/bBorrarArticulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="Borrar"
+                android:backgroundTint="@color/can_i_c0027"/>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+
+</LinearLayout>

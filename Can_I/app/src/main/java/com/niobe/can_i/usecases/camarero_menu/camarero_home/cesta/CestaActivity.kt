@@ -10,7 +10,7 @@ import com.niobe.can_i.R
 import com.niobe.can_i.databinding.ActivityCestaBinding
 import com.niobe.can_i.model.ArticulosComanda
 import com.niobe.can_i.provider.services.firebase.FirebaseUtil
-import com.niobe.can_i.usecases.camarero_menu.camarero_home.sel_articulo.SelArticuloCamareroActivity
+import com.niobe.can_i.usecases.camarero_menu.camarero_home.cesta.sel_articulo_cesta.SelArticuloCestaActivity
 import com.niobe.can_i.util.Constants
 import com.niobe.can_i.util.Util
 
@@ -38,6 +38,12 @@ class CestaActivity : AppCompatActivity() {
         initUI()
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Recargar la lista de artículos cada vez que la actividad se reanuda
+        idComanda?.let { loadArticulosComanda(it) }
+    }
+
     private fun initUI() {
         idComanda = intent.getStringExtra(Constants.EXTRA_COMANDA)
         Log.i("IDCOMANDA CESTA", idComanda ?: "")
@@ -57,7 +63,7 @@ class CestaActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        adapter = CestaAdapter()
+        adapter = CestaAdapter { articuloId -> navigateToDetail(articuloId) }
         Util.setupRecyclerViewVertical(this, binding.rvCesta, adapter)
     }
 
@@ -67,7 +73,6 @@ class CestaActivity : AppCompatActivity() {
             showTotalPrice(articulosComandaList) // Llama a la función showTotalPrice después de actualizar la lista de artículos
         }
     }
-
 
     private fun showTotalPrice(articulosComandaList: List<ArticulosComanda>) {
         var totalPrice = 0.0
@@ -82,7 +87,6 @@ class CestaActivity : AppCompatActivity() {
                     // Incrementa el total sumando el precio del artículo multiplicado por la cantidad
                     totalPrice += articulo.precio * articuloComanda.cantidad
                 }
-
                 // Incrementa el contador de artículos cargados
                 loadedArticulos++
 
@@ -98,10 +102,9 @@ class CestaActivity : AppCompatActivity() {
         }
     }
 
-
-    private fun navigateToDetail(id: String) {
-        val intent = Intent(this, SelArticuloCamareroActivity::class.java)
-        intent.putExtra(Constants.EXTRA_ID, id)
+    private fun navigateToDetail(idArticulo: String) {
+        val intent = Intent(this, SelArticuloCestaActivity::class.java)
+        intent.putExtra(Constants.EXTRA_ID, idArticulo)
         intent.putExtra(Constants.EXTRA_COMANDA, idComanda)
         intent.putExtra(Constants.EXTRA_USUARIO, idCamarero)
         startActivity(intent)
