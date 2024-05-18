@@ -4,10 +4,10 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!-- Optional feature for camera access -->
-    <uses-feature android:name="android.hardware.camera" android:required="false" />
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- Optional feature for camera access -->
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -19,6 +19,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CanI"
         tools:targetApi="31">
+        <activity
+            android:name=".usecases.camarero_menu.camarero_home.cesta.metodo_pago.resultado_operacion.No_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".usecases.camarero_menu.camarero_home.cesta.metodo_pago.resultado_operacion.OK_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".usecases.camarero_menu.camarero_home.cesta.metodo_pago.tarjeta.TarjetaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".usecases.camarero_menu.camarero_home.cesta.metodo_pago.efectivo.EfectivoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".usecases.camarero_menu.camarero_home.cesta.metodo_pago.MetodoPagoActivity"
+            android:exported="false" />
         <activity
             android:name=".usecases.camarero_menu.camarero_home.cesta.sel_articulo_cesta.SelArticuloCestaActivity"
             android:exported="false" />
