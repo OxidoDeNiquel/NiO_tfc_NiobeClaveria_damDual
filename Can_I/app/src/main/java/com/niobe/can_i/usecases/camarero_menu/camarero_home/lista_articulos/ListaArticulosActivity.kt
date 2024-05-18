@@ -23,6 +23,8 @@ class ListaArticulosActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityListaArticulosCamareroBinding
     private val firebaseUtil = FirebaseUtil()
+    private var idComanda: String? = null
+    private var idCamarero: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -37,7 +39,9 @@ class ListaArticulosActivity : AppCompatActivity() {
         initUI()
     }
 
-    private fun initUI(){
+    private fun initUI() {
+        idComanda = intent.getStringExtra(Constants.EXTRA_COMANDA)
+        idCamarero = intent.getStringExtra(Constants.EXTRA_USUARIO)
         val tipoArticulo = intent.getStringExtra(Constants.EXTRA_TIPO_ARTICULO)
         if (tipoArticulo != null) {
             actualizarRecyclerViews(tipoArticulo)
@@ -66,6 +70,8 @@ class ListaArticulosActivity : AppCompatActivity() {
     private fun navigateToDetail(id: String) {
         val intent = Intent(this, SelArticuloCamareroActivity::class.java)
         intent.putExtra(Constants.EXTRA_ID, id)
+        intent.putExtra(Constants.EXTRA_COMANDA, idComanda)
+        intent.putExtra(Constants.EXTRA_USUARIO, idCamarero)
         startActivity(intent)
     }
 }

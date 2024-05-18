@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -29,11 +30,16 @@ class CamareroHomeActivity : AppCompatActivity() {
         enableEdgeToEdge()
         binding = ActivityCamareroHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+
+        val mainView = findViewById<View>(R.id.main)
+        if (mainView != null) {
+            ViewCompat.setOnApplyWindowInsetsListener(mainView) { v, insets ->
+                val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+                insets
+            }
         }
+
         // Inicializamos FirebaseUtil
         firebaseUtil = FirebaseUtil()
 
@@ -44,7 +50,7 @@ class CamareroHomeActivity : AppCompatActivity() {
         idComanda = intent.getStringExtra(Constants.EXTRA_COMANDA)
         idCamarero = intent.getStringExtra(Constants.EXTRA_USUARIO)
 
-        if(idComanda.isNullOrEmpty()) {
+        if (idComanda.isNullOrEmpty()) {
             Log.e("Error idComanda", "El idComanda es inválido")
             finish()
             return
@@ -62,8 +68,9 @@ class CamareroHomeActivity : AppCompatActivity() {
         binding.tvInicio.setOnClickListener {
             finish()
         }
-        // Leer y mostrar los artículos por tipo en los RecyclerViews
-        onResume()
+
+        // Actualizar RecyclerViews
+        actualizarRecyclerViews()
     }
 
     override fun onResume() {
@@ -74,11 +81,8 @@ class CamareroHomeActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == Constants.REQUEST_CODE_CREAR_ARTICULO && resultCode == Activity.RESULT_OK) {
-            // Obtener la clave del artículo del intent resultante
             val articuloId = data?.getStringExtra("articuloId")
-            // Verificar que la clave del artículo no sea nula
             if (articuloId != null) {
-                // Actualizar los RecyclerViews utilizando la clave del artículo
                 actualizarRecyclerViews()
             }
         }
@@ -110,6 +114,7 @@ class CamareroHomeActivity : AppCompatActivity() {
         val intent = Intent(this, ListaArticulosActivity::class.java)
         intent.putExtra(Constants.EXTRA_TIPO_ARTICULO, tipoArticulo)
         intent.putExtra(Constants.EXTRA_COMANDA, idComanda)
+        intent.putExtra(Constants.EXTRA_USUARIO, idCamarero)
         startActivity(intent)
     }
 }
