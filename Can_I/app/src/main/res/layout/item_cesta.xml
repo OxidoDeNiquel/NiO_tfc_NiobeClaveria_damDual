@@ -15,6 +15,7 @@
         android:orientation="horizontal"
         android:padding="20dp">
         <ImageView
+            android:id="@+id/ivArticulo"
             android:layout_width="80dp"
             android:layout_height="80dp"/>
         <LinearLayout

@@ -45,8 +45,8 @@ class ListaArticulosActivity : AppCompatActivity() {
 
         binding.tvTipoBebida.text = tipoArticulo
 
-        binding.tvInicio.setOnClickListener {
-            Util.changeActivity(this, GestionArticulosActivity::class.java)
+        binding.ivBack.setOnClickListener {
+            finish()
         }
     }
 

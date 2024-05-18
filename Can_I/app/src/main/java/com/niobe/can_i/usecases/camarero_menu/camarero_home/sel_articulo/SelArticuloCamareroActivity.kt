@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FirebaseFirestore
 import com.niobe.can_i.R
 import com.niobe.can_i.databinding.ActivitySelArticuloCamareroBinding
@@ -153,5 +154,14 @@ class SelArticuloCamareroActivity : AppCompatActivity() {
     private fun createUI(articulo: Articulo) {
         binding.tvNombreArticulo.text = articulo.nombre
         binding.tvPrecio.text = "${articulo.precio}€"
+        val imageUrl = articulo.imagenUrl
+
+        if (!imageUrl.isNullOrEmpty()) {
+            Glide.with(this)
+                .load(imageUrl)
+                .into(binding.ivArticulo)
+        } else {
+            binding.ivArticulo.setImageResource(R.drawable.ic_launcher_foreground) // Imagen de reserva
+        }
     }
 }

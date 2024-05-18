@@ -22,6 +22,8 @@ object Constants {
     const val EXTRA_USUARIO= "extra_usuario"
     const val EXTRA_COMANDA = "extra_comanda"
 
+    const val PICK_IMAGE_REQUEST = 1
+
     const val TIPO_USUARIO_ADMINISTRADOR= "Administrador"
     const val TIPO_USUARIO_CAMARERO= "Camarero"
 

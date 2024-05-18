@@ -9,6 +9,7 @@
     app:cardCornerRadius="20dp"
     app:cardElevation="8dp">
     <ImageView
+        android:id="@+id/ivArticulo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"/>

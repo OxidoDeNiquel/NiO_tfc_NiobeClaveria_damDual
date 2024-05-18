@@ -78,67 +78,49 @@ class FirebaseUtil {
 
     fun actualizarArticulo(
         articuloId: String,
-        nuevosDatos: Map<String, Any>,
+        nuevoArticulo: Articulo,
         onSuccess: () -> Unit,
         onFailure: (String) -> Unit
     ) {
         firestore.collection("articulos")
-            .whereEqualTo("articuloId", articuloId) // Consultar documentos con el articuloId proporcionado
-            .get()
-            .addOnSuccessListener { querySnapshot ->
-                if (!querySnapshot.isEmpty) {
-                    val documento = querySnapshot.documents[0] // Tomar el primer documento de la consulta
-                    documento.reference.update(nuevosDatos) // Actualizar el documento con los nuevos datos
-                        .addOnSuccessListener {
-                            Log.d("SUCCESS", "Documento actualizado correctamente")
-                            onSuccess() // Llamar a onSuccess cuando la operación tenga éxito
-                        }
-                        .addOnFailureListener { e ->
-                            Log.e("ERROR", "Error al actualizar documento", e)
-                            onFailure("Error al actualizar el artículo: ${e.message}") // Llamar a onFailure con el mensaje de error
-                        }
-                } else {
-                    onFailure("No se encontró ningún artículo con el ID $articuloId") // Llamar a onFailure si no se encuentra ningún documento
-                }
+            .document(articuloId)
+            .set(nuevoArticulo) // Actualizar el documento con el nuevo artículo
+            .addOnSuccessListener {
+                Log.d("SUCCESS", "Documento actualizado correctamente")
+                onSuccess() // Llamar a onSuccess cuando la operación tenga éxito
             }
             .addOnFailureListener { e ->
-                Log.e("ERROR", "Error al obtener el artículo para actualizar", e)
-                onFailure("Error al obtener el artículo para actualizar: ${e.message}") // Llamar a onFailure con el mensaje de error
+                Log.e("ERROR", "Error al actualizar documento", e)
+                onFailure("Error al actualizar el artículo: ${e.message}") // Llamar a onFailure con el mensaje de error
             }
     }
 
+
+    // En tu clase FirebaseUtil
+
     fun getArticulo(articuloId: String, onSuccess: (Articulo?) -> Unit, onFailure: (String) -> Unit) {
-        firestore.collection("articulos")
-            .whereEqualTo("articuloId", articuloId)
-            .get()
-            .addOnSuccessListener { documents ->
-                if (!documents.isEmpty) {
-                    val document = documents.documents[0]
+        val articuloRef = firestore.collection("articulos").document(articuloId)
+        articuloRef.get()
+            .addOnSuccessListener { document ->
+                if (document != null && document.exists()) {
                     val articulo = document.toObject(Articulo::class.java)
                     onSuccess(articulo)
                 } else {
-                    onFailure("No se encontró ningún artículo con el ID $articuloId")
+                    onSuccess(null)
                 }
             }
             .addOnFailureListener { exception ->
-                Log.e("ERROR", "Error al obtener artículo: $exception")
-                onFailure("Error al obtener el artículo: $exception")
+                onFailure(exception.message ?: "Error al obtener el artículo")
             }
     }
 
+
     fun guardarArticulo(articuloId: String, articulo: Articulo, callback: (Boolean) -> Unit) {
-        val db = FirebaseFirestore.getInstance()
-        db.collection("articulos")
-            .document(articuloId) // Usar articuloId como documentId
-            .set(articulo)
-            .addOnSuccessListener {
-                callback(true)
-            }
-            .addOnFailureListener { e ->
-                Log.e("FirebaseUtil", "Error al guardar el artículo: ", e)
-                callback(false)
-            }
+        firestore.collection("articulos").document(articuloId).set(articulo)
+            .addOnSuccessListener { callback(true) }
+            .addOnFailureListener { callback(false) }
     }
+
 
     fun getBarra(idBarra: String, onSuccess: (Barra?) -> Unit, onFailure: (String) -> Unit) {
         val firestore = FirebaseFirestore.getInstance()

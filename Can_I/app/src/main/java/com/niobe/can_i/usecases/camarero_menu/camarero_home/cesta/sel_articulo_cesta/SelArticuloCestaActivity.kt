@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.bumptech.glide.Glide
 import com.niobe.can_i.R
 import com.niobe.can_i.databinding.ActivitySelArticuloCestaBinding
 import com.niobe.can_i.model.Articulo
@@ -118,20 +119,38 @@ class SelArticuloCestaActivity : AppCompatActivity() {
     }
 
     private fun getArticuloInformation(articuloId: String) {
-        firebaseUtil.getArticuloById(articuloId) { articulo ->
-            articulo?.let {
-                runOnUiThread {
-                    createUI(articulo)
+        firebaseUtil.getArticulo(
+            articuloId,
+            onSuccess = { articulo ->
+                articulo?.let {
+                    runOnUiThread {
+                        createUI(articulo)
+                    }
+                } ?: runOnUiThread {
+                    // Manejar caso donde no se puede obtener el artículo
+                    Toast.makeText(this, "No se encontró ningún artículo", Toast.LENGTH_SHORT).show()
                 }
-            } ?: runOnUiThread {
-                // Manejar caso donde no se puede obtener el artículo
-                Toast.makeText(this, "No se encontró ningún artículo", Toast.LENGTH_SHORT).show()
+            },
+            onFailure = { errorMessage ->
+                runOnUiThread {
+                    // Manejar el caso de error
+                    Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
+                }
             }
-        }
+        )
     }
 
     private fun createUI(articulo: Articulo) {
         binding.tvNombreArticulo.text = articulo.nombre
         binding.tvPrecio.text = "${articulo.precio}€"
+        val imageUrl = articulo.imagenUrl
+
+        if (!imageUrl.isNullOrEmpty()) {
+            Glide.with(this)
+                .load(imageUrl)
+                .into(binding.ivArticulo)
+        } else {
+            binding.ivArticulo.setImageResource(R.drawable.ic_launcher_foreground) // Imagen de reserva
+        }
     }
 }

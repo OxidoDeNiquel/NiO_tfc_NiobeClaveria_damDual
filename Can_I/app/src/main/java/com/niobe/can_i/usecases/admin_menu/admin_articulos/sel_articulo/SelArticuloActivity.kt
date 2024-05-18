@@ -2,12 +2,12 @@ package com.niobe.can_i.usecases.admin_menu.admin_articulos.sel_articulo
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.bumptech.glide.Glide
 import com.niobe.can_i.R
 import com.niobe.can_i.databinding.ActivitySelArticuloBinding
 import com.niobe.can_i.model.Articulo
@@ -99,5 +99,15 @@ class SelArticuloActivity : AppCompatActivity() {
         binding.tvNombreArticulo.text = articulo.nombre
         binding.tvPrecio.text = "${articulo.precio}€"
         binding.tvStockValue.text = articulo.stock.toString()
+        val imageUrl = articulo.imagenUrl
+
+        if (!imageUrl.isNullOrEmpty()) {
+            Glide.with(this)
+                .load(imageUrl)
+                .into(binding.ivArticulo)
+        } else {
+            binding.ivArticulo.setImageResource(R.drawable.ic_launcher_foreground) // Imagen de reserva
+        }
     }
+
 }
