@@ -284,44 +284,20 @@ class FirebaseUtil {
             }
     }
 
-    suspend fun obtenerComandaPorId(documentId: String, camarero: Camarero): Comanda {
-        return suspendCoroutine { continuation ->
-            firestore.collection("comandas")
-                .document(documentId)
-                .get()
-                .addOnSuccessListener { document ->
-                    if (document.exists()) {
-                        val idComanda = document.getString("idComanda") ?: ""
-                        val fechaHora = document.getString("fechaHora") ?: ""
-                        val comanda = Comanda(idComanda, camarero, fechaHora)
-                        continuation.resume(comanda)
-                    } else {
-                        continuation.resumeWithException(NoSuchElementException("No se encontró ninguna comanda con ese DocumentID"))
-                    }
+    fun obtenerArticuloPorId(documentId: String, onSuccess: (Articulo?) -> Unit, onFailure: (Exception) -> Unit) {
+        firestore.collection("articulos")
+            .document(documentId)
+            .get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    val articulo = document.toObject(Articulo::class.java)
+                    onSuccess(articulo)
+                } else {
+                    onSuccess(null)
                 }
-                .addOnFailureListener { e ->
-                    continuation.resumeWithException(e)
-                }
-        }
-    }
-
-
-    fun crearArticuloComanda(articulosComanda: ArticulosComanda, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
-        // Generar un ID aleatorio para idArticulosComanda
-        val idArticulosComanda = UUID.randomUUID().toString()
-
-        // Guardar el artículo de comanda en Firestore con el mismo ID que el documentID
-        firestore.collection("articulos_comanda")
-            .document(idArticulosComanda)
-            .set(articulosComanda)
-            .addOnSuccessListener {
-                // Llamar a onSuccess si la operación tiene éxito
-                onSuccess()
             }
             .addOnFailureListener { e ->
-                // Llamar a onFailure si hay un error
                 onFailure(e)
             }
     }
-
 }
