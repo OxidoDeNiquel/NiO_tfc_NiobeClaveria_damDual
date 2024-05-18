@@ -25,6 +25,8 @@ data class Empleado(
 }
 
 data class Administrador(
-    var idAdministrador: String,
-    var usuario: Usuario
-)
+    var idAdministrador: String = "",
+    var usuario: Usuario = Usuario()
+){
+    constructor() : this("", Usuario())
+}

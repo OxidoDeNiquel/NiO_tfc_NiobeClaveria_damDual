@@ -107,8 +107,6 @@ class FirebaseUtil {
             }
     }
 
-
-
     fun getArticulo(articuloId: String, onSuccess: (Articulo?) -> Unit, onFailure: (String) -> Unit) {
         firestore.collection("articulos")
             .whereEqualTo("articuloId", articuloId)
@@ -298,6 +296,40 @@ class FirebaseUtil {
             }
             .addOnFailureListener { e ->
                 onFailure(e)
+            }
+    }
+
+    fun getArticulosComandaByComanda(idComanda: String, callback: (List<ArticulosComanda>) -> Unit) {
+        firestore.collection("articulos_comanda")
+            .whereEqualTo("idComanda.idComanda", idComanda)
+            .get()
+            .addOnSuccessListener { result ->
+                val articulosComandaList = mutableListOf<ArticulosComanda>()
+                for (document in result) {
+                    val articuloComanda = document.toObject(ArticulosComanda::class.java)
+                    articulosComandaList.add(articuloComanda)
+                }
+                callback(articulosComandaList)
+            }
+            .addOnFailureListener { exception ->
+                exception.printStackTrace()
+                callback(emptyList())
+            }
+    }
+
+    fun getArticuloById(articuloId: String, callback: (Articulo?) -> Unit) {
+        firestore.collection("articulos").document(articuloId).get()
+            .addOnSuccessListener { document ->
+                if (document != null && document.exists()) {
+                    val articulo = document.toObject(Articulo::class.java)
+                    callback(articulo)
+                } else {
+                    callback(null)
+                }
+            }
+            .addOnFailureListener { exception ->
+                exception.printStackTrace()
+                callback(null)
             }
     }
 }

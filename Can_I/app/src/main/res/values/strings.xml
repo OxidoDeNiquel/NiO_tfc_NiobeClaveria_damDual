@@ -36,6 +36,7 @@
     <string name="administradores">Administradores</string>
     <string name="editar_usuario">Editar Usuario</string>
     <string name="crear_comanda">Crear comanda</string>
+    <string name="cesta">Cesta</string>
 
     <!-- Dropdown items -->
     <string-array name="tipos_de_bebidas">

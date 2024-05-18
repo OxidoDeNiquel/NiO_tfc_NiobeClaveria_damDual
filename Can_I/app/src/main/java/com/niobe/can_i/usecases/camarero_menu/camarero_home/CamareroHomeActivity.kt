@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.niobe.can_i.R
 import com.niobe.can_i.databinding.ActivityCamareroHomeBinding
 import com.niobe.can_i.provider.services.firebase.FirebaseUtil
+import com.niobe.can_i.usecases.camarero_menu.camarero_home.cesta.CestaActivity
 import com.niobe.can_i.usecases.camarero_menu.camarero_home.lista_articulos.ListaArticulosActivity
 import com.niobe.can_i.usecases.camarero_menu.camarero_home.sel_articulo.SelArticuloCamareroActivity
 import com.niobe.can_i.util.Constants
@@ -68,6 +69,9 @@ class CamareroHomeActivity : AppCompatActivity() {
         binding.tvInicio.setOnClickListener {
             finish()
         }
+        binding.bCesta.setOnClickListener {
+            navigateToCesta()
+        }
 
         // Actualizar RecyclerViews
         actualizarRecyclerViews()
@@ -113,6 +117,13 @@ class CamareroHomeActivity : AppCompatActivity() {
     private fun navigateToList(tipoArticulo: String) {
         val intent = Intent(this, ListaArticulosActivity::class.java)
         intent.putExtra(Constants.EXTRA_TIPO_ARTICULO, tipoArticulo)
+        intent.putExtra(Constants.EXTRA_COMANDA, idComanda)
+        intent.putExtra(Constants.EXTRA_USUARIO, idCamarero)
+        startActivity(intent)
+    }
+
+    private fun navigateToCesta() {
+        val intent = Intent(this, CestaActivity::class.java)
         intent.putExtra(Constants.EXTRA_COMANDA, idComanda)
         intent.putExtra(Constants.EXTRA_USUARIO, idCamarero)
         startActivity(intent)

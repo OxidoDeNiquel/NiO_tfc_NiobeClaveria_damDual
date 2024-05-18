@@ -68,6 +68,7 @@ class SelArticuloCamareroActivity : AppCompatActivity() {
             }
             binding.bAnadirCesta.setOnClickListener {
                 añadirArticuloAComanda(idComanda, idCamarero, idArticulo, cantidad)
+                finish()
             }
         } else {
             // Manejar el caso donde no se proporciona el ID del artículo

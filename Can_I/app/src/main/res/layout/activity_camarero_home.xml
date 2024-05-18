@@ -174,11 +174,11 @@
                 </androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
             <Button
-                android:id="@+id/bAnadirArticulo"
+                android:id="@+id/bCesta"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/can_i_c0026"
-                android:text="@string/anadir_articulo"/>
+                android:text="@string/cesta"/>
 
         </LinearLayout>
 

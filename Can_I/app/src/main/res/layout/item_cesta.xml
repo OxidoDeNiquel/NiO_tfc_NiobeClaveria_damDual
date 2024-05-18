@@ -23,18 +23,21 @@
             android:padding="5dp"
             android:orientation="vertical">
             <TextView
+                android:id="@+id/tvNombreArticulo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Nombre Artículo"
                 android:textStyle="bold"
                 android:textSize="18sp"/>
             <TextView
+                android:id="@+id/tvCantidad"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:text="Cantidad: X"
                 android:textSize="14sp"/>
             <TextView
+                android:id="@+id/tvPrecio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0,00€"
