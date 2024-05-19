@@ -10,7 +10,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.google.firebase.storage.FirebaseStorage
+import com.bumptech.glide.Glide
 import com.niobe.can_i.R
 import com.niobe.can_i.databinding.ActivityEditArticuloBinding
 import com.niobe.can_i.model.Articulo
@@ -21,8 +21,9 @@ import com.niobe.can_i.util.Constants
 class EditArticuloActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityEditArticuloBinding
-    private lateinit var selectedImageUri: Uri
-    private val firebaseUtil = FirebaseUtil()
+    private lateinit var firebaseUtil: FirebaseUtil
+    private var selectedImageUri: Uri? = null
+    private var currentImageUrl: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +36,8 @@ class EditArticuloActivity : AppCompatActivity() {
             insets
         }
 
+        firebaseUtil = FirebaseUtil()
+
         initUI()
     }
 
@@ -45,15 +48,14 @@ class EditArticuloActivity : AppCompatActivity() {
             this, R.layout.list_desplegable, tipoBebida
         )
 
-        with(binding.actvTipoBebida) {
-            setAdapter(adapter)
-        }
+        binding.actvTipoBebida.setAdapter(adapter)
 
         if (articuloId != null) {
             firebaseUtil.getArticulo(articuloId,
                 onSuccess = { articulo ->
                     articulo?.let {
-                        createUI(articulo)
+                        currentImageUrl = it.imagenUrl
+                        createUI(it)
                     } ?: run {
                         Toast.makeText(this, "No se encontró ningún artículo", Toast.LENGTH_SHORT).show()
                     }
@@ -69,16 +71,35 @@ class EditArticuloActivity : AppCompatActivity() {
 
         binding.bConfirmar.setOnClickListener {
             if (articuloId != null) {
-                // Verificar si se ha seleccionado una imagen
-                if (::selectedImageUri.isInitialized) {
-                    // Si se seleccionó una imagen, subir la imagen a Firebase Storage y luego actualizar el artículo
-                    uploadImageToFirebaseStorage(articuloId)
+                if (selectedImageUri != null) {
+                    firebaseUtil.uploadImageToFirebaseStorage(selectedImageUri!!,
+                        onSuccess = { imageUrl ->
+                            val updatedArticulo = Articulo(
+                                articuloId = articuloId,
+                                nombre = binding.etNombreArticulo.text.toString(),
+                                tipo = binding.actvTipoBebida.text.toString(),
+                                precio = binding.etPrecio.text.toString().toDoubleOrNull() ?: 0.0,
+                                stock = binding.etStock.text.toString().toIntOrNull() ?: 0,
+                                imagenUrl = imageUrl
+                            )
+                            updateArticulo(updatedArticulo)
+                        },
+                        onFailure = { exception ->
+                            Toast.makeText(this, "Error al subir la imagen", Toast.LENGTH_SHORT).show()
+                        }
+                    )
                 } else {
-                    // Si no se seleccionó una imagen, simplemente actualizar el artículo sin modificar la imagen
                     firebaseUtil.getArticulo(articuloId,
                         onSuccess = { articulo ->
                             articulo?.let {
-                                updateArticulo(articulo)
+                                val updatedArticulo = it.copy(
+                                    nombre = binding.etNombreArticulo.text.toString(),
+                                    tipo = binding.actvTipoBebida.text.toString(),
+                                    precio = binding.etPrecio.text.toString().toDoubleOrNull() ?: 0.0,
+                                    stock = binding.etStock.text.toString().toIntOrNull() ?: 0,
+                                    imagenUrl = currentImageUrl
+                                )
+                                updateArticulo(updatedArticulo)
                             } ?: run {
                                 Toast.makeText(this, "No se encontró ningún artículo", Toast.LENGTH_SHORT).show()
                             }
@@ -104,15 +125,9 @@ class EditArticuloActivity : AppCompatActivity() {
         binding.actvTipoBebida.setText(articulo.tipo)
         binding.etPrecio.setText(articulo.precio.toString())
         binding.etStock.setText(articulo.stock.toString())
-    }
-
-    private fun obtenerNuevoArticulo(): Articulo {
-        val nombreArticulo = binding.etNombreArticulo.text.toString()
-        val tipoArticulo = binding.actvTipoBebida.text.toString()
-        val precioArticulo = binding.etPrecio.text.toString().toDoubleOrNull() ?: 0.0
-        val stockArticulo = binding.etStock.text.toString().toIntOrNull() ?: 0
-
-        return Articulo("", nombreArticulo, tipoArticulo, precioArticulo, stockArticulo)
+        articulo.imagenUrl?.let { imageUrl ->
+            Glide.with(this).load(imageUrl).into(binding.ivFotoArticulo)
+        }
     }
 
     private fun goToGestionArticulosActivity() {
@@ -147,23 +162,5 @@ class EditArticuloActivity : AppCompatActivity() {
                 Toast.makeText(this, "Error al actualizar el artículo", Toast.LENGTH_SHORT).show()
             }
         )
-    }
-
-    private fun uploadImageToFirebaseStorage(articuloId: String) {
-        val storageRef = FirebaseStorage.getInstance().reference.child("images/${System.currentTimeMillis()}")
-        storageRef.putFile(selectedImageUri)
-            .addOnSuccessListener { taskSnapshot ->
-                taskSnapshot.storage.downloadUrl.addOnSuccessListener { uri ->
-                    val imageUrl = uri.toString()
-                    // Crear un nuevo objeto Articulo con la nueva URL de la imagen
-                    val nuevoArticulo = obtenerNuevoArticulo().copy(imagenUrl = imageUrl)
-                    // Actualizar el artículo en Firestore con el nuevo objeto Articulo
-                    updateArticulo(nuevoArticulo)
-                }
-            }
-            .addOnFailureListener { exception ->
-                // Manejar errores al cargar la imagen
-                Toast.makeText(this, "Error al subir la imagen", Toast.LENGTH_SHORT).show()
-            }
     }
 }

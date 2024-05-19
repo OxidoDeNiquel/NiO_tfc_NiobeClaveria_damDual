@@ -2,9 +2,11 @@ package com.niobe.can_i.provider.services.firebase
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import com.niobe.can_i.model.Articulo
 import com.niobe.can_i.model.ArticulosComanda
 import com.niobe.can_i.model.Barra
@@ -76,27 +78,26 @@ class FirebaseUtil {
             }
     }
 
-    fun actualizarArticulo(
-        articuloId: String,
-        nuevoArticulo: Articulo,
-        onSuccess: () -> Unit,
-        onFailure: (String) -> Unit
-    ) {
-        firestore.collection("articulos")
-            .document(articuloId)
-            .set(nuevoArticulo) // Actualizar el documento con el nuevo artículo
-            .addOnSuccessListener {
-                Log.d("SUCCESS", "Documento actualizado correctamente")
-                onSuccess() // Llamar a onSuccess cuando la operación tenga éxito
-            }
-            .addOnFailureListener { e ->
-                Log.e("ERROR", "Error al actualizar documento", e)
-                onFailure("Error al actualizar el artículo: ${e.message}") // Llamar a onFailure con el mensaje de error
-            }
+    fun actualizarArticulo(articuloId: String, articulo: Articulo, onSuccess: () -> Unit, onFailure: () -> Unit) {
+        firestore.collection("articulos").document(articuloId).set(articulo)
+            .addOnSuccessListener { onSuccess() }
+            .addOnFailureListener { onFailure() }
     }
 
-
-    // En tu clase FirebaseUtil
+    fun uploadImageToFirebaseStorage(imageUri: Uri, onSuccess: (String) -> Unit, onFailure: (Exception) -> Unit) {
+        val storageRef = FirebaseStorage.getInstance().reference.child("images/${System.currentTimeMillis()}.jpg")
+        storageRef.putFile(imageUri)
+            .addOnSuccessListener { taskSnapshot ->
+                taskSnapshot.storage.downloadUrl.addOnSuccessListener { uri ->
+                    onSuccess(uri.toString())
+                }.addOnFailureListener { exception ->
+                    onFailure(exception)
+                }
+            }
+            .addOnFailureListener { exception ->
+                onFailure(exception)
+            }
+    }
 
     fun getArticulo(articuloId: String, onSuccess: (Articulo?) -> Unit, onFailure: (String) -> Unit) {
         val articuloRef = firestore.collection("articulos").document(articuloId)
