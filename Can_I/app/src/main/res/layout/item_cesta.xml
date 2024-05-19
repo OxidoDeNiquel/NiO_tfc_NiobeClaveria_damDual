@@ -14,10 +14,17 @@
         android:layout_height="match_parent"
         android:orientation="horizontal"
         android:padding="20dp">
-        <ImageView
-            android:id="@+id/ivArticulo"
+        <androidx.cardview.widget.CardView
             android:layout_width="80dp"
-            android:layout_height="80dp"/>
+            android:layout_height="80dp"
+            app:cardCornerRadius="20dp">
+
+            <ImageView
+                android:id="@+id/ivArticulo"
+                android:layout_width="80dp"
+                android:layout_height="80dp"/>
+
+        </androidx.cardview.widget.CardView>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

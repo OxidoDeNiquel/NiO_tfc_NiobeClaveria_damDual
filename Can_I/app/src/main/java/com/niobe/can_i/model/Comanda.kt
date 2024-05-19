@@ -4,10 +4,11 @@ data class Comanda(
     var idComanda: String = "",
     var idCamarero: Camarero = Camarero(),
     //var idBarra: Barra,
-    var fechaHora: String = ""
+    var fechaHora: String = "",
+    var pagada: Boolean = false
 ) {
     // Constructor sin argumentos requerido por Firestore
-    constructor() : this("", Camarero(), "")
+    constructor() : this("", Camarero(), "", false)
 }
 
 data class ArticulosComanda(

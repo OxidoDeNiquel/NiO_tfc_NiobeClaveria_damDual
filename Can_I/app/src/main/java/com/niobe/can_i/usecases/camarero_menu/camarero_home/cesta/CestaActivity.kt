@@ -10,6 +10,7 @@ import com.niobe.can_i.R
 import com.niobe.can_i.databinding.ActivityCestaBinding
 import com.niobe.can_i.model.ArticulosComanda
 import com.niobe.can_i.provider.services.firebase.FirebaseUtil
+import com.niobe.can_i.usecases.camarero_menu.camarero_home.cesta.metodo_pago.MetodoPagoActivity
 import com.niobe.can_i.usecases.camarero_menu.camarero_home.cesta.sel_articulo_cesta.SelArticuloCestaActivity
 import com.niobe.can_i.util.Constants
 import com.niobe.can_i.util.Util
@@ -21,6 +22,7 @@ class CestaActivity : AppCompatActivity() {
     private lateinit var adapter: CestaAdapter
     private var idComanda: String? = null
     private var idCamarero: String? = null
+    private var precioTotal: Double = 0.00
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +56,10 @@ class CestaActivity : AppCompatActivity() {
             Log.e("Error", "El idComanda es inválido o está vacío")
             finish()
             return
+        }
+
+        binding.bTramitarPedido.setOnClickListener {
+            navigateToTramitarPedido(precioTotal)
         }
 
         setupRecyclerView()
@@ -92,6 +98,7 @@ class CestaActivity : AppCompatActivity() {
 
                 // Comprueba si ya se han cargado todos los artículos
                 if (loadedArticulos == articulosComandaList.size) {
+                    precioTotal = totalPrice
                     // Actualiza el TextView con el precio total
                     binding.tvTotalPrecio.text = buildString {
                         append(totalPrice.toString())
@@ -107,6 +114,13 @@ class CestaActivity : AppCompatActivity() {
         intent.putExtra(Constants.EXTRA_ID, idArticulo)
         intent.putExtra(Constants.EXTRA_COMANDA, idComanda)
         intent.putExtra(Constants.EXTRA_USUARIO, idCamarero)
+        startActivity(intent)
+    }
+
+    private fun navigateToTramitarPedido(precioTotal: Double) {
+        val intent = Intent(this, MetodoPagoActivity::class.java)
+        intent.putExtra(Constants.EXTRA_PRECIO_TOTAL, precioTotal)
+        intent.putExtra(Constants.EXTRA_COMANDA, idComanda)
         startActivity(intent)
     }
 }

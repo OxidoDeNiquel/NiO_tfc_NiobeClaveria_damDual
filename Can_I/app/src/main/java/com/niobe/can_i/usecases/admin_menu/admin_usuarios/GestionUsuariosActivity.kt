@@ -14,6 +14,7 @@ import com.niobe.can_i.provider.services.firebase.FirebaseUtil
 import com.niobe.can_i.usecases.admin_menu.admin_articulos.GestionArticulosAdapter
 import com.niobe.can_i.usecases.admin_menu.admin_articulos.admin_articulos_lista.ListaArticulosActivity
 import com.niobe.can_i.usecases.admin_menu.admin_articulos.sel_articulo.SelArticuloActivity
+import com.niobe.can_i.usecases.admin_menu.admin_usuarios.admin_usuarios_lista.ListaUsuariosActivity
 import com.niobe.can_i.usecases.admin_menu.admin_usuarios.sel_usuario.SelUsuarioActivity
 import com.niobe.can_i.util.Constants
 import com.niobe.can_i.util.Util
@@ -42,6 +43,12 @@ class GestionUsuariosActivity : AppCompatActivity() {
     private fun initUI(){
         binding.tvInicio.setOnClickListener {
             finish()
+        }
+        binding.ivCamareros.setOnClickListener {
+            navigateToList(Constants.TIPO_USUARIO_CAMARERO)
+        }
+        binding.ivAdministradores.setOnClickListener {
+            navigateToList(Constants.TIPO_USUARIO_ADMINISTRADOR)
         }
         onResume()
     }
@@ -83,9 +90,9 @@ class GestionUsuariosActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun navigateToList(tipoArticulo: String) {
-        val intent = Intent(this, ListaArticulosActivity::class.java)
-        intent.putExtra(Constants.EXTRA_TIPO_ARTICULO, tipoArticulo)
+    private fun navigateToList(rol: String) {
+        val intent = Intent(this, ListaUsuariosActivity::class.java)
+        intent.putExtra(Constants.EXTRA_USUARIO, rol)
         startActivity(intent)
     }
 }
