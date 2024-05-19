@@ -20,6 +20,7 @@ class EfectivoActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEfectivoBinding
     private lateinit var firebaseUtil: FirebaseUtil
     private var idComanda: String? = null
+    private var idCamarero: String? = null
     private var precioTotal: Double = 0.00
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,9 +43,8 @@ class EfectivoActivity : AppCompatActivity() {
 
     private fun initUI() {
         idComanda = intent.getStringExtra(Constants.EXTRA_COMANDA)
-        Log.i("IDCOMANDA EFECTIVO", idComanda ?: "")
+        intent.putExtra(Constants.EXTRA_USUARIO, idCamarero)
         precioTotal = intent.getDoubleExtra(Constants.EXTRA_PRECIO_TOTAL, 0.00)
-        Log.i("PRECIOTOTAL EFECTIVO", precioTotal.toString())
 
         if (idComanda.isNullOrEmpty()) {
             Log.e("Error", "El idComanda es inválido o está vacío")
@@ -88,6 +88,7 @@ class EfectivoActivity : AppCompatActivity() {
         val intent = Intent(this, OK_Activity::class.java)
         intent.putExtra(Constants.EXTRA_PRECIO_TOTAL, precioTotal)
         intent.putExtra(Constants.EXTRA_COMANDA, idComanda)
+        intent.putExtra(Constants.EXTRA_USUARIO, idCamarero)
         startActivity(intent)
         finish()
     }

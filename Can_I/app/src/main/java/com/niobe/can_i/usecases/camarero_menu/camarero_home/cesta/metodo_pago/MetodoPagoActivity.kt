@@ -19,6 +19,7 @@ class MetodoPagoActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMetodoPagoBinding
     private lateinit var firebaseUtil: FirebaseUtil
     private var idComanda: String? = null
+    private var idCamarero: String? = null
     private var precioTotal: Double = 0.00
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,9 +41,8 @@ class MetodoPagoActivity : AppCompatActivity() {
 
     private fun initUI() {
         idComanda = intent.getStringExtra(Constants.EXTRA_COMANDA)
-        Log.i("IDCOMANDA METODOP", idComanda ?: "")
+        idCamarero = intent.getStringExtra(Constants.EXTRA_USUARIO)
         precioTotal = intent.getDoubleExtra(Constants.EXTRA_PRECIO_TOTAL, 0.00)
-        Log.i("PRECIOTOTAL METODOP", precioTotal.toString())
 
         if (idComanda.isNullOrEmpty()) {
             Log.e("Error", "El idComanda es inválido o está vacío")
@@ -70,6 +70,7 @@ class MetodoPagoActivity : AppCompatActivity() {
         val intent = Intent(this, EfectivoActivity::class.java)
         intent.putExtra(Constants.EXTRA_PRECIO_TOTAL, precioTotal)
         intent.putExtra(Constants.EXTRA_COMANDA, idComanda)
+        intent.putExtra(Constants.EXTRA_USUARIO, idCamarero)
         startActivity(intent)
         finish()
     }
@@ -78,8 +79,10 @@ class MetodoPagoActivity : AppCompatActivity() {
         val intent = Intent(this, QRCodeActivity::class.java).apply {
             putExtra(Constants.EXTRA_COMANDA, idComanda)
             putExtra(Constants.EXTRA_PRECIO_TOTAL, precioTotal)
+            putExtra(Constants.EXTRA_USUARIO, idCamarero)
         }
         startActivity(intent)
+        finish()
     }
 
     private fun createUI(){

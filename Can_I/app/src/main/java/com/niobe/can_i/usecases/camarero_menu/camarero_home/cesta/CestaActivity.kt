@@ -121,6 +121,8 @@ class CestaActivity : AppCompatActivity() {
         val intent = Intent(this, MetodoPagoActivity::class.java)
         intent.putExtra(Constants.EXTRA_PRECIO_TOTAL, precioTotal)
         intent.putExtra(Constants.EXTRA_COMANDA, idComanda)
+        intent.putExtra(Constants.EXTRA_USUARIO, idCamarero)
         startActivity(intent)
+        finish()
     }
 }

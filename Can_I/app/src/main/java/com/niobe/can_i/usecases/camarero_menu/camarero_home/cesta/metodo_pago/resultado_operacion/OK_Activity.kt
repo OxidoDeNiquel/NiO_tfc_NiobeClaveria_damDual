@@ -1,5 +1,6 @@
 package com.niobe.can_i.usecases.camarero_menu.camarero_home.cesta.metodo_pago.resultado_operacion
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.enableEdgeToEdge
@@ -18,6 +19,7 @@ class OK_Activity : AppCompatActivity() {
     private lateinit var binding: ActivityOkBinding
     private lateinit var firebaseUtil: FirebaseUtil
     private var idComanda: String? = null
+    private var idCamarero: String? = null
     private var precioTotal: Double = 0.00
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,17 +41,26 @@ class OK_Activity : AppCompatActivity() {
 
     private fun initUI() {
         idComanda = intent.getStringExtra(Constants.EXTRA_COMANDA)
-        Log.i("IDCOMANDA OK", idComanda ?: "")
+        idCamarero = intent.getStringExtra(Constants.EXTRA_USUARIO)
         precioTotal = intent.getDoubleExtra(Constants.EXTRA_PRECIO_TOTAL, 0.00)
-        Log.i("PRECIOTOTAL OK", precioTotal.toString())
+
 
         idComanda?.let {
             updateComandaPagado(it)
         }
 
         binding.bVolverMenu.setOnClickListener {
-            Util.changeActivity(this, CamareroMenuActivity::class.java)
+            navigateToMenu()
         }
+    }
+
+    private fun navigateToMenu() {
+        val intent = Intent(this, CamareroMenuActivity::class.java)
+        intent.putExtra(Constants.EXTRA_PRECIO_TOTAL, precioTotal)
+        intent.putExtra(Constants.EXTRA_COMANDA, idComanda)
+        intent.putExtra(Constants.EXTRA_USUARIO, idCamarero)
+        startActivity(intent)
+        finish()
     }
 
     private fun updateComandaPagado(idComanda: String) {
