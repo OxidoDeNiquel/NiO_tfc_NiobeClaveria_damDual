@@ -22,9 +22,18 @@ import kotlin.coroutines.suspendCoroutine
 
 class FirebaseUtil {
 
+    /**
+     * Clase de utilidad para interactuar con Firebase.
+     */
+
     private var auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
+    /**
+     * Cierra la sesión del usuario y lo redirige a la pantalla de inicio de sesión.
+     *
+     * @param context Contexto de la aplicación.
+     */
     fun cerrarSesion(context: Context) {
         auth.signOut()
         // Redirigir al usuario de vuelta a la pantalla de inicio de sesión
@@ -33,6 +42,12 @@ class FirebaseUtil {
         context.startActivity(intent)
     }
 
+    /**
+     * Lee los artículos de Firestore filtrados por tipo de artículo.
+     *
+     * @param tipoArticulo Tipo de artículo a filtrar.
+     * @param callback Función de retorno que proporciona la lista de artículos.
+     */
     fun leerArticulos(tipoArticulo: String, callback: (List<Articulo>) -> Unit) {
         firestore.collection("articulos")
             .whereEqualTo("tipo", tipoArticulo)
@@ -51,6 +66,12 @@ class FirebaseUtil {
             }
     }
 
+    /**
+     * Elimina un artículo de Firestore.
+     *
+     * @param articuloId ID del artículo a eliminar.
+     * @param callback Función de retorno que indica si la operación fue exitosa.
+     */
     fun eliminarArticulo(articuloId: String, callback: (Boolean) -> Unit) {
         firestore.collection("articulos")
             .whereEqualTo("articuloId", articuloId)
@@ -78,12 +99,27 @@ class FirebaseUtil {
             }
     }
 
+    /**
+     * Actualiza un artículo en Firestore.
+     *
+     * @param articuloId ID del artículo a actualizar.
+     * @param articulo Nuevo objeto Articulo con los datos actualizados.
+     * @param onSuccess Función de retorno que se llama si la actualización es exitosa.
+     * @param onFailure Función de retorno que se llama si la actualización falla.
+     */
     fun actualizarArticulo(articuloId: String, articulo: Articulo, onSuccess: () -> Unit, onFailure: () -> Unit) {
         firestore.collection("articulos").document(articuloId).set(articulo)
             .addOnSuccessListener { onSuccess() }
             .addOnFailureListener { onFailure() }
     }
 
+    /**
+     * Sube una imagen al almacenamiento de Firebase.
+     *
+     * @param imageUri URI de la imagen a subir.
+     * @param onSuccess Función de retorno que proporciona la URL de la imagen subida.
+     * @param onFailure Función de retorno que se llama si la carga de la imagen falla.
+     */
     fun uploadImageToFirebaseStorage(imageUri: Uri, onSuccess: (String) -> Unit, onFailure: (Exception) -> Unit) {
         val storageRef = FirebaseStorage.getInstance().reference.child("images/${System.currentTimeMillis()}.jpg")
         storageRef.putFile(imageUri)
@@ -99,6 +135,13 @@ class FirebaseUtil {
             }
     }
 
+    /**
+     * Obtiene un artículo de Firestore por su ID.
+     *
+     * @param articuloId ID del artículo a obtener.
+     * @param onSuccess Función de retorno que proporciona el objeto Articulo si se encuentra.
+     * @param onFailure Función de retorno que se llama si la operación falla.
+     */
     fun getArticulo(articuloId: String, onSuccess: (Articulo?) -> Unit, onFailure: (String) -> Unit) {
         val articuloRef = firestore.collection("articulos").document(articuloId)
         articuloRef.get()
@@ -115,14 +158,26 @@ class FirebaseUtil {
             }
     }
 
-
+    /**
+     * Guarda un artículo en Firestore.
+     *
+     * @param articuloId ID del artículo a guardar.
+     * @param articulo Objeto Articulo a guardar en Firestore.
+     * @param callback Función de retorno que indica si la operación fue exitosa.
+     */
     fun guardarArticulo(articuloId: String, articulo: Articulo, callback: (Boolean) -> Unit) {
         firestore.collection("articulos").document(articuloId).set(articulo)
             .addOnSuccessListener { callback(true) }
             .addOnFailureListener { callback(false) }
     }
 
-
+    /**
+     * Obtiene una barra de Firestore por su ID.
+     *
+     * @param idBarra ID de la barra a obtener.
+     * @param onSuccess Función de retorno que proporciona el objeto Barra si se encuentra.
+     * @param onFailure Función de retorno que se llama si la operación falla.
+     */
     fun getBarra(idBarra: String, onSuccess: (Barra?) -> Unit, onFailure: (String) -> Unit) {
         val firestore = FirebaseFirestore.getInstance()
         firestore.collection("barras")
@@ -141,6 +196,13 @@ class FirebaseUtil {
             }
     }
 
+    /**
+     * Borra una barra de Firestore por su ID.
+     *
+     * @param idBarra ID de la barra a borrar.
+     * @param onSuccess Función de retorno que se llama si la operación de borrado es exitosa.
+     * @param onFailure Función de retorno que se llama si la operación de borrado falla.
+     */
     fun borrarBarra(idBarra: String, onSuccess: () -> Unit, onFailure: (String) -> Unit) {
         val firestore = FirebaseFirestore.getInstance()
         val barrasCollection = firestore.collection("barras")
@@ -155,6 +217,12 @@ class FirebaseUtil {
             }
     }
 
+    /**
+     * Lee los artículos de Firestore asociados a una barra específica por su ID.
+     *
+     * @param idBarra ID de la barra cuyos artículos se desean leer.
+     * @param callback Función de retorno que proporciona la lista de artículos asociados a la barra.
+     */
     fun leerArticulosPorIdBarra(idBarra: String, callback: (List<Articulo>) -> Unit) {
         val firestore = FirebaseFirestore.getInstance()
         val articulosCollection = firestore.collection("articulos_barra")
@@ -175,6 +243,12 @@ class FirebaseUtil {
             }
     }
 
+    /**
+     * Lee los usuarios de Firestore filtrados por rol.
+     *
+     * @param rol Rol de los usuarios a filtrar.
+     * @param callback Función de retorno que proporciona la lista de usuarios filtrados por rol.
+     */
     fun leerUsuariosPorRol(rol: String, callback: (List<Usuario>) -> Unit) {
         firestore.collection("usuarios")
             .whereEqualTo("rol", rol)
@@ -192,6 +266,14 @@ class FirebaseUtil {
                 callback(emptyList())
             }
     }
+
+    /**
+     * Elimina un usuario de Firestore por su ID.
+     *
+     * @param documentId ID del documento de usuario a eliminar.
+     * @param onSuccess Función de retorno que se llama si la operación de eliminación es exitosa.
+     * @param onFailure Función de retorno que se llama si la operación de eliminación falla.
+     */
     fun eliminarUsuario(documentId: String, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
         val db = FirebaseFirestore.getInstance()
 
@@ -205,6 +287,13 @@ class FirebaseUtil {
             }
     }
 
+    /**
+     * Obtiene un usuario de Firestore por su ID.
+     *
+     * @param documentId ID del documento de usuario a obtener.
+     * @param onSuccess Función de retorno que proporciona el objeto Usuario si se encuentra.
+     * @param onFailure Función de retorno que se llama si la operación falla.
+     */
     fun obtenerUsuarioPorId(documentId: String, onSuccess: (Usuario?) -> Unit, onFailure: (Exception) -> Unit) {
         val db = FirebaseFirestore.getInstance()
 
@@ -224,6 +313,13 @@ class FirebaseUtil {
             }
     }
 
+    /**
+     * Crea una nueva comanda en Firestore.
+     *
+     * @param idCamarero Objeto Camarero que representa al camarero que realiza la comanda.
+     * @param onSuccess Función de retorno que proporciona el ID de la comanda creada si la operación es exitosa.
+     * @param onFailure Función de retorno que se llama si la operación falla.
+     */
     fun crearComanda(idCamarero: Camarero, onSuccess: (String) -> Unit, onFailure: (Exception) -> Unit) {
         // Genera un ID aleatorio para la comanda
         val idComanda = UUID.randomUUID().toString()
@@ -249,6 +345,13 @@ class FirebaseUtil {
             }
     }
 
+    /**
+     * Obtiene un camarero de Firestore por su ID.
+     *
+     * @param documentId ID del documento de camarero a obtener.
+     * @param onSuccess Función de retorno que proporciona el objeto Camarero si se encuentra.
+     * @param onFailure Función de retorno que se llama si la operación falla.
+     */
     fun obtenerCamareroPorId(documentId: String, onSuccess: (Camarero?) -> Unit, onFailure: (Exception) -> Unit) {
         firestore.collection("camareros")
             .document(documentId)
@@ -266,6 +369,13 @@ class FirebaseUtil {
             }
     }
 
+    /**
+     * Obtiene un artículo de Firestore por su ID.
+     *
+     * @param documentId ID del documento de artículo a obtener.
+     * @param onSuccess Función de retorno que proporciona el objeto Articulo si se encuentra.
+     * @param onFailure Función de retorno que se llama si la operación falla.
+     */
     fun obtenerArticuloPorId(documentId: String, onSuccess: (Articulo?) -> Unit, onFailure: (Exception) -> Unit) {
         firestore.collection("articulos")
             .document(documentId)
@@ -283,6 +393,12 @@ class FirebaseUtil {
             }
     }
 
+    /**
+     * Obtiene los artículos asociados a una comanda específica por su ID de comanda.
+     *
+     * @param idComanda ID de la comanda cuyos artículos se desean obtener.
+     * @param callback Función de retorno que proporciona la lista de artículos asociados a la comanda.
+     */
     fun getArticulosComandaByComanda(idComanda: String, callback: (List<ArticulosComanda>) -> Unit) {
         firestore.collection("articulos_comanda")
             .whereEqualTo("idComanda.idComanda", idComanda)
@@ -301,6 +417,12 @@ class FirebaseUtil {
             }
     }
 
+    /**
+     * Obtiene un artículo de Firestore por su ID.
+     *
+     * @param articuloId ID del artículo a obtener.
+     * @param callback Función de retorno que proporciona el objeto Articulo si se encuentra.
+     */
     fun getArticuloById(articuloId: String, callback: (Articulo?) -> Unit) {
         firestore.collection("articulos").document(articuloId).get()
             .addOnSuccessListener { document ->
@@ -317,6 +439,13 @@ class FirebaseUtil {
             }
     }
 
+    /**
+     * Obtiene un artículo de Firestore por su ID de comanda y su ID de artículo.
+     *
+     * @param idComanda ID de la comanda asociada al artículo.
+     * @param idArticulo ID del artículo.
+     * @param callback Función de retorno que proporciona el objeto ArticulosComanda si se encuentra.
+     */
     fun getArticuloComandaByComandaAndArticulo(idComanda: String, idArticulo: String, callback: (ArticulosComanda?) -> Unit) {
         firestore.collection("articulos_comanda")
             .whereEqualTo("idComanda.idComanda", idComanda)
@@ -332,6 +461,14 @@ class FirebaseUtil {
             }
     }
 
+    /**
+     * Actualiza la cantidad de un artículo en una comanda específica en Firestore.
+     *
+     * @param idComanda ID de la comanda asociada al artículo.
+     * @param idArticulo ID del artículo.
+     * @param nuevaCantidad Nueva cantidad del artículo en la comanda.
+     * @param callback Función de retorno que indica si la operación fue exitosa.
+     */
     fun updateArticuloComanda(idComanda: String, idArticulo: String, nuevaCantidad: Int, callback: (Boolean) -> Unit) {
         firestore.collection("articulos_comanda")
             .whereEqualTo("idComanda.idComanda", idComanda)
@@ -350,6 +487,13 @@ class FirebaseUtil {
             .addOnFailureListener { callback(false) }
     }
 
+    /**
+     * Elimina un artículo de una comanda específica en Firestore.
+     *
+     * @param idComanda ID de la comanda asociada al artículo.
+     * @param idArticulo ID del artículo.
+     * @param callback Función de retorno que indica si la operación fue exitosa.
+     */
     fun deleteArticuloComanda(idComanda: String, idArticulo: String, callback: (Boolean) -> Unit) {
         firestore.collection("articulos_comanda")
             .whereEqualTo("idComanda.idComanda", idComanda)
@@ -368,6 +512,13 @@ class FirebaseUtil {
             .addOnFailureListener { callback(false) }
     }
 
+    /**
+     * Actualiza el estado de pago de una comanda en Firestore.
+     *
+     * @param idComanda ID de la comanda a actualizar.
+     * @param pagado Nuevo estado de pago de la comanda.
+     * @param callback Función de retorno que indica si la operación fue exitosa.
+     */
     fun updateComandaPagado(idComanda: String, pagado: Boolean, callback: (Boolean) -> Unit) {
         val comandaRef = firestore.collection("comandas").document(idComanda)
         comandaRef.update("pagada", pagado)

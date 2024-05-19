@@ -1,3 +1,6 @@
+/**
+ * Clase de utilidad que proporciona funciones comunes para realizar tareas específicas.
+ */
 package com.niobe.can_i.util
 
 import android.content.Context
@@ -28,8 +31,16 @@ object Util {
         // Asigna el adaptador al RecyclerView
         recyclerView.adapter = adapter
     }
+
+    /**
+     * Configura un RecyclerView con un LinearLayoutManager vertical y un adaptador dado.
+     *
+     * @param activity Actividad que contiene el RecyclerView.
+     * @param recyclerView RecyclerView que se va a configurar.
+     * @param adapter Adaptador que se va a establecer en el RecyclerView.
+     */
     fun setupRecyclerViewVertical(activity: AppCompatActivity, recyclerView: RecyclerView, adapter: RecyclerView.Adapter<*>) {
-        // Establece el RecyclerView con un tamaño fijo y un LayoutManager horizontal
+        // Establece el RecyclerView con un tamaño fijo y un LayoutManager vertical
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         // Asigna el adaptador al RecyclerView
@@ -37,7 +48,7 @@ object Util {
     }
 
     /**
-     * Cambia la actividad actual a la especificada por la clase de destino.
+     * Cambia la actividad actual a la especificada por la clase de destino y finaliza la actividad actual.
      *
      * @param context Contexto de la actividad actual.
      * @param destination Clase de la actividad de destino.
@@ -66,7 +77,6 @@ object Util {
         context.startActivity(intent)
     }
 
-
     /**
      * Obtiene una referencia a la base de datos Firebase.
      *
@@ -79,19 +89,35 @@ object Util {
             .getReference("articulos")
     }
 
+    /**
+     * Muestra un mensaje Toast corto en el contexto especificado.
+     *
+     * @param context Contexto en el que se mostrará el Toast.
+     * @param message Mensaje a mostrar en el Toast.
+     */
     fun showToast(context: Context, message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
+    /**
+     * Obtiene la fecha y hora actuales como una cadena de texto en formato predeterminado.
+     *
+     * @return Cadena de texto que representa la fecha y hora actuales.
+     */
     fun obtenerFechaHoraActual(): String {
         val currentDateTime = Calendar.getInstance().time
         return currentDateTime.toString() // Puedes formatear esto según tus necesidades
     }
 
+    /**
+     * Formatea un valor numérico como una cadena de texto en la moneda europea (EUR).
+     *
+     * @param value Valor numérico a formatear.
+     * @return Cadena de texto que representa el valor formateado en la moneda europea.
+     */
     fun formatCurrency(value: Double): String {
         val format = NumberFormat.getCurrencyInstance(Locale.GERMANY)
         format.currency = Currency.getInstance("EUR")
         return format.format(value)
     }
-
 }

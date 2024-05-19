@@ -1,3 +1,6 @@
+/**
+ * Clase de utilidad que almacena todas las constantes de la aplicación.
+ */
 package com.niobe.can_i.util
 
 object Constants {
@@ -5,15 +8,15 @@ object Constants {
     * Aquí se almacenarán todas las constantes de nuestra app
     * */
 
-    //Instance Firebase
+    // Instancia de Firebase
     const val INSTANCE = "https://can-i-oxidodeniquel-2024-default-rtdb.europe-west1.firebasedatabase.app"
 
-    //Tipos de articulos
+    // Tipos de artículos
     const val TIPO_ARTICULO_CERVEZA = "Cerveza"
     const val TIPO_ARTICULO_COPA = "Copa"
     const val TIPO_ARTICULO_SIN_ALCOHOL = "Sin alcohol"
 
-    //REQUEST CODES
+    // Códigos de solicitud
     const val REQUEST_CODE_CREAR_ARTICULO = 1001
 
     const val EXTRA_ID = "extra_id"
@@ -27,5 +30,4 @@ object Constants {
 
     const val TIPO_USUARIO_ADMINISTRADOR= "Administrador"
     const val TIPO_USUARIO_CAMARERO= "Camarero"
-
 }
