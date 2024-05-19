@@ -9,14 +9,6 @@ Este proyecto es una aplicación de gestión de barras diseñada para eventos y 
 - **Asignación de Personal**: Asigna y gestiona el personal necesario para cada barra, con opciones de horarios y roles.
 - **Integración con Firebase**: Utiliza Firebase como base de datos para almacenar y sincronizar los datos de manera segura y eficiente.
 
-## Capturas de Pantalla
-
-![Captura de pantalla 1](screenshots/screenshot1.png)
-_Descripción de la captura de pantalla 1._
-
-![Captura de pantalla 2](screenshots/screenshot2.png)
-_Descripción de la captura de pantalla 2._
-
 ## Instalación
 
 1. Clona el repositorio a tu máquina local utilizando Git:
