@@ -13,7 +13,7 @@ Este proyecto es una aplicación de gestión de barras diseñada para eventos y 
 
 1. Clona el repositorio a tu máquina local utilizando Git:
    ```sh
-   git clone https://github.com/tu_usuario/nombre_del_repositorio.git
+   git clone https://github.com/OxidoDeNiquel/NiO_tfc_NiobeClaveria_damDual.git
 2. Abre el proyecto en Android Studio.
 3. Configura tu proyecto para que se conecte a tu proyecto Firebase.
 4. Compila y ejecuta la aplicación en un dispositivo Android o emulador.
