@@ -20,6 +20,9 @@
         android:theme="@style/Theme.CanI"
         tools:targetApi="31">
         <activity
+            android:name=".usecases.admin_menu.admin_usuarios.admin_usuarios_lista.ListaUsuariosActivity"
+            android:exported="false" />
+        <activity
             android:name=".usecases.camarero_menu.camarero_home.cesta.metodo_pago.resultado_operacion.No_Activity"
             android:exported="false" />
         <activity
