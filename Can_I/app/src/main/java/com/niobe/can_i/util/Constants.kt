@@ -21,6 +21,7 @@ object Constants {
     const val EXTRA_ARTICULOS_BARRA= "extra_articulos_barra"
     const val EXTRA_USUARIO= "extra_usuario"
     const val EXTRA_COMANDA = "extra_comanda"
+    const val EXTRA_PRECIO_TOTAL = "extra_precio_total"
 
     const val PICK_IMAGE_REQUEST = 1
 

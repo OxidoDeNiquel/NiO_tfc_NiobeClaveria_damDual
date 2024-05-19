@@ -41,6 +41,9 @@
     <string name="efectivo">EFECTIVO</string>
     <string name="pago_completado_exito">Pago completado con éxito</string>
     <string name="error_pago">Error al completar el pago</string>
+    <string name="done">Done</string>
+    <string name="qr_code">QR Code</string>
+    <string name="hecho">Hecho</string>
 
     <!-- Dropdown items -->
     <string-array name="tipos_de_bebidas">

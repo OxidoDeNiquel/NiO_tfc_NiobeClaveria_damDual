@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center"
+    android:background="@color/can_i_c0026">
+
+    <ImageView
+        android:id="@+id/ivQrCode"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:contentDescription="@string/qr_code"/>
+
+    <Button
+        android:id="@+id/btnDone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/can_i_c0022"
+        android:text="@string/hecho"/>
+
+</LinearLayout>
+

@@ -59,7 +59,6 @@ class CamareroMenuActivity : AppCompatActivity() {
                                     intent.putExtra(Constants.EXTRA_COMANDA, idComanda)
                                     intent.putExtra(Constants.EXTRA_USUARIO, uidAuth)
                                     startActivity(intent)
-                                    finish() // Finaliza la actividad actual si es necesario
                                 },
                                 onFailure = { exception ->
                                     // Maneja el error al crear la comanda

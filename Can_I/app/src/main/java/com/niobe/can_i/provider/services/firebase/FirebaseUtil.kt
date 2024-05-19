@@ -230,9 +230,10 @@ class FirebaseUtil {
 
         // Obtén la fecha y hora actual
         val fechaHoraActual = Util.obtenerFechaHoraActual()
+        val pagada = false
 
         // Crea una instancia de Comanda con los datos proporcionados
-        val comanda = Comanda(idComanda, idCamarero, fechaHoraActual)
+        val comanda = Comanda(idComanda, idCamarero, fechaHoraActual, pagada)
 
         // Agrega la comanda a Firestore con el ID generado
         firestore.collection("comandas")
@@ -367,5 +368,15 @@ class FirebaseUtil {
             .addOnFailureListener { callback(false) }
     }
 
-
+    fun updateComandaPagado(idComanda: String, pagado: Boolean, callback: (Boolean) -> Unit) {
+        val comandaRef = firestore.collection("comandas").document(idComanda)
+        comandaRef.update("pagada", pagado)
+            .addOnSuccessListener {
+                callback(true)
+            }
+            .addOnFailureListener { exception ->
+                exception.printStackTrace()
+                callback(false)
+            }
+    }
 }

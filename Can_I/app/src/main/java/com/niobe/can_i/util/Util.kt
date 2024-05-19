@@ -8,7 +8,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import java.text.NumberFormat
 import java.util.Calendar
+import java.util.Currency
+import java.util.Locale
 
 object Util {
     /**
@@ -83,6 +86,12 @@ object Util {
     fun obtenerFechaHoraActual(): String {
         val currentDateTime = Calendar.getInstance().time
         return currentDateTime.toString() // Puedes formatear esto según tus necesidades
+    }
+
+    fun formatCurrency(value: Double): String {
+        val format = NumberFormat.getCurrencyInstance(Locale.GERMANY)
+        format.currency = Currency.getInstance("EUR")
+        return format.format(value)
     }
 
 }
