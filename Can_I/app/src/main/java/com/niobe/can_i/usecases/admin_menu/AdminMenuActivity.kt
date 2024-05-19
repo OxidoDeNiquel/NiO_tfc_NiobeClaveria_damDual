@@ -1,6 +1,7 @@
 package com.niobe.can_i.usecases.admin_menu
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -8,19 +9,19 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.niobe.can_i.R
 import com.niobe.can_i.databinding.ActivityAdminMenuBinding
+import com.niobe.can_i.model.Usuario
 import com.niobe.can_i.provider.services.firebase.FirebaseUtil
 import com.niobe.can_i.usecases.admin_menu.admin_articulos.GestionArticulosActivity
 import com.niobe.can_i.usecases.admin_menu.admin_usuarios.GestionUsuariosActivity
 import com.niobe.can_i.usecases.admin_menu.admin_usuarios.GestionUsuariosAdapter
 import com.niobe.can_i.usecases.admin_menu.admin_usuarios.crear_usuario.CrearUsuarioActivity
+import com.niobe.can_i.util.Constants
 import com.niobe.can_i.util.Util
 
 class AdminMenuActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAdminMenuBinding
     private lateinit var firebaseUtil: FirebaseUtil
-
-    private lateinit var botonGestionArticulos : Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -41,19 +42,54 @@ class AdminMenuActivity : AppCompatActivity() {
     }
     //Función para inicializar todos los componentes del layout
     private fun initUI(){
-        // Configuramos el click listener para el botón
-        binding.bGestionArticulos.setOnClickListener {
-            // Aquí se ejecutará cuando se presione el botón
-            Util.changeActivity(this, GestionArticulosActivity::class.java)
+        val uidAuth = intent.getStringExtra(Constants.EXTRA_USUARIO)
+
+        if(uidAuth != null){
+            Log.i("uidAuth", uidAuth)
+            getUsuarioInformacion(uidAuth)
+            // Configuramos el click listener para el botón
+            binding.bGestionArticulos.setOnClickListener {
+                // Aquí se ejecutará cuando se presione el botón
+                Util.changeActivityWithoutFinish(this, GestionArticulosActivity::class.java)
+            }
+            binding.bGestionEmpleados.setOnClickListener {
+                Util.changeActivityWithoutFinish(this, GestionUsuariosActivity::class.java)
+            }
+            binding.bCerrarSesion.setOnClickListener {
+                firebaseUtil.cerrarSesion(this)
+            }
+            /*binding.bGestionIncidencias.setOnClickListener {
+                Util.changeActivity(this, GestionBarrasActivity::class.java)
+            }*/
+        }else{
+            Log.e("Error uidAuth", "El uid es inválido")
         }
-        binding.bGestionEmpleados.setOnClickListener {
-            Util.changeActivity(this, GestionUsuariosActivity::class.java)
+
+    }
+
+    private fun getUsuarioInformacion(idUsuario: String) {
+        firebaseUtil.obtenerUsuarioPorId(idUsuario,
+            onSuccess = { usuario ->
+                if (usuario != null) {
+                    // Manejar el éxito, por ejemplo, mostrar los datos del usuario en la interfaz de usuario
+                    createUI(usuario)
+                } else {
+                    // El usuario no existe
+                    Util.showToast(this, "El usuario no existe")
+                }
+            },
+            onFailure = { exception ->
+                // Manejar el error, por ejemplo, mostrar un mensaje de error al usuario
+                Util.showToast(this, "Error al obtener usuario: $exception")
+            }
+        )
+    }
+
+    private fun createUI(usuario: Usuario){
+        binding.tvNombreAdmin.text = buildString {
+            append(usuario.nombre)
+            append(" ")
+            append(usuario.apellido1)
         }
-        binding.bCerrarSesion.setOnClickListener {
-            firebaseUtil.cerrarSesion(this)
-        }
-        /*binding.bGestionIncidencias.setOnClickListener {
-            Util.changeActivity(this, GestionBarrasActivity::class.java)
-        }*/
     }
 }

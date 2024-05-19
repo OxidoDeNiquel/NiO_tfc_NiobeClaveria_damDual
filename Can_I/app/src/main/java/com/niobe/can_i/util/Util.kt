@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import java.util.Calendar
 
 object Util {
     /**
@@ -50,6 +51,20 @@ object Util {
     }
 
     /**
+     * Cambia la actividad actual a la especificada por la clase de destino sin finalizar la actividad actual.
+     *
+     * @param context Contexto de la actividad actual.
+     * @param destination Clase de la actividad de destino.
+     */
+    fun changeActivityWithoutFinish(context: Context, destination: Class<*>) {
+        // Crea un intent para la nueva actividad
+        val intent = Intent(context, destination)
+        // Inicia la nueva actividad
+        context.startActivity(intent)
+    }
+
+
+    /**
      * Obtiene una referencia a la base de datos Firebase.
      *
      * @return Referencia a la base de datos de Firebase.
@@ -63,6 +78,11 @@ object Util {
 
     fun showToast(context: Context, message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    fun obtenerFechaHoraActual(): String {
+        val currentDateTime = Calendar.getInstance().time
+        return currentDateTime.toString() // Puedes formatear esto según tus necesidades
     }
 
 }

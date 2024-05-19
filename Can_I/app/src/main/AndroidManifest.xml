@@ -3,6 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- Optional feature for camera access -->
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -15,6 +20,30 @@
         android:theme="@style/Theme.CanI"
         tools:targetApi="31">
         <activity
+            android:name=".usecases.camarero_menu.camarero_home.cesta.metodo_pago.resultado_operacion.No_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".usecases.camarero_menu.camarero_home.cesta.metodo_pago.resultado_operacion.OK_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".usecases.camarero_menu.camarero_home.cesta.metodo_pago.tarjeta.TarjetaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".usecases.camarero_menu.camarero_home.cesta.metodo_pago.efectivo.EfectivoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".usecases.camarero_menu.camarero_home.cesta.metodo_pago.MetodoPagoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".usecases.camarero_menu.camarero_home.cesta.sel_articulo_cesta.SelArticuloCestaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".usecases.camarero_menu.CamareroMenuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".usecases.camarero_menu.camarero_home.lista_articulos.ListaArticulosActivity"
+            android:exported="false" />
+        <activity
             android:name=".usecases.admin_menu.admin_usuarios.sel_usuario.editar_usuario.EditarUsuarioActivity"
             android:exported="false" />
         <activity
@@ -24,7 +53,7 @@
             android:name=".usecases.admin_menu.admin_usuarios.GestionUsuariosActivity"
             android:exported="false" />
         <activity
-            android:name=".usecases.camarero_home.cesta.CestaActivity"
+            android:name=".usecases.camarero_menu.camarero_home.cesta.CestaActivity"
             android:exported="false" />
         <activity
             android:name=".usecases.admin_menu.admin_barras.sel_barra.articulos_por_barra.ArticulosPorBarraActivity"
@@ -42,7 +71,7 @@
             android:name=".usecases.admin_menu.admin_articulos.admin_articulos_lista.ListaArticulosActivity"
             android:exported="false" />
         <activity
-            android:name=".usecases.camarero_home.sel_articulo.SelArticuloCamareroActivity"
+            android:name=".usecases.camarero_menu.camarero_home.sel_articulo.SelArticuloCamareroActivity"
             android:exported="false" />
         <activity
             android:name=".usecases.admin_menu.admin_perfil.PerfilAdminActivity"
@@ -63,7 +92,7 @@
             android:name=".usecases.admin_menu.AdminMenuActivity"
             android:exported="false" />
         <activity
-            android:name=".usecases.camarero_home.CamareroHomeActivity"
+            android:name=".usecases.camarero_menu.camarero_home.CamareroHomeActivity"
             android:exported="false" />
         <activity
             android:name=".usecases.login.RecoverAccountActivity"

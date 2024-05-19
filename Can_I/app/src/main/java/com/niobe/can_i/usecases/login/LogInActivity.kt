@@ -12,7 +12,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.niobe.can_i.R
 import com.niobe.can_i.databinding.ActivityLogInBinding
 import com.niobe.can_i.usecases.admin_menu.AdminMenuActivity
-import com.niobe.can_i.usecases.camarero_home.CamareroHomeActivity
+import com.niobe.can_i.usecases.camarero_menu.CamareroMenuActivity
+import com.niobe.can_i.usecases.camarero_menu.camarero_home.CamareroHomeActivity
 import com.niobe.can_i.util.Constants
 
 class LogInActivity : AppCompatActivity() {
@@ -55,6 +56,7 @@ class LogInActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Inicio de sesión exitoso
                     obtenerRolUsuario(auth.currentUser?.uid)
+                    Log.i("auth.currentUser?.uid", auth.currentUser?.uid ?: "")
                 } else {
                     // Error en el inicio de sesión
                     Log.e("LogInActivity", "Error al iniciar sesión", task.exception)
@@ -74,10 +76,14 @@ class LogInActivity : AppCompatActivity() {
                         rol?.let {
                             if (it == Constants.TIPO_USUARIO_ADMINISTRADOR) {
                                 // Usuario con rol de Administrador
-                                startActivity(Intent(this, AdminMenuActivity::class.java))
+                                val intent = Intent(this, AdminMenuActivity::class.java)
+                                intent.putExtra(Constants.EXTRA_USUARIO, uid) // Aquí se pasa el usuario
+                                startActivity(intent)
                             } else if (it == Constants.TIPO_USUARIO_CAMARERO){
                                 // Usuario con otro rol (por ejemplo, Camarero)
-                                startActivity(Intent(this, CamareroHomeActivity::class.java))
+                                val intent = Intent(this, CamareroMenuActivity::class.java)
+                                intent.putExtra(Constants.EXTRA_USUARIO, uid) // Aquí se pasa el usuario
+                                startActivity(intent)
                             }
                         }
                     } else {

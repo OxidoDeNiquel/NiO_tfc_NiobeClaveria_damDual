@@ -1,4 +1,4 @@
-package com.niobe.can_i.usecases.camarero_home.cesta
+package com.niobe.can_i.usecases.camarero_menu.camarero_home.cesta.metodo_pago.efectivo
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
@@ -7,11 +7,11 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.niobe.can_i.R
 
-class CestaActivity : AppCompatActivity() {
+class EfectivoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_cesta)
+        setContentView(R.layout.activity_efectivo)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)

@@ -2,13 +2,23 @@ package com.niobe.can_i.provider.services.firebase
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import com.niobe.can_i.model.Articulo
+import com.niobe.can_i.model.ArticulosComanda
 import com.niobe.can_i.model.Barra
+import com.niobe.can_i.model.Camarero
+import com.niobe.can_i.model.Comanda
 import com.niobe.can_i.model.Usuario
 import com.niobe.can_i.usecases.login.LogInActivity
+import com.niobe.can_i.util.Util
+import java.util.UUID
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 class FirebaseUtil {
 
@@ -68,71 +78,50 @@ class FirebaseUtil {
             }
     }
 
-    fun actualizarArticulo(
-        articuloId: String,
-        nuevosDatos: Map<String, Any>,
-        onSuccess: () -> Unit,
-        onFailure: (String) -> Unit
-    ) {
-        firestore.collection("articulos")
-            .whereEqualTo("articuloId", articuloId) // Consultar documentos con el articuloId proporcionado
-            .get()
-            .addOnSuccessListener { querySnapshot ->
-                if (!querySnapshot.isEmpty) {
-                    val documento = querySnapshot.documents[0] // Tomar el primer documento de la consulta
-                    documento.reference.update(nuevosDatos) // Actualizar el documento con los nuevos datos
-                        .addOnSuccessListener {
-                            Log.d("SUCCESS", "Documento actualizado correctamente")
-                            onSuccess() // Llamar a onSuccess cuando la operación tenga éxito
-                        }
-                        .addOnFailureListener { e ->
-                            Log.e("ERROR", "Error al actualizar documento", e)
-                            onFailure("Error al actualizar el artículo: ${e.message}") // Llamar a onFailure con el mensaje de error
-                        }
-                } else {
-                    onFailure("No se encontró ningún artículo con el ID $articuloId") // Llamar a onFailure si no se encuentra ningún documento
-                }
-            }
-            .addOnFailureListener { e ->
-                Log.e("ERROR", "Error al obtener el artículo para actualizar", e)
-                onFailure("Error al obtener el artículo para actualizar: ${e.message}") // Llamar a onFailure con el mensaje de error
-            }
+    fun actualizarArticulo(articuloId: String, articulo: Articulo, onSuccess: () -> Unit, onFailure: () -> Unit) {
+        firestore.collection("articulos").document(articuloId).set(articulo)
+            .addOnSuccessListener { onSuccess() }
+            .addOnFailureListener { onFailure() }
     }
 
-
-
-    fun getArticulo(articuloId: String, onSuccess: (Articulo?) -> Unit, onFailure: (String) -> Unit) {
-        firestore.collection("articulos")
-            .whereEqualTo("articuloId", articuloId)
-            .get()
-            .addOnSuccessListener { documents ->
-                if (!documents.isEmpty) {
-                    val document = documents.documents[0]
-                    val articulo = document.toObject(Articulo::class.java)
-                    onSuccess(articulo)
-                } else {
-                    onFailure("No se encontró ningún artículo con el ID $articuloId")
+    fun uploadImageToFirebaseStorage(imageUri: Uri, onSuccess: (String) -> Unit, onFailure: (Exception) -> Unit) {
+        val storageRef = FirebaseStorage.getInstance().reference.child("images/${System.currentTimeMillis()}.jpg")
+        storageRef.putFile(imageUri)
+            .addOnSuccessListener { taskSnapshot ->
+                taskSnapshot.storage.downloadUrl.addOnSuccessListener { uri ->
+                    onSuccess(uri.toString())
+                }.addOnFailureListener { exception ->
+                    onFailure(exception)
                 }
             }
             .addOnFailureListener { exception ->
-                Log.e("ERROR", "Error al obtener artículo: $exception")
-                onFailure("Error al obtener el artículo: $exception")
+                onFailure(exception)
             }
     }
 
-    fun guardarArticulo(articuloId: String, articulo: Articulo, callback: (Boolean) -> Unit) {
-        val db = FirebaseFirestore.getInstance()
-        db.collection("articulos")
-            .document(articuloId) // Usar articuloId como documentId
-            .set(articulo)
-            .addOnSuccessListener {
-                callback(true)
+    fun getArticulo(articuloId: String, onSuccess: (Articulo?) -> Unit, onFailure: (String) -> Unit) {
+        val articuloRef = firestore.collection("articulos").document(articuloId)
+        articuloRef.get()
+            .addOnSuccessListener { document ->
+                if (document != null && document.exists()) {
+                    val articulo = document.toObject(Articulo::class.java)
+                    onSuccess(articulo)
+                } else {
+                    onSuccess(null)
+                }
             }
-            .addOnFailureListener { e ->
-                Log.e("FirebaseUtil", "Error al guardar el artículo: ", e)
-                callback(false)
+            .addOnFailureListener { exception ->
+                onFailure(exception.message ?: "Error al obtener el artículo")
             }
     }
+
+
+    fun guardarArticulo(articuloId: String, articulo: Articulo, callback: (Boolean) -> Unit) {
+        firestore.collection("articulos").document(articuloId).set(articulo)
+            .addOnSuccessListener { callback(true) }
+            .addOnFailureListener { callback(false) }
+    }
+
 
     fun getBarra(idBarra: String, onSuccess: (Barra?) -> Unit, onFailure: (String) -> Unit) {
         val firestore = FirebaseFirestore.getInstance()
@@ -233,6 +222,149 @@ class FirebaseUtil {
             .addOnFailureListener { exception ->
                 onFailure(exception)
             }
+    }
+
+    fun crearComanda(idCamarero: Camarero, onSuccess: (String) -> Unit, onFailure: (Exception) -> Unit) {
+        // Genera un ID aleatorio para la comanda
+        val idComanda = UUID.randomUUID().toString()
+
+        // Obtén la fecha y hora actual
+        val fechaHoraActual = Util.obtenerFechaHoraActual()
+
+        // Crea una instancia de Comanda con los datos proporcionados
+        val comanda = Comanda(idComanda, idCamarero, fechaHoraActual)
+
+        // Agrega la comanda a Firestore con el ID generado
+        firestore.collection("comandas")
+            .document(idComanda)
+            .set(comanda)
+            .addOnSuccessListener {
+                println("Comanda creada correctamente en Firestore")
+                onSuccess(idComanda) // Devuelve el ID de la comanda creada
+            }
+            .addOnFailureListener { e ->
+                println("Error al crear la comanda: $e")
+                onFailure(e)
+            }
+    }
+
+    fun obtenerCamareroPorId(documentId: String, onSuccess: (Camarero?) -> Unit, onFailure: (Exception) -> Unit) {
+        firestore.collection("camareros")
+            .document(documentId)
+            .get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    val camarero = document.toObject(Camarero::class.java)
+                    onSuccess(camarero)
+                } else {
+                    onSuccess(null)
+                }
+            }
+            .addOnFailureListener { e ->
+                onFailure(e)
+            }
+    }
+
+    fun obtenerArticuloPorId(documentId: String, onSuccess: (Articulo?) -> Unit, onFailure: (Exception) -> Unit) {
+        firestore.collection("articulos")
+            .document(documentId)
+            .get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    val articulo = document.toObject(Articulo::class.java)
+                    onSuccess(articulo)
+                } else {
+                    onSuccess(null)
+                }
+            }
+            .addOnFailureListener { e ->
+                onFailure(e)
+            }
+    }
+
+    fun getArticulosComandaByComanda(idComanda: String, callback: (List<ArticulosComanda>) -> Unit) {
+        firestore.collection("articulos_comanda")
+            .whereEqualTo("idComanda.idComanda", idComanda)
+            .get()
+            .addOnSuccessListener { result ->
+                val articulosComandaList = mutableListOf<ArticulosComanda>()
+                for (document in result) {
+                    val articuloComanda = document.toObject(ArticulosComanda::class.java)
+                    articulosComandaList.add(articuloComanda)
+                }
+                callback(articulosComandaList)
+            }
+            .addOnFailureListener { exception ->
+                exception.printStackTrace()
+                callback(emptyList())
+            }
+    }
+
+    fun getArticuloById(articuloId: String, callback: (Articulo?) -> Unit) {
+        firestore.collection("articulos").document(articuloId).get()
+            .addOnSuccessListener { document ->
+                if (document != null && document.exists()) {
+                    val articulo = document.toObject(Articulo::class.java)
+                    callback(articulo)
+                } else {
+                    callback(null)
+                }
+            }
+            .addOnFailureListener { exception ->
+                exception.printStackTrace()
+                callback(null)
+            }
+    }
+
+    fun getArticuloComandaByComandaAndArticulo(idComanda: String, idArticulo: String, callback: (ArticulosComanda?) -> Unit) {
+        firestore.collection("articulos_comanda")
+            .whereEqualTo("idComanda.idComanda", idComanda)
+            .whereEqualTo("idArticulo.articuloId", idArticulo)
+            .get()
+            .addOnSuccessListener { result ->
+                val articuloComanda = result.documents.firstOrNull()?.toObject(ArticulosComanda::class.java)
+                callback(articuloComanda)
+            }
+            .addOnFailureListener { exception ->
+                exception.printStackTrace()
+                callback(null)
+            }
+    }
+
+    fun updateArticuloComanda(idComanda: String, idArticulo: String, nuevaCantidad: Int, callback: (Boolean) -> Unit) {
+        firestore.collection("articulos_comanda")
+            .whereEqualTo("idComanda.idComanda", idComanda)
+            .whereEqualTo("idArticulo.articuloId", idArticulo)
+            .get()
+            .addOnSuccessListener { result ->
+                val document = result.documents.firstOrNull()
+                if (document != null) {
+                    document.reference.update("cantidad", nuevaCantidad)
+                        .addOnSuccessListener { callback(true) }
+                        .addOnFailureListener { callback(false) }
+                } else {
+                    callback(false)
+                }
+            }
+            .addOnFailureListener { callback(false) }
+    }
+
+    fun deleteArticuloComanda(idComanda: String, idArticulo: String, callback: (Boolean) -> Unit) {
+        firestore.collection("articulos_comanda")
+            .whereEqualTo("idComanda.idComanda", idComanda)
+            .whereEqualTo("idArticulo.articuloId", idArticulo)
+            .get()
+            .addOnSuccessListener { result ->
+                val document = result.documents.firstOrNull()
+                if (document != null) {
+                    document.reference.delete()
+                        .addOnSuccessListener { callback(true) }
+                        .addOnFailureListener { callback(false) }
+                } else {
+                    callback(false)
+                }
+            }
+            .addOnFailureListener { callback(false) }
     }
 
 

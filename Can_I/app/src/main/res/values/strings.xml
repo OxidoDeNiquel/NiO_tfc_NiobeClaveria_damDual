@@ -35,6 +35,12 @@
     <string name="camareros">Camareros</string>
     <string name="administradores">Administradores</string>
     <string name="editar_usuario">Editar Usuario</string>
+    <string name="crear_comanda">Crear comanda</string>
+    <string name="cesta">Cesta</string>
+    <string name="total_a_pagar">TOTAL A PAGAR</string>
+    <string name="efectivo">EFECTIVO</string>
+    <string name="pago_completado_exito">Pago completado con éxito</string>
+    <string name="error_pago">Error al completar el pago</string>
 
     <!-- Dropdown items -->
     <string-array name="tipos_de_bebidas">

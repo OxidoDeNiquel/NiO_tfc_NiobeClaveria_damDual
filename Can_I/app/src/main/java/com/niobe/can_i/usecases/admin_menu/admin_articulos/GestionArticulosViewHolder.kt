@@ -2,6 +2,7 @@ package com.niobe.can_i.usecases.admin_menu.admin_articulos
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.niobe.can_i.databinding.ItemProductsBinding
 import com.niobe.can_i.model.Articulo
 class GestionArticulosViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -9,7 +10,12 @@ class GestionArticulosViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     fun bind(articulo: Articulo,
              navigateToDetailActivity: (String) -> Unit) {
         binding.tvArticulo.text = articulo.nombre
-        // Enlaza otros datos del artículo a las vistas
+        // Cargar la imagen del artículo si existe una URL válida
+        articulo.imagenUrl?.let { url ->
+            Glide.with(itemView.context)
+                .load(url)
+                .into(binding.ivArticulo)
+        }
 
         binding.root.setOnClickListener {
             navigateToDetailActivity(articulo.articuloId)

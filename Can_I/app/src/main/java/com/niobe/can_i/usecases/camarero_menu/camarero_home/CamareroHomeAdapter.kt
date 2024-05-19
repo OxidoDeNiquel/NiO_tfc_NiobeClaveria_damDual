@@ -1,4 +1,4 @@
-package com.niobe.can_i.usecases.camarero_home
+package com.niobe.can_i.usecases.camarero_menu.camarero_home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
