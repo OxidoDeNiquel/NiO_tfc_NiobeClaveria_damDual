@@ -56,4 +56,7 @@
         <item>Camarero</item>
         <item>Administrador</item>
     </string-array>
+
+    <string name="error_seleccionar_imagen">Tu mensaje de error aquí</string>
+
 </resources>
