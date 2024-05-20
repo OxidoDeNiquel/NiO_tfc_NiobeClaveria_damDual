@@ -18,9 +18,9 @@ import com.niobe.can_i.util.Constants
 
 class LogInActivity : AppCompatActivity() {
 
-    private lateinit var auth: FirebaseAuth
-    private lateinit var db: FirebaseFirestore
-    private lateinit var binding: ActivityLogInBinding
+    lateinit var auth: FirebaseAuth
+    lateinit var db: FirebaseFirestore
+    lateinit var binding: ActivityLogInBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +33,8 @@ class LogInActivity : AppCompatActivity() {
         initUI()
     }
 
-    private fun initUI(){
+
+    fun initUI(){
         val etEmail = binding.etEmailAddress
         val etPassword = binding.etPassword
         val bLogIn = binding.bLogIn
@@ -50,7 +51,7 @@ class LogInActivity : AppCompatActivity() {
         }
     }
 
-    private fun iniciarSesion(email: String, password: String) {
+    fun iniciarSesion(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
@@ -65,7 +66,7 @@ class LogInActivity : AppCompatActivity() {
             }
     }
 
-    private fun obtenerRolUsuario(uid: String?) {
+    fun obtenerRolUsuario(uid: String?) {
         uid?.let {
             db.collection("usuarios")
                 .document(uid)

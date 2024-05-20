@@ -64,9 +64,17 @@ dependencies {
 
     implementation ("com.journeyapps:zxing-android-embedded:4.3.0")
 
+    testImplementation ("junit:junit:4.13.2")
+    testImplementation ("org.mockito:mockito-core:3.11.2")
+    testImplementation ("org.mockito:mockito-inline:3.11.2")
+    testImplementation ("androidx.test.ext:junit:1.1.2")
+    testImplementation ("androidx.test:core:1.3.0")
+    testImplementation ("androidx.test:rules:1.3.0")
+    testImplementation ("androidx.test:runner:1.3.0")
+    testImplementation ("androidx.test.espresso:espresso-core:3.3.0")
+
 
     testImplementation(libs.junit)
-    testImplementation ("org.mockito:mockito-core:3.12.4")
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }
