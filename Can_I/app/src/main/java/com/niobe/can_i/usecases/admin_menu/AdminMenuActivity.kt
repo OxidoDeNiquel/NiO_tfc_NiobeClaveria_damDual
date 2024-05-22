@@ -50,10 +50,10 @@ class AdminMenuActivity : AppCompatActivity() {
             // Configuramos el click listener para el botón
             binding.bGestionArticulos.setOnClickListener {
                 // Aquí se ejecutará cuando se presione el botón
-                Util.changeActivityWithoutFinish(this, GestionArticulosActivity::class.java)
+                Util.changeActivityWithoutFinish(this, uidAuth, GestionArticulosActivity::class.java)
             }
             binding.bGestionEmpleados.setOnClickListener {
-                Util.changeActivityWithoutFinish(this, GestionUsuariosActivity::class.java)
+                Util.changeActivityWithoutFinish(this, uidAuth, GestionUsuariosActivity::class.java)
             }
             binding.bCerrarSesion.setOnClickListener {
                 firebaseUtil.cerrarSesion(this)
