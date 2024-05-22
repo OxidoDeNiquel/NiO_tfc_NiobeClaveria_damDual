@@ -92,7 +92,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:text="TARJETA"
+                android:text="@string/qr"
                 android:padding="30dp"
                 android:textSize="24dp"
                 android:backgroundTint="@color/can_i_c0026"/>

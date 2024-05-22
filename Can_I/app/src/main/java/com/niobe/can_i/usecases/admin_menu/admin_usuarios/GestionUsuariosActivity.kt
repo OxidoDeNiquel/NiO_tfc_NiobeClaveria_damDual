@@ -15,6 +15,7 @@ import com.niobe.can_i.usecases.admin_menu.admin_articulos.GestionArticulosAdapt
 import com.niobe.can_i.usecases.admin_menu.admin_articulos.admin_articulos_lista.ListaArticulosActivity
 import com.niobe.can_i.usecases.admin_menu.admin_articulos.sel_articulo.SelArticuloActivity
 import com.niobe.can_i.usecases.admin_menu.admin_usuarios.admin_usuarios_lista.ListaUsuariosActivity
+import com.niobe.can_i.usecases.admin_menu.admin_usuarios.crear_usuario.CrearUsuarioActivity
 import com.niobe.can_i.usecases.admin_menu.admin_usuarios.sel_usuario.SelUsuarioActivity
 import com.niobe.can_i.util.Constants
 import com.niobe.can_i.util.Util
@@ -43,6 +44,9 @@ class GestionUsuariosActivity : AppCompatActivity() {
     private fun initUI(){
         binding.tvInicio.setOnClickListener {
             finish()
+        }
+        binding.bAnadirUsuario.setOnClickListener {
+            Util.changeActivityWithoutFinish(this, "", CrearUsuarioActivity::class.java)
         }
         binding.ivCamareros.setOnClickListener {
             navigateToList(Constants.TIPO_USUARIO_CAMARERO)

@@ -58,5 +58,7 @@
     </string-array>
 
     <string name="error_seleccionar_imagen">Tu mensaje de error aquí</string>
+    <string name="anadir_usuario">Añadir usuario</string>
+    <string name="qr">QR</string>
 
 </resources>
