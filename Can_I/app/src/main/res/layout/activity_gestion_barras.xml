@@ -51,11 +51,6 @@
                 android:text="@string/perfil"/>
         </LinearLayout>
 
-        <androidx.appcompat.widget.SearchView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/can_i_c0025"/>
-
     </LinearLayout>
 
     <androidx.cardview.widget.CardView

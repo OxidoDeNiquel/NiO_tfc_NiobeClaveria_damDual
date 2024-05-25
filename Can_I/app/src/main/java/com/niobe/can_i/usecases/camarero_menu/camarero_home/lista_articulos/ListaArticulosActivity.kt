@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.niobe.can_i.R
@@ -22,6 +23,8 @@ import com.niobe.can_i.util.Util
 class ListaArticulosActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityListaArticulosCamareroBinding
+    private lateinit var adapter: ListaArticulosAdapter
+    private lateinit var tipoArticulo: String
     private val firebaseUtil = FirebaseUtil()
     private var idComanda: String? = null
     private var idCamarero: String? = null
@@ -37,12 +40,13 @@ class ListaArticulosActivity : AppCompatActivity() {
         }
 
         initUI()
+        setupSearchView()
     }
 
     private fun initUI() {
         idComanda = intent.getStringExtra(Constants.EXTRA_COMANDA)
         idCamarero = intent.getStringExtra(Constants.EXTRA_USUARIO)
-        val tipoArticulo = intent.getStringExtra(Constants.EXTRA_TIPO_ARTICULO)
+        tipoArticulo = intent.getStringExtra(Constants.EXTRA_TIPO_ARTICULO) ?: ""
         if (tipoArticulo != null) {
             actualizarRecyclerViews(tipoArticulo)
         } else {
@@ -73,5 +77,30 @@ class ListaArticulosActivity : AppCompatActivity() {
         intent.putExtra(Constants.EXTRA_COMANDA, idComanda)
         intent.putExtra(Constants.EXTRA_USUARIO, idCamarero)
         startActivity(intent)
+    }
+
+    private fun setupSearchView() {
+        val searchView = binding.searchBar
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                query?.let {
+                    searchArticulos(it)
+                }
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                newText?.let {
+                    searchArticulos(it)
+                }
+                return false
+            }
+        })
+    }
+
+    private fun searchArticulos(query: String) {
+        firebaseUtil.buscarArticulosPorTipoYNombre(tipoArticulo, query) { articulos ->
+            adapter.updateList(articulos)
+        }
     }
 }

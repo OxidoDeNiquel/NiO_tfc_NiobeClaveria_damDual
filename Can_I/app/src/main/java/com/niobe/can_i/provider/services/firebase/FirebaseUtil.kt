@@ -66,6 +66,26 @@ class FirebaseUtil {
             }
     }
 
+    fun buscarArticulosPorTipoYNombre(tipoArticulo: String, query: String, callback: (List<Articulo>) -> Unit) {
+        firestore.collection("articulos")
+            .whereEqualTo("tipo", tipoArticulo)
+            .get()
+            .addOnSuccessListener { result ->
+                val articulos: MutableList<Articulo> = mutableListOf()
+                for (document in result) {
+                    val articulo = document.toObject(Articulo::class.java)
+                    if (articulo.nombre.contains(query, ignoreCase = true)) {
+                        articulos.add(articulo)
+                    }
+                }
+                callback(articulos)
+            }
+            .addOnFailureListener { exception ->
+                Log.e("ERROR", "Error al buscar datos en Firestore: $exception")
+                callback(emptyList())
+            }
+    }
+
     /**
      * Elimina un artículo de Firestore.
      *
@@ -530,4 +550,25 @@ class FirebaseUtil {
                 callback(false)
             }
     }
+
+    fun buscarUsuariosPorRolYNombre(rol: String, nombre: String, callback: (List<Usuario>) -> Unit) {
+        firestore.collection("usuarios")
+            .whereEqualTo("rol", rol)
+            .whereGreaterThanOrEqualTo("nombre", nombre)
+            .whereLessThan("nombre", nombre + "\uf8ff")
+            .get()
+            .addOnSuccessListener { result ->
+                val usuarios: MutableList<Usuario> = mutableListOf()
+                for (document in result) {
+                    val usuario = document.toObject(Usuario::class.java)
+                    usuarios.add(usuario)
+                }
+                callback(usuarios)
+            }
+            .addOnFailureListener { exception ->
+                Log.e("ERROR", "Error al leer datos de Firestore: $exception")
+                callback(emptyList())
+            }
+    }
+
 }

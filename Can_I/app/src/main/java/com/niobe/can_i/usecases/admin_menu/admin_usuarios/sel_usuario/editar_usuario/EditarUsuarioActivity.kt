@@ -64,14 +64,17 @@ class EditarUsuarioActivity : AppCompatActivity() {
                             val dni = binding.etDni.text.toString()
                             editarUsuario(id, nombre, apell1, apell2, dni, usuario.rol)
                             Util.showToast(this, "El usuario ha sido editado con éxito")
+                            finish()
                         } else {
                             // El usuario no existe
                             Util.showToast(this, "El usuario no existe")
+                            finish()
                         }
                     },
                     onFailure = { exception ->
                         // Manejar el error, por ejemplo, mostrar un mensaje de error al usuario
                         Util.showToast(this, "Error al obtener usuario: $exception")
+                        finish()
                     }
                 )
             }
