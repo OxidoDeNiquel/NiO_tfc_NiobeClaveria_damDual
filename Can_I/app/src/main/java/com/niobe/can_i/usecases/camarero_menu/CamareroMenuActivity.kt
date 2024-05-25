@@ -53,8 +53,6 @@ class CamareroMenuActivity : AppCompatActivity() {
                         if (camarero != null) {
                             firebaseUtil.crearComanda(camarero,
                                 onSuccess = { idComanda ->
-                                    // Aquí se ejecutará cuando la comanda se haya creado exitosamente
-                                    // Puedes pasar el ID de la comanda a la siguiente actividad
                                     val intent = Intent(this, CamareroHomeActivity::class.java)
                                     intent.putExtra(Constants.EXTRA_COMANDA, idComanda)
                                     intent.putExtra(Constants.EXTRA_USUARIO, uidAuth)

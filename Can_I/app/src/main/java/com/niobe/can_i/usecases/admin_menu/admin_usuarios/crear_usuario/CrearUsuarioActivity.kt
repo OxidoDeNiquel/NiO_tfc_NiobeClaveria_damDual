@@ -16,9 +16,7 @@ import com.niobe.can_i.model.Barra
 import com.niobe.can_i.model.Camarero
 import com.niobe.can_i.model.Empleado
 import com.niobe.can_i.model.Usuario
-import com.niobe.can_i.usecases.admin_menu.AdminMenuActivity
 import com.niobe.can_i.util.Constants
-import com.niobe.can_i.util.Util
 
 class CrearUsuarioActivity : AppCompatActivity() {
 
@@ -84,11 +82,10 @@ class CrearUsuarioActivity : AppCompatActivity() {
                 }
                 toast.show()
             }
-            finish()
         }
     }
 
-    private fun registrarUsuario(email: String, contrasena: String, rol: String, nombre: String, apellido1:String, apellido2:String, dni: String) {
+    private fun registrarUsuario(email: String, contrasena: String, rol: String, nombre: String, apellido1: String, apellido2: String, dni: String) {
         auth.createUserWithEmailAndPassword(email, contrasena)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
@@ -96,11 +93,9 @@ class CrearUsuarioActivity : AppCompatActivity() {
                     user?.let {
                         val uid = it.uid
                         val usuario = Usuario(uid, email, rol, nombre, apellido1, apellido2, dni)
+                        Log.d("RegistrarUsuario", "Usuario creado: $usuario")
                         when (rol) {
-                            Constants.TIPO_USUARIO_ADMINISTRADOR -> {
-                                guardarUsuario(usuario, usuario.rol)
-                            }
-                            Constants.TIPO_USUARIO_CAMARERO -> {
+                            Constants.TIPO_USUARIO_ADMINISTRADOR, Constants.TIPO_USUARIO_CAMARERO -> {
                                 guardarUsuario(usuario, usuario.rol)
                             }
                             else -> {
@@ -123,7 +118,7 @@ class CrearUsuarioActivity : AppCompatActivity() {
             .document(usuario.idUsuario)
             .set(usuario)
             .addOnSuccessListener {
-                Log.d("Guardar Usuario", "Usuario almacenado correctamente en Firestore")
+                Log.d("Guardar Usuario", "Usuario almacenado correctamente en Firestore: $usuario")
             }
             .addOnFailureListener { e ->
                 Log.e("Guardar Usuario", "Error al almacenar usuario en Firestore", e)
@@ -138,9 +133,11 @@ class CrearUsuarioActivity : AppCompatActivity() {
         when (tipoUsuario) {
             Constants.TIPO_USUARIO_ADMINISTRADOR -> {
                 val administrador = Administrador(usuario.idUsuario, usuario)
+                Log.d("Guardar Usuario Segun Tipo", "Administrador creado: $administrador")
                 guardarAdministradorEnFirestore(administrador)
             }
             Constants.TIPO_USUARIO_CAMARERO -> {
+                Log.d("Guardar Usuario Segun Tipo", "Asignando barra y camarero para usuario: $usuario")
                 asignarBarraYCamarero(usuario)
             }
             else -> {
@@ -157,6 +154,7 @@ class CrearUsuarioActivity : AppCompatActivity() {
                 val barraSeleccionada = seleccionarBarraAleatoria(barrasDisponibles)
                 if (barraSeleccionada != null) {
                     val camarero = Camarero(usuario.idUsuario, Empleado(usuario.idUsuario, usuario), usuario, barraSeleccionada)
+                    Log.d("Asignar Barra y Camarero", "Camarero creado: $camarero")
                     guardarCamareroEnFirestore(camarero)
                 } else {
                     Log.e("Error", "No hay barras disponibles para asignar al camarero")
@@ -198,7 +196,7 @@ class CrearUsuarioActivity : AppCompatActivity() {
             .document(camarero.idCamarero)
             .set(camarero)
             .addOnSuccessListener {
-                Log.d("Guardar Camarero", "Camarero almacenado correctamente en Firestore")
+                Log.d("Guardar Camarero", "Camarero almacenado correctamente en Firestore: $camarero")
             }
             .addOnFailureListener { e ->
                 Log.e("Guardar Camarero", "Error al almacenar camarero en Firestore", e)
@@ -211,7 +209,7 @@ class CrearUsuarioActivity : AppCompatActivity() {
             .document(administrador.idAdministrador)
             .set(administrador)
             .addOnSuccessListener {
-                Log.d("Guardar Administrador", "Administrador almacenado correctamente en Firestore")
+                Log.d("Guardar Administrador", "Administrador almacenado correctamente en Firestore: $administrador")
             }
             .addOnFailureListener { e ->
                 Log.e("Guardar Administrador", "Error al almacenar administrador en Firestore", e)

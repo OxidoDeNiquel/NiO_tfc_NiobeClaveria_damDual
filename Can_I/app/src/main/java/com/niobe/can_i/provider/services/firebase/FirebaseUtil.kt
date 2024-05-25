@@ -357,7 +357,7 @@ class FirebaseUtil {
         val pagada = false
 
         // Crea una instancia de Comanda con los datos proporcionados
-        val comanda = Comanda(idComanda, idCamarero, fechaHoraActual, pagada)
+        val comanda = Comanda(idComanda, idCamarero, fechaHoraActual, 0.00, pagada)
 
         // Agrega la comanda a Firestore con el ID generado
         firestore.collection("comandas")
@@ -547,9 +547,9 @@ class FirebaseUtil {
      * @param pagado Nuevo estado de pago de la comanda.
      * @param callback Función de retorno que indica si la operación fue exitosa.
      */
-    fun updateComandaPagado(idComanda: String, pagado: Boolean, callback: (Boolean) -> Unit) {
+    fun updateComandaPagado(idComanda: String, pagado: Boolean, totalComanda: Double, callback: (Boolean) -> Unit) {
         val comandaRef = firestore.collection("comandas").document(idComanda)
-        comandaRef.update("pagada", pagado)
+        comandaRef.update("pagada", pagado, "totalComanda", totalComanda)
             .addOnSuccessListener {
                 callback(true)
             }

@@ -64,7 +64,7 @@ class OK_Activity : AppCompatActivity() {
     }
 
     private fun updateComandaPagado(idComanda: String) {
-        firebaseUtil.updateComandaPagado(idComanda, true) { success ->
+        firebaseUtil.updateComandaPagado(idComanda, true, precioTotal) { success ->
             if (success) {
                 Log.i("UPDATECOMANDA", "Comanda actualizada a pagado")
             } else {
