@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -85,11 +86,18 @@ class EfectivoActivity : AppCompatActivity() {
     }
 
     private fun navigateToOK() {
-        val intent = Intent(this, OK_Activity::class.java)
-        intent.putExtra(Constants.EXTRA_PRECIO_TOTAL, precioTotal)
-        intent.putExtra(Constants.EXTRA_COMANDA, idComanda)
-        intent.putExtra(Constants.EXTRA_USUARIO, idCamarero)
-        startActivity(intent)
-        finish()
+        val entregadoText = binding.tvTotalEntregado.text.toString().replace(",", ".").replace("€", "").trim()
+        val totalEntregado = entregadoText.toDoubleOrNull() ?: 0.0
+
+        if (totalEntregado < precioTotal) {
+            Toast.makeText(this, "El total entregado es menor que la cantidad total a pagar", Toast.LENGTH_SHORT).show()
+        } else {
+            val intent = Intent(this, OK_Activity::class.java)
+            intent.putExtra(Constants.EXTRA_PRECIO_TOTAL, precioTotal)
+            intent.putExtra(Constants.EXTRA_COMANDA, idComanda)
+            intent.putExtra(Constants.EXTRA_USUARIO, idCamarero)
+            startActivity(intent)
+            finish()
+        }
     }
 }
