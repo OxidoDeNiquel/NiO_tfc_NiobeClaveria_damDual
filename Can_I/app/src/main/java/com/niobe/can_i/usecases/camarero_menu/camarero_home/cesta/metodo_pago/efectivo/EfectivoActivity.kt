@@ -58,7 +58,7 @@ class EfectivoActivity : AppCompatActivity() {
         }
 
         binding.bCancelar.setOnClickListener {
-            finish()
+
         }
     }
 

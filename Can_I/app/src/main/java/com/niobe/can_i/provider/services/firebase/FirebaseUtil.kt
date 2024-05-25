@@ -14,6 +14,7 @@ import com.niobe.can_i.model.Camarero
 import com.niobe.can_i.model.Comanda
 import com.niobe.can_i.model.Usuario
 import com.niobe.can_i.usecases.login.LogInActivity
+import com.niobe.can_i.util.Constants
 import com.niobe.can_i.util.Util
 import java.util.UUID
 import kotlin.coroutines.resume
@@ -306,14 +307,51 @@ class FirebaseUtil {
         val db = FirebaseFirestore.getInstance()
 
         db.collection("usuarios").document(documentId)
-            .delete()
-            .addOnSuccessListener {
-                onSuccess()
+            .get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    val rol = document.getString("rol")
+                    db.collection("usuarios").document(documentId)
+                        .delete()
+                        .addOnSuccessListener {
+                            when (rol) {
+                                Constants.TIPO_USUARIO_ADMINISTRADOR -> {
+                                    db.collection("administradores").document(documentId)
+                                        .delete()
+                                        .addOnSuccessListener {
+                                            onSuccess()
+                                        }
+                                        .addOnFailureListener { exception ->
+                                            onFailure(exception)
+                                        }
+                                }
+                                Constants.TIPO_USUARIO_CAMARERO -> {
+                                    db.collection("camareros").document(documentId)
+                                        .delete()
+                                        .addOnSuccessListener {
+                                            onSuccess()
+                                        }
+                                        .addOnFailureListener { exception ->
+                                            onFailure(exception)
+                                        }
+                                }
+                                else -> {
+                                    onSuccess()
+                                }
+                            }
+                        }
+                        .addOnFailureListener { exception ->
+                            onFailure(exception)
+                        }
+                } else {
+                    onFailure(Exception("El documento no existe"))
+                }
             }
             .addOnFailureListener { exception ->
                 onFailure(exception)
             }
     }
+
 
     /**
      * Obtiene un usuario de Firestore por su ID.

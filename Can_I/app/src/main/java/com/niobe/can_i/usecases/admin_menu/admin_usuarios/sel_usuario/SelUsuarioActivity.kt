@@ -69,10 +69,12 @@ class SelUsuarioActivity : AppCompatActivity() {
             onSuccess = {
                 // Manejar el éxito, por ejemplo, actualizar la interfaz de usuario
                 Util.showToast(this, "Usuario eliminado con éxito")
+                finish()
             },
             onFailure = { exception ->
                 // Manejar el error, por ejemplo, mostrar un mensaje de error al usuario
                 Util.showToast(this, "Error al eliminar usuario")
+                finish()
             }
         )
     }

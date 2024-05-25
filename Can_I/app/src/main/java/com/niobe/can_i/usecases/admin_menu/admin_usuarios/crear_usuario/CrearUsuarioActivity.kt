@@ -82,6 +82,7 @@ class CrearUsuarioActivity : AppCompatActivity() {
                 }
                 toast.show()
             }
+            finish()
         }
     }
 
