@@ -60,5 +60,6 @@
     <string name="error_seleccionar_imagen">Tu mensaje de error aquí</string>
     <string name="anadir_usuario">Añadir usuario</string>
     <string name="qr">QR</string>
+    <string name="error_pago_2">El pago no ha podido completarse</string>
 
 </resources>
