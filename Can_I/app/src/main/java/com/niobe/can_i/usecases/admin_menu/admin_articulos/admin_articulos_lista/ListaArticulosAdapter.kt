@@ -6,8 +6,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.niobe.can_i.R
 import com.niobe.can_i.model.Articulo
 
-class ListaArticulosAdapter (var articuloList: List<Articulo> = emptyList(),
-                             private val navigateToList: (String) -> Unit) : RecyclerView.Adapter<ListaArticulosViewHolder>() {
+class ListaArticulosAdapter(
+    private var articuloList: List<Articulo> = emptyList(),
+    private val navigateToDetail: (String) -> Unit
+) : RecyclerView.Adapter<ListaArticulosViewHolder>() {
+
     fun updateList(list: List<Articulo>) {
         articuloList = list
         notifyDataSetChanged()
@@ -20,7 +23,7 @@ class ListaArticulosAdapter (var articuloList: List<Articulo> = emptyList(),
     }
 
     override fun onBindViewHolder(holder: ListaArticulosViewHolder, position: Int) {
-        holder.bind(articuloList[position], navigateToList)
+        holder.bind(articuloList[position], navigateToDetail)
     }
 
     override fun getItemCount() = articuloList.size

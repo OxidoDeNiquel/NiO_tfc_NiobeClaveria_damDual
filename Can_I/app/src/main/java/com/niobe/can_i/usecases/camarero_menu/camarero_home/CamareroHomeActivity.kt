@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.niobe.can_i.R
 import com.niobe.can_i.databinding.ActivityCamareroHomeBinding
 import com.niobe.can_i.provider.services.firebase.FirebaseUtil
+import com.niobe.can_i.usecases.perfil.PerfilActivity
 import com.niobe.can_i.usecases.camarero_menu.camarero_home.cesta.CestaActivity
 import com.niobe.can_i.usecases.camarero_menu.camarero_home.lista_articulos.ListaArticulosActivity
 import com.niobe.can_i.usecases.camarero_menu.camarero_home.sel_articulo.SelArticuloCamareroActivity
@@ -55,6 +56,10 @@ class CamareroHomeActivity : AppCompatActivity() {
             Log.e("Error idComanda", "El idComanda es inválido")
             finish()
             return
+        }
+
+        binding.tvPerfil.setOnClickListener {
+            navigateToProfile(idCamarero ?: "")
         }
 
         binding.ivCerveza.setOnClickListener {
@@ -104,6 +109,12 @@ class CamareroHomeActivity : AppCompatActivity() {
             Util.setupRecyclerViewHorizontal(this@CamareroHomeActivity, recyclerView, adapter)
             adapter.updateList(articulos)
         }
+    }
+
+    private fun navigateToProfile(uidAuth: String) {
+        val intent = Intent(this, PerfilActivity::class.java)
+        intent.putExtra(Constants.EXTRA_USUARIO, uidAuth)
+        startActivity(intent)
     }
 
     private fun navigateToDetail(id: String) {

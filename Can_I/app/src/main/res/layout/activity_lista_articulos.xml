@@ -17,6 +17,16 @@
         android:padding="10dp"
         android:src="@drawable/baseline_arrow_back_24"/>
 
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@color/can_i_c0025"/>
+
     <androidx.cardview.widget.CardView
         android:id="@+id/cvHome"
         android:layout_width="match_parent"

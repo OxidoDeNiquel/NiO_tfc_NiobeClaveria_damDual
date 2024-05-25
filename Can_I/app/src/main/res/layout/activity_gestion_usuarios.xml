@@ -15,7 +15,6 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/cvHome"
         android:padding="20dp"
         android:orientation="vertical">
         <LinearLayout
@@ -44,6 +43,7 @@
                 android:textColor="@color/white"
                 android:text="@string/can_i"/>
             <TextView
+                android:id="@+id/tvPerfil"
                 style="@style/HeaderApp_Inicio_Perfil"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -52,11 +52,6 @@
                 android:textColor="@color/white"
                 android:text="@string/perfil"/>
         </LinearLayout>
-
-        <androidx.appcompat.widget.SearchView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/can_i_c0025"/>
 
     </LinearLayout>
 

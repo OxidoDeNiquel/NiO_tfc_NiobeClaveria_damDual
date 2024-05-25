@@ -11,10 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.niobe.can_i.R
 import com.niobe.can_i.databinding.ActivityGestionArticulosBinding
 import com.niobe.can_i.provider.services.firebase.FirebaseUtil
-import com.niobe.can_i.usecases.admin_menu.AdminMenuActivity
 import com.niobe.can_i.usecases.admin_menu.admin_articulos.admin_articulos_lista.ListaArticulosActivity
 import com.niobe.can_i.usecases.admin_menu.admin_articulos.crear_articulo.CrearArticuloActivity
 import com.niobe.can_i.usecases.admin_menu.admin_articulos.sel_articulo.SelArticuloActivity
+import com.niobe.can_i.usecases.perfil.PerfilActivity
 import com.niobe.can_i.usecases.camarero_menu.camarero_home.CamareroHomeActivity
 import com.niobe.can_i.util.Constants
 import com.niobe.can_i.util.Util
@@ -49,29 +49,30 @@ class GestionArticulosActivity : AppCompatActivity() {
         val uidAuth = intent.getStringExtra(Constants.EXTRA_USUARIO)
 
         if(uidAuth != null){
-            // Configuramos el click listener para el botón
-            binding.bAnadirArticulo.setOnClickListener {
-                val intent = Intent(this, CrearArticuloActivity::class.java)
-                intent.putExtra(Constants.EXTRA_USUARIO, uidAuth)
-                startActivity(intent)
+            binding.tvPerfil.setOnClickListener {
+                navigateToProfile(uidAuth)
             }
-            binding.tvInicio.setOnClickListener {
-                val intent = Intent(this, AdminMenuActivity::class.java)
-                intent.putExtra(Constants.EXTRA_USUARIO, uidAuth)
-                startActivity(intent)
-            }
-            binding.ivCerveza.setOnClickListener {
-                navigateToList(Constants.TIPO_ARTICULO_CERVEZA)
-            }
-            binding.ivCopa.setOnClickListener {
-                navigateToList(Constants.TIPO_ARTICULO_COPA)
-            }
-            binding.ivSinAlcohol.setOnClickListener {
-                navigateToList(Constants.TIPO_ARTICULO_SIN_ALCOHOL)
-            }
-            // Leer y mostrar los artículos por tipo en los RecyclerViews
-            onResume()
         }
+        
+        // Configuramos el click listener para el botón
+        binding.bAnadirArticulo.setOnClickListener {
+            Util.changeActivity(this, CrearArticuloActivity::class.java)
+        }
+        binding.tvInicio.setOnClickListener {
+            finish()
+        }
+        binding.ivCerveza.setOnClickListener {
+            navigateToList(Constants.TIPO_ARTICULO_CERVEZA)
+        }
+        binding.ivCopa.setOnClickListener {
+            navigateToList(Constants.TIPO_ARTICULO_COPA)
+        }
+        binding.ivSinAlcohol.setOnClickListener {
+            navigateToList(Constants.TIPO_ARTICULO_SIN_ALCOHOL)
+        }
+        // Leer y mostrar los artículos por tipo en los RecyclerViews
+        onResume()
+        
     }
 
     override fun onResume() {
@@ -104,6 +105,12 @@ class GestionArticulosActivity : AppCompatActivity() {
             Util.setupRecyclerViewHorizontal(this@GestionArticulosActivity, recyclerView, adapter)
             adapter.updateList(articulos)
         }
+    }
+
+    private fun navigateToProfile(uidAuth: String) {
+        val intent = Intent(this, PerfilActivity::class.java)
+        intent.putExtra(Constants.EXTRA_USUARIO, uidAuth)
+        startActivity(intent)
     }
 
     private fun navigateToDetail(id: String) {

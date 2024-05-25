@@ -1,5 +1,6 @@
 package com.niobe.can_i.usecases.admin_menu
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -15,6 +16,7 @@ import com.niobe.can_i.usecases.admin_menu.admin_articulos.GestionArticulosActiv
 import com.niobe.can_i.usecases.admin_menu.admin_usuarios.GestionUsuariosActivity
 import com.niobe.can_i.usecases.admin_menu.admin_usuarios.GestionUsuariosAdapter
 import com.niobe.can_i.usecases.admin_menu.admin_usuarios.crear_usuario.CrearUsuarioActivity
+import com.niobe.can_i.usecases.camarero_menu.camarero_home.cesta.CestaActivity
 import com.niobe.can_i.util.Constants
 import com.niobe.can_i.util.Util
 
@@ -50,10 +52,11 @@ class AdminMenuActivity : AppCompatActivity() {
             // Configuramos el click listener para el botón
             binding.bGestionArticulos.setOnClickListener {
                 // Aquí se ejecutará cuando se presione el botón
-                Util.changeActivityWithoutFinish(this, uidAuth, GestionArticulosActivity::class.java)
+
+                navigateToGestionArticulos(uidAuth)
             }
             binding.bGestionEmpleados.setOnClickListener {
-                Util.changeActivityWithoutFinish(this, uidAuth, GestionUsuariosActivity::class.java)
+                navigateToGestionUsuarios(uidAuth)
             }
             binding.bCerrarSesion.setOnClickListener {
                 firebaseUtil.cerrarSesion(this)
@@ -65,6 +68,18 @@ class AdminMenuActivity : AppCompatActivity() {
             Log.e("Error uidAuth", "El uid es inválido")
         }
 
+    }
+
+    private fun navigateToGestionArticulos(uidAuth: String) {
+        val intent = Intent(this, GestionArticulosActivity::class.java)
+        intent.putExtra(Constants.EXTRA_USUARIO, uidAuth)
+        startActivity(intent)
+    }
+
+    private fun navigateToGestionUsuarios(uidAuth: String) {
+        val intent = Intent(this, GestionUsuariosActivity::class.java)
+        intent.putExtra(Constants.EXTRA_USUARIO, uidAuth)
+        startActivity(intent)
     }
 
     private fun getUsuarioInformacion(idUsuario: String) {

@@ -67,6 +67,34 @@ class FirebaseUtil {
     }
 
     /**
+     * Busca artículos por tipo y nombre en Firestore.
+     *
+     * @param tipoArticulo Tipo de artículo a buscar.
+     * @param query Texto de búsqueda para el nombre del artículo.
+     * @param callback Función de retorno que recibe la lista de artículos encontrados.
+     */
+    fun buscarArticulosPorTipoYNombre(tipoArticulo: String, query: String, callback: (List<Articulo>) -> Unit) {
+        firestore.collection("articulos")
+            .whereEqualTo("tipo", tipoArticulo)
+            .get()
+            .addOnSuccessListener { result ->
+                val articulos: MutableList<Articulo> = mutableListOf()
+                for (document in result) {
+                    val articulo = document.toObject(Articulo::class.java)
+                    if (articulo.nombre.contains(query, ignoreCase = true)) {
+                        articulos.add(articulo)
+                    }
+                }
+                callback(articulos)
+            }
+            .addOnFailureListener { exception ->
+                Log.e("ERROR", "Error al buscar datos en Firestore: $exception")
+                callback(emptyList())
+            }
+    }
+
+
+    /**
      * Elimina un artículo de Firestore.
      *
      * @param articuloId ID del artículo a eliminar.
@@ -530,4 +558,32 @@ class FirebaseUtil {
                 callback(false)
             }
     }
+
+    /**
+     * Busca usuarios por rol y nombre en Firestore.
+     *
+     * @param rol Rol del usuario a buscar.
+     * @param nombre Nombre del usuario o parte del nombre.
+     * @param callback Función de retorno que recibe la lista de usuarios encontrados.
+     */
+    fun buscarUsuariosPorRolYNombre(rol: String, nombre: String, callback: (List<Usuario>) -> Unit) {
+        firestore.collection("usuarios")
+            .whereEqualTo("rol", rol)
+            .whereGreaterThanOrEqualTo("nombre", nombre)
+            .whereLessThan("nombre", nombre + "\uf8ff")
+            .get()
+            .addOnSuccessListener { result ->
+                val usuarios: MutableList<Usuario> = mutableListOf()
+                for (document in result) {
+                    val usuario = document.toObject(Usuario::class.java)
+                    usuarios.add(usuario)
+                }
+                callback(usuarios)
+            }
+            .addOnFailureListener { exception ->
+                Log.e("ERROR", "Error al leer datos de Firestore: $exception")
+                callback(emptyList())
+            }
+    }
+
 }

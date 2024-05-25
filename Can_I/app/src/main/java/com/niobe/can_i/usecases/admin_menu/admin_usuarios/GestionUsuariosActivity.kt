@@ -11,9 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.niobe.can_i.R
 import com.niobe.can_i.databinding.ActivityGestionUsuariosBinding
 import com.niobe.can_i.provider.services.firebase.FirebaseUtil
-import com.niobe.can_i.usecases.admin_menu.admin_articulos.GestionArticulosAdapter
-import com.niobe.can_i.usecases.admin_menu.admin_articulos.admin_articulos_lista.ListaArticulosActivity
-import com.niobe.can_i.usecases.admin_menu.admin_articulos.sel_articulo.SelArticuloActivity
+import com.niobe.can_i.usecases.perfil.PerfilActivity
 import com.niobe.can_i.usecases.admin_menu.admin_usuarios.admin_usuarios_lista.ListaUsuariosActivity
 import com.niobe.can_i.usecases.admin_menu.admin_usuarios.crear_usuario.CrearUsuarioActivity
 import com.niobe.can_i.usecases.admin_menu.admin_usuarios.sel_usuario.SelUsuarioActivity
@@ -42,6 +40,13 @@ class GestionUsuariosActivity : AppCompatActivity() {
     }
 
     private fun initUI(){
+        val uidAuth = intent.getStringExtra(Constants.EXTRA_USUARIO)
+
+        if(uidAuth != null){
+            binding.tvPerfil.setOnClickListener {
+                navigateToProfile(uidAuth)
+            }
+        }
         binding.tvInicio.setOnClickListener {
             finish()
         }
@@ -86,6 +91,12 @@ class GestionUsuariosActivity : AppCompatActivity() {
             Util.setupRecyclerViewVertical(this@GestionUsuariosActivity, recyclerView, adapter)
             adapter.updateList(usuarios)
         }
+    }
+
+    private fun navigateToProfile(uidAuth: String) {
+        val intent = Intent(this, PerfilActivity::class.java)
+        intent.putExtra(Constants.EXTRA_USUARIO, uidAuth)
+        startActivity(intent)
     }
 
     private fun navigateToDetail(id: String) {
