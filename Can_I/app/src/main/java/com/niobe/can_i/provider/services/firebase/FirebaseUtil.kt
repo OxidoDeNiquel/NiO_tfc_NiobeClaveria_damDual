@@ -66,6 +66,13 @@ class FirebaseUtil {
             }
     }
 
+    /**
+     * Busca artículos por tipo y nombre en Firestore.
+     *
+     * @param tipoArticulo Tipo de artículo a buscar.
+     * @param query Texto de búsqueda para el nombre del artículo.
+     * @param callback Función de retorno que recibe la lista de artículos encontrados.
+     */
     fun buscarArticulosPorTipoYNombre(tipoArticulo: String, query: String, callback: (List<Articulo>) -> Unit) {
         firestore.collection("articulos")
             .whereEqualTo("tipo", tipoArticulo)
@@ -85,6 +92,7 @@ class FirebaseUtil {
                 callback(emptyList())
             }
     }
+
 
     /**
      * Elimina un artículo de Firestore.
@@ -551,6 +559,13 @@ class FirebaseUtil {
             }
     }
 
+    /**
+     * Busca usuarios por rol y nombre en Firestore.
+     *
+     * @param rol Rol del usuario a buscar.
+     * @param nombre Nombre del usuario o parte del nombre.
+     * @param callback Función de retorno que recibe la lista de usuarios encontrados.
+     */
     fun buscarUsuariosPorRolYNombre(rol: String, nombre: String, callback: (List<Usuario>) -> Unit) {
         firestore.collection("usuarios")
             .whereEqualTo("rol", rol)
