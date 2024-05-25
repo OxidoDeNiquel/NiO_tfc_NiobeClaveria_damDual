@@ -109,9 +109,5 @@ class SelUsuarioActivity : AppCompatActivity() {
             append("Email: ")
             append(usuario.email)
         }
-        binding.tvDni.text = buildString {
-            append("DNI: ")
-            append(usuario.dni)
-        }
     }
 }

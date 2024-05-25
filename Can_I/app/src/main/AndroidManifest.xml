@@ -80,7 +80,7 @@
             android:name=".usecases.camarero_menu.camarero_home.sel_articulo.SelArticuloCamareroActivity"
             android:exported="false" />
         <activity
-            android:name=".usecases.admin_menu.admin_perfil.PerfilAdminActivity"
+            android:name=".usecases.perfil.PerfilActivity"
             android:exported="false" />
         <activity
             android:name=".usecases.admin_menu.admin_articulos.GestionArticulosActivity"

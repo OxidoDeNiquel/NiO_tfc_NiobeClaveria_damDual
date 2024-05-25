@@ -43,6 +43,7 @@
                 android:textColor="@color/white"
                 android:text="@string/can_i"/>
             <TextView
+                android:id="@+id/tvPerfil"
                 style="@style/HeaderApp_Inicio_Perfil"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
