@@ -55,7 +55,7 @@ class CrearUsuarioActivity : AppCompatActivity() {
         val etDni = binding.etDni
 
         binding.bCancelar.setOnClickListener {
-            Util.changeActivity(this, AdminMenuActivity::class.java)
+            finish()
         }
 
         binding.bCrearUsuario.setOnClickListener {
@@ -84,6 +84,7 @@ class CrearUsuarioActivity : AppCompatActivity() {
                 }
                 toast.show()
             }
+            finish()
         }
     }
 

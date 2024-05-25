@@ -70,9 +70,10 @@ object Util {
      * @param context Contexto de la actividad actual.
      * @param destination Clase de la actividad de destino.
      */
-    fun changeActivityWithoutFinish(context: Context, destination: Class<*>) {
+    fun changeActivityWithoutFinish(context: Context, uidAuth: String, destination: Class<*>) {
         // Crea un intent para la nueva actividad
         val intent = Intent(context, destination)
+        intent.putExtra(Constants.EXTRA_USUARIO, uidAuth)
         // Inicia la nueva actividad
         context.startActivity(intent)
     }

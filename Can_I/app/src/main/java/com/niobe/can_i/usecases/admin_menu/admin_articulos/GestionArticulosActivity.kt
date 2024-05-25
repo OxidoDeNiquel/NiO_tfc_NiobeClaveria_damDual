@@ -15,6 +15,7 @@ import com.niobe.can_i.usecases.admin_menu.admin_articulos.admin_articulos_lista
 import com.niobe.can_i.usecases.admin_menu.admin_articulos.crear_articulo.CrearArticuloActivity
 import com.niobe.can_i.usecases.admin_menu.admin_articulos.sel_articulo.SelArticuloActivity
 import com.niobe.can_i.usecases.perfil.PerfilActivity
+import com.niobe.can_i.usecases.camarero_menu.camarero_home.CamareroHomeActivity
 import com.niobe.can_i.util.Constants
 import com.niobe.can_i.util.Util
 
@@ -52,6 +53,7 @@ class GestionArticulosActivity : AppCompatActivity() {
                 navigateToProfile(uidAuth)
             }
         }
+        
         // Configuramos el click listener para el botón
         binding.bAnadirArticulo.setOnClickListener {
             Util.changeActivity(this, CrearArticuloActivity::class.java)
@@ -70,6 +72,7 @@ class GestionArticulosActivity : AppCompatActivity() {
         }
         // Leer y mostrar los artículos por tipo en los RecyclerViews
         onResume()
+        
     }
 
     override fun onResume() {

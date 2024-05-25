@@ -52,6 +52,7 @@ class AdminMenuActivity : AppCompatActivity() {
             // Configuramos el click listener para el botón
             binding.bGestionArticulos.setOnClickListener {
                 // Aquí se ejecutará cuando se presione el botón
+
                 navigateToGestionArticulos(uidAuth)
             }
             binding.bGestionEmpleados.setOnClickListener {

@@ -45,7 +45,11 @@ class ListaUsuariosActivity : AppCompatActivity() {
             Log.e("ListaUsuarioActivity", "Rol de usuario no proporcionado")
         }
 
-        binding.tvRolUsuario.text = rol
+        if(rol == Constants.TIPO_USUARIO_ADMINISTRADOR){
+            binding.tvRolUsuario.text = "Administradores"
+        }else if(rol == Constants.TIPO_USUARIO_CAMARERO){
+            binding.tvRolUsuario.text = "Camareros"
+        }
 
         binding.ivBack.setOnClickListener {
             finish()
