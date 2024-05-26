@@ -156,7 +156,7 @@ class EditArticuloActivity : AppCompatActivity() {
         firebaseUtil.actualizarArticulo(articulo.articuloId, articulo,
             onSuccess = {
                 Toast.makeText(this, "Artículo actualizado correctamente", Toast.LENGTH_SHORT).show()
-                goToGestionArticulosActivity()
+                finish()
             },
             onFailure = {
                 Toast.makeText(this, "Error al actualizar el artículo", Toast.LENGTH_SHORT).show()

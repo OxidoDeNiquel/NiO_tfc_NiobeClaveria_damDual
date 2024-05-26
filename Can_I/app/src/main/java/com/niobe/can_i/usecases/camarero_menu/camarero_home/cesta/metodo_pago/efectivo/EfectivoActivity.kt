@@ -44,6 +44,7 @@ class EfectivoActivity : AppCompatActivity() {
 
     private fun initUI() {
         idComanda = intent.getStringExtra(Constants.EXTRA_COMANDA)
+        idCamarero = intent.getStringExtra(Constants.EXTRA_USUARIO)
         intent.putExtra(Constants.EXTRA_USUARIO, idCamarero)
         precioTotal = intent.getDoubleExtra(Constants.EXTRA_PRECIO_TOTAL, 0.00)
 

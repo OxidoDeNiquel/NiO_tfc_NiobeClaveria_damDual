@@ -108,6 +108,7 @@ class CrearArticuloActivity : AppCompatActivity() {
                 finish()
             } else {
                 Toast.makeText(this, "Error al crear el artículo", Toast.LENGTH_SHORT).show()
+                finish()
             }
         }
     }
