@@ -15,6 +15,7 @@ import com.niobe.can_i.usecases.admin_menu.AdminMenuActivity
 import com.niobe.can_i.usecases.camarero_menu.CamareroMenuActivity
 import com.niobe.can_i.usecases.camarero_menu.camarero_home.CamareroHomeActivity
 import com.niobe.can_i.util.Constants
+import com.niobe.can_i.util.Util
 
 class LogInActivity : AppCompatActivity() {
 
@@ -48,6 +49,9 @@ class LogInActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show()
             }
+        }
+        binding.tvRecuperarCuenta.setOnClickListener {
+            Util.changeActivityWithoutFinish(this, RecoverAccountActivity::class.java)
         }
     }
 
