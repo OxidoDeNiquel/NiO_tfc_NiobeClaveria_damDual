@@ -34,7 +34,6 @@ class CrearUsuarioActivity : AppCompatActivity() {
     }
 
     private fun initUI() {
-        // Componentes
         val tipoUsuarios = resources.getStringArray(R.array.tipos_de_usuarios)
         val adapter = ArrayAdapter(
             this, R.layout.list_desplegable, tipoUsuarios
@@ -44,26 +43,18 @@ class CrearUsuarioActivity : AppCompatActivity() {
             setAdapter(adapter)
         }
 
-        val etEmail = binding.etEmail
-        val etContrasena = binding.etContrasena
-        val etRol = binding.actvTipoUsuario
-        val etNombre = binding.etNombre
-        val etApellido1 = binding.etApellido1
-        val etApellido2 = binding.etApellido2
-        val etDni = binding.etDni
-
         binding.bCancelar.setOnClickListener {
             finish()
         }
 
         binding.bCrearUsuario.setOnClickListener {
-            val email = etEmail.text.toString()
-            val contrasena = etContrasena.text.toString()
-            val rol = etRol.text.toString()
-            val nombre = etNombre.text.toString()
-            val apellido1 = etApellido1.text.toString()
-            val apellido2 = etApellido2.text.toString()
-            val dni = etDni.text.toString()
+            val email = binding.etEmail.text.toString()
+            val contrasena = binding.etContrasena.text.toString()
+            val rol = binding.actvTipoUsuario.text.toString()
+            val nombre = binding.etNombre.text.toString()
+            val apellido1 = binding.etApellido1.text.toString()
+            val apellido2 = binding.etApellido2.text.toString()
+            val dni = binding.etDni.text.toString()
 
             if (email.isEmpty() || contrasena.isEmpty()) {
                 Toast.makeText(this, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show()
@@ -82,7 +73,6 @@ class CrearUsuarioActivity : AppCompatActivity() {
                 }
                 toast.show()
             }
-            finish()
         }
     }
 
@@ -95,14 +85,7 @@ class CrearUsuarioActivity : AppCompatActivity() {
                         val uid = it.uid
                         val usuario = Usuario(uid, email, rol, nombre, apellido1, apellido2, dni)
                         Log.d("RegistrarUsuario", "Usuario creado: $usuario")
-                        when (rol) {
-                            Constants.TIPO_USUARIO_ADMINISTRADOR, Constants.TIPO_USUARIO_CAMARERO -> {
-                                guardarUsuario(usuario, usuario.rol)
-                            }
-                            else -> {
-                                Log.e("Tipo de usuario no válido", "El tipo de usuario '$rol' no es válido")
-                            }
-                        }
+                        guardarUsuarioEnFirestore(usuario, rol)
                     }
                     Toast.makeText(this, "Registro exitoso", Toast.LENGTH_SHORT).show()
                 } else {
@@ -112,22 +95,18 @@ class CrearUsuarioActivity : AppCompatActivity() {
             }
     }
 
-    fun guardarUsuario(usuario: Usuario, tipoUsuario: String) {
+    private fun guardarUsuarioEnFirestore(usuario: Usuario, tipoUsuario: String) {
         val db = FirebaseFirestore.getInstance()
-
         db.collection("usuarios")
             .document(usuario.idUsuario)
             .set(usuario)
             .addOnSuccessListener {
                 Log.d("Guardar Usuario", "Usuario almacenado correctamente en Firestore: $usuario")
+                guardarUsuarioSegunTipo(usuario, tipoUsuario)
             }
             .addOnFailureListener { e ->
                 Log.e("Guardar Usuario", "Error al almacenar usuario en Firestore", e)
             }
-
-        if (tipoUsuario == Constants.TIPO_USUARIO_ADMINISTRADOR || tipoUsuario == Constants.TIPO_USUARIO_CAMARERO) {
-            guardarUsuarioSegunTipo(usuario, tipoUsuario)
-        }
     }
 
     private fun guardarUsuarioSegunTipo(usuario: Usuario, tipoUsuario: String) {
@@ -198,9 +177,11 @@ class CrearUsuarioActivity : AppCompatActivity() {
             .set(camarero)
             .addOnSuccessListener {
                 Log.d("Guardar Camarero", "Camarero almacenado correctamente en Firestore: $camarero")
+                finish()
             }
             .addOnFailureListener { e ->
                 Log.e("Guardar Camarero", "Error al almacenar camarero en Firestore", e)
+                finish()
             }
     }
 
@@ -211,9 +192,11 @@ class CrearUsuarioActivity : AppCompatActivity() {
             .set(administrador)
             .addOnSuccessListener {
                 Log.d("Guardar Administrador", "Administrador almacenado correctamente en Firestore: $administrador")
+                finish()
             }
             .addOnFailureListener { e ->
                 Log.e("Guardar Administrador", "Error al almacenar administrador en Firestore", e)
+                finish()
             }
     }
 }

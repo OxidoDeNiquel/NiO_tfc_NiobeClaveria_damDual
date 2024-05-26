@@ -56,7 +56,7 @@ class GestionArticulosActivity : AppCompatActivity() {
         
         // Configuramos el click listener para el botón
         binding.bAnadirArticulo.setOnClickListener {
-            Util.changeActivity(this, CrearArticuloActivity::class.java)
+            navigateToAddArticle()
         }
         binding.tvInicio.setOnClickListener {
             finish()
@@ -110,6 +110,11 @@ class GestionArticulosActivity : AppCompatActivity() {
     private fun navigateToProfile(uidAuth: String) {
         val intent = Intent(this, PerfilActivity::class.java)
         intent.putExtra(Constants.EXTRA_USUARIO, uidAuth)
+        startActivity(intent)
+    }
+
+    private fun navigateToAddArticle() {
+        val intent = Intent(this, CrearArticuloActivity::class.java)
         startActivity(intent)
     }
 

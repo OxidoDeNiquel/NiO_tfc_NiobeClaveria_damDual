@@ -51,7 +51,7 @@ class GestionUsuariosActivity : AppCompatActivity() {
             finish()
         }
         binding.bAnadirUsuario.setOnClickListener {
-            Util.changeActivityWithoutFinish(this, "", CrearUsuarioActivity::class.java)
+            Util.changeActivityWithoutFinish(this, CrearUsuarioActivity::class.java)
         }
         binding.ivCamareros.setOnClickListener {
             navigateToList(Constants.TIPO_USUARIO_CAMARERO)
