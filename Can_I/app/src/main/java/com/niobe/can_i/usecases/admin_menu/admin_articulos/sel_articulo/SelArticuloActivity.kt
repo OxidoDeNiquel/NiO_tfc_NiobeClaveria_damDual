@@ -19,6 +19,7 @@ class SelArticuloActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySelArticuloBinding
     private lateinit var firebaseUtil: FirebaseUtil
+    private var articuloId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,21 +34,26 @@ class SelArticuloActivity : AppCompatActivity() {
 
         firebaseUtil = FirebaseUtil()
 
+        articuloId = intent.getStringExtra(Constants.EXTRA_ID)
+
         initUI()
     }
 
+    override fun onResume() {
+        super.onResume()
+        articuloId?.let { getArticuloInformation(it) }
+    }
+
     private fun initUI() {
-        val id: String? = intent.getStringExtra(Constants.EXTRA_ID)
-        if (id != null) {
-            getArticuloInformation(id)
+        if (articuloId != null) {
             binding.ivBack.setOnClickListener {
                 finish()
             }
             binding.bEditarArticulo.setOnClickListener {
-                navigateToEditArticulo(id)
+                navigateToEditArticulo(articuloId!!)
             }
             binding.bBorrarArticulo.setOnClickListener {
-                deleteArticulo(id)
+                deleteArticulo(articuloId!!)
             }
         } else {
             // Manejar el caso donde no se proporciona el ID del artículo
@@ -109,5 +115,4 @@ class SelArticuloActivity : AppCompatActivity() {
             binding.ivArticulo.setImageResource(R.drawable.ic_launcher_foreground) // Imagen de reserva
         }
     }
-
 }

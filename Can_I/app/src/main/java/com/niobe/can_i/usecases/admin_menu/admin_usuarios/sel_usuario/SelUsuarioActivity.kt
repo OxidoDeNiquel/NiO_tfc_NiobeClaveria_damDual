@@ -8,12 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.niobe.can_i.R
-import com.niobe.can_i.databinding.ActivitySelArticuloBinding
 import com.niobe.can_i.databinding.ActivitySelUsuarioBinding
-import com.niobe.can_i.model.Articulo
 import com.niobe.can_i.model.Usuario
 import com.niobe.can_i.provider.services.firebase.FirebaseUtil
-import com.niobe.can_i.usecases.admin_menu.admin_articulos.sel_articulo.edit_articulo.EditArticuloActivity
 import com.niobe.can_i.usecases.admin_menu.admin_usuarios.sel_usuario.editar_usuario.EditarUsuarioActivity
 import com.niobe.can_i.util.Constants
 import com.niobe.can_i.util.Util
@@ -22,6 +19,8 @@ class SelUsuarioActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySelUsuarioBinding
     private lateinit var firebaseUtil: FirebaseUtil
+    private var idUsuario: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -35,25 +34,30 @@ class SelUsuarioActivity : AppCompatActivity() {
 
         firebaseUtil = FirebaseUtil()
 
+        idUsuario = intent.getStringExtra(Constants.EXTRA_ID)
+
         initUI()
     }
 
-    private fun initUI(){
-        val id: String? = intent.getStringExtra(Constants.EXTRA_ID)
-        if (id != null) {
-            getUsuarioInformacion(id)
+    override fun onResume() {
+        super.onResume()
+        idUsuario?.let { getUsuarioInformacion(it) }
+    }
+
+    private fun initUI() {
+        if (idUsuario != null) {
             binding.ivBack.setOnClickListener {
                 finish()
             }
             binding.bEditarUsuario.setOnClickListener {
-                navigateToEditUsuario(id)
+                navigateToEditUsuario(idUsuario!!)
             }
             binding.bBorrarUsuario.setOnClickListener {
-                deleteUsuario(id)
+                deleteUsuario(idUsuario!!)
             }
         } else {
-            // Manejar el caso donde no se proporciona el ID del artículo
-            Toast.makeText(this, "ID de artículo no válido", Toast.LENGTH_SHORT).show()
+            // Manejar el caso donde no se proporciona el ID del usuario
+            Toast.makeText(this, "ID de usuario no válido", Toast.LENGTH_SHORT).show()
             finish()
         }
     }
