@@ -22,7 +22,7 @@ Este proyecto es una aplicación de gestión de barras diseñada para eventos y 
 
 - **Android Studio**: Entorno de desarrollo integrado (IDE) para aplicaciones Android.
 - **Firebase**: Plataforma de desarrollo de aplicaciones móviles y web desarrollada por Google.
-- **Java**: Lenguaje de programación utilizado para desarrollar la lógica de la aplicación.
+- **Kotlin**: Lenguaje de programación utilizado para desarrollar la lógica de la aplicación.
 
 ## Licencia
 
