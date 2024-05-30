@@ -1,13 +1,11 @@
 package com.niobe.can_i.usecases.camarero_menu.camarero_home.sel_articulo
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FirebaseFirestore
 import com.niobe.can_i.R
@@ -15,16 +13,10 @@ import com.niobe.can_i.databinding.ActivitySelArticuloCamareroBinding
 import com.niobe.can_i.model.Articulo
 import com.niobe.can_i.model.ArticulosComanda
 import com.niobe.can_i.model.Comanda
-import com.niobe.can_i.model.Camarero
 import com.niobe.can_i.provider.services.firebase.FirebaseUtil
 import com.niobe.can_i.util.Constants
 import com.niobe.can_i.util.Util
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import java.util.UUID
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
-import kotlin.coroutines.suspendCoroutine
 
 class SelArticuloCamareroActivity : AppCompatActivity() {
 
@@ -47,7 +39,6 @@ class SelArticuloCamareroActivity : AppCompatActivity() {
         firebaseUtil = FirebaseUtil()
 
         initUI()
-
     }
 
     private fun initUI() {
@@ -69,7 +60,6 @@ class SelArticuloCamareroActivity : AppCompatActivity() {
             }
             binding.bAnadirCesta.setOnClickListener {
                 añadirArticuloAComanda(idComanda, idCamarero, idArticulo, cantidad)
-                finish()
             }
         } else {
             // Manejar el caso donde no se proporciona el ID del artículo
@@ -78,7 +68,7 @@ class SelArticuloCamareroActivity : AppCompatActivity() {
         }
     }
 
-    private fun setWeight(){
+    private fun setWeight() {
         binding.tvNumber.text = cantidad.toString()
     }
 
@@ -110,22 +100,23 @@ class SelArticuloCamareroActivity : AppCompatActivity() {
                             .document(idArticulosComanda)
                             .set(articuloComanda)
                             .addOnSuccessListener {
-                                println("Artículo añadido a la comanda exitosamente")
+                                Toast.makeText(this, "Producto añadido al pedido con éxito", Toast.LENGTH_SHORT).show()
+                                finish()
                             }
                             .addOnFailureListener { e ->
-                                println("Error al añadir el artículo a la comanda: ${e.message}")
+                                Toast.makeText(this, "Error al añadir el producto al pedido", Toast.LENGTH_SHORT).show()
                             }
                     } else {
-                        println("Artículo no encontrado")
+                        Toast.makeText(this, "Artículo no encontrado", Toast.LENGTH_SHORT).show()
                     }
                 }, { e ->
-                    println("Error al obtener el artículo: ${e.message}")
+                    Toast.makeText(this, "Error al obtener el artículo", Toast.LENGTH_SHORT).show()
                 })
             } else {
-                println("Camarero no encontrado")
+                Toast.makeText(this, "Camarero no encontrado", Toast.LENGTH_SHORT).show()
             }
         }, { e ->
-            println("Error al obtener el camarero: ${e.message}")
+            Toast.makeText(this, "Error al obtener el camarero", Toast.LENGTH_SHORT).show()
         })
     }
 
