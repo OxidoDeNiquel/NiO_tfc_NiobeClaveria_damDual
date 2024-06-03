@@ -624,4 +624,42 @@ class FirebaseUtil {
             }
     }
 
+    fun actualizarStockPorComanda(idComanda: String, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
+        getArticulosComandaByComanda(idComanda) { articulosComandaList ->
+            if (articulosComandaList.isEmpty()) {
+                onFailure(Exception("No se encontraron artículos para la comanda $idComanda"))
+                return@getArticulosComandaByComanda
+            }
+
+            for (articuloComanda in articulosComandaList) {
+                val articuloId = articuloComanda.idArticulo.articuloId
+                obtenerArticuloPorId(articuloId, { articulo ->
+                    if (articulo != null) {
+                        val nuevoStock = articulo.stock - articuloComanda.cantidad
+                        if (nuevoStock >= 0) {
+                            articulo.stock = nuevoStock
+                            actualizarArticulo(articuloId, articulo, {
+                                Log.i("ACTUALIZARSTOCK", "Stock actualizado correctamente para artículo $articuloId")
+                            }, {
+                                Log.e("ACTUALIZARSTOCK", "Error actualizando stock para artículo $articuloId")
+                                onFailure(Exception("Error actualizando stock para artículo $articuloId"))
+                            })
+                        } else {
+                            onFailure(Exception("Stock insuficiente para el artículo: ${articulo.nombre}"))
+                            return@obtenerArticuloPorId
+                        }
+                    } else {
+                        onFailure(Exception("No se encontró el artículo con ID $articuloId"))
+                        return@obtenerArticuloPorId
+                    }
+                }, { error ->
+                    onFailure(error)
+                    return@obtenerArticuloPorId
+                })
+            }
+
+            // Todos los artículos procesados correctamente
+            onSuccess()
+        }
+    }
 }
