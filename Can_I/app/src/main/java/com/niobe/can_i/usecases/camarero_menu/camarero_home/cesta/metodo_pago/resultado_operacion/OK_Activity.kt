@@ -44,7 +44,6 @@ class OK_Activity : AppCompatActivity() {
         idCamarero = intent.getStringExtra(Constants.EXTRA_USUARIO)
         precioTotal = intent.getDoubleExtra(Constants.EXTRA_PRECIO_TOTAL, 0.00)
 
-
         idComanda?.let {
             updateComandaPagado(it)
         }
@@ -67,9 +66,18 @@ class OK_Activity : AppCompatActivity() {
         firebaseUtil.updateComandaPagado(idComanda, true, precioTotal) { success ->
             if (success) {
                 Log.i("UPDATECOMANDA", "Comanda actualizada a pagado")
+                actualizarStock(idComanda)
             } else {
                 Log.e("UPDATECOMANDA", "Error actualizando comanda")
             }
         }
+    }
+
+    private fun actualizarStock(idComanda: String) {
+        firebaseUtil.actualizarStockPorComanda(idComanda, {
+            Log.i("ACTUALIZARSTOCK", "Stock actualizado correctamente")
+        }, { error ->
+            Log.e("ACTUALIZARSTOCK", "Error actualizando stock: ${error.message}")
+        })
     }
 }
